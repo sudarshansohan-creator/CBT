@@ -1,0 +1,6 @@
+{
+  "name": "CBT Exam Portal",
+  "description": "A computer-based test platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
