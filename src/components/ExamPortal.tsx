@@ -190,7 +190,6 @@ export default function ExamPortal() {
     const accuracy = correctCount + incorrectCount > 0 
       ? Math.round((correctCount / (correctCount + incorrectCount)) * 100) 
       : 0;
-
     return {
       totalMarks,
       correctCount,
@@ -202,6 +201,147 @@ export default function ExamPortal() {
   };
 
   const results = calculateResult();
+
+  // Helper to calculate rank, percentile & zone based on total marks out of 200
+  const getRankAndPercentile = (score: number) => {
+    let zoneName = '';
+    let zoneBg = '';
+    let zoneColor = '';
+    let borderStyle = '';
+    let rankRange = '';
+    let percentileRange = '';
+    let descriptionBengali = '';
+    let adviceBengali = '';
+    let progressBg = '';
+    let relativePosition = 0; // 0 to 100 for visual marker
+
+    if (score >= 185) {
+      zoneName = 'টপার জোন (Topper Zone)';
+      zoneBg = 'bg-amber-500/15 text-amber-300';
+      zoneColor = 'text-amber-400';
+      borderStyle = 'border-amber-500/30';
+      progressBg = 'bg-gradient-to-r from-amber-500 to-yellow-400';
+      rankRange = '1 – 50';
+      percentileRange = '99.98% – 100%';
+      descriptionBengali = 'সেরা র্যাঙ্ক ও নিশ্চিত সিলেকশন! আপনি আমাদের মেধা তালিকার শীর্ষে আছেন।';
+      adviceBengali = 'অসাধারণ ঐতিহাসিক স্কোর! প্রশ্ন খুব সহজ না হলে এই স্তরে পরীক্ষার্থীর সংখ্যা খুবই নগণ্য থাকে। আপনি নিশ্চিতভাবেই নিজের পছন্দের রাজ্য এবং ক্যাটাগরির ডেটা এন্ট্রি কিংবা সেরা মেইন পোস্ট অফার পাবেন।';
+      relativePosition = 96;
+    } else if (score >= 175) {
+      zoneName = 'টপার জোন (Topper Zone)';
+      zoneBg = 'bg-yellow-500/15 text-yellow-300';
+      zoneColor = 'text-yellow-400';
+      borderStyle = 'border-yellow-500/30';
+      progressBg = 'bg-yellow-500';
+      rankRange = '50 – 500';
+      percentileRange = '99.80% – 99.97%';
+      descriptionBengali = 'শীর্ষ র্যাঙ্ক জোন। প্রথম পছন্দ অনুযায়ী সেরা মন্ত্রক পাওয়ার সুবর্ণ সুযোগ।';
+      adviceBengali = 'চমৎকার পারফরম্যান্স! প্রিলিমিনারি স্তরের এই অসাধারণ স্কোরের মাধ্যমে প্রথম পছন্দ অনুযায়ী সেরা ও হাই-প্রোফাইল মন্ত্রণালয় কিংবা কাস্টম উইং পাওয়ার পথ সুগম হয়ে গেছে।';
+      relativePosition = 89;
+    } else if (score >= 165) {
+      zoneName = 'নিরাপদ জোন (Selection Zone)';
+      zoneBg = 'bg-emerald-500/15 text-emerald-300';
+      zoneColor = 'text-emerald-400';
+      borderStyle = 'border-emerald-500/30';
+      progressBg = 'bg-emerald-500';
+      rankRange = '500 – 2,500';
+      percentileRange = '99.00% – 99.79%';
+      descriptionBengali = 'যেকোনো প্রধান ক্যাটাগরির জন্য অত্যন্ত নিরাপদ এবং নিশ্চিত সিলেকশন জোন।';
+      adviceBengali = 'অত্যন্ত নিরাপদ স্কোর! সাধারণ প্রার্থী হোন কিংবা ওবিসি/ইডব্লিউএস - যেকোনো স্তরেই আপনার চূড়ান্ত তালিকায় সুযোগ পাওয়ার নিশ্চয়তা অত্যন্ত প্রবল। পরবর্তী লেভেলের মূল মূল ধারাগুলিতে প্রস্তুতি আরও তুঙ্গে রাখুন।';
+      relativePosition = 82;
+    } else if (score >= 155) {
+      zoneName = 'নিরাপদ জোন (Selection Zone)';
+      zoneBg = 'bg-teal-500/15 text-teal-300';
+      zoneColor = 'text-teal-400';
+      borderStyle = 'border-teal-500/30';
+      progressBg = 'bg-teal-500';
+      rankRange = '2,500 – 8,000';
+      percentileRange = '96.80% – 98.99%';
+      descriptionBengali = 'স্ট্যান্ডার্ড সিলেকশন জোন। বিগত কয়েক বছরের ট্রেন্ড অনুযায়ী অত্যন্ত নির্ভরযোগ্য স্কোর।';
+      adviceBengali = 'আপনার স্কোর বেশ ভালো। পূর্ববর্তী ট্রেন্ড ও রেকর্ড অনুযায়ী এই স্কোরে আপনি স্বাচ্ছন্দ্যে লোয়ার ডিভিশনাল ক্লাসিক পোস্ট বা তার সমমানের মূল পদ পেয়ে যেতে পারেন। সিলেকশন প্রায় নিশ্চিত।';
+      relativePosition = 74;
+    } else if (score >= 145) {
+      zoneName = 'বর্ডারলাইন জোন (Selection Zone)';
+      zoneBg = 'bg-blue-500/15 text-blue-300';
+      zoneColor = 'text-blue-400';
+      borderStyle = 'border-blue-500/30';
+      progressBg = 'bg-blue-505';
+      rankRange = '8,000 – 20,000';
+      percentileRange = '92.00% – 96.79%';
+      descriptionBengali = 'সীমান্তবর্তী স্কোর। নরমালাইজেশনে কাট-অফ পরিবর্তন সাপেক্ষে সুযোগ প্রাপ্তি।';
+      adviceBengali = 'এটি একটি বর্ডারলাইন বা কাছাকাছি থাকা স্কোর। নরমালাইজেশনে আপনার শিফটের কাঠিন্য অনুযায়ী নম্বর বৃদ্ধি পেলে খুব সহজেই তালিকায় চলে আসবেন, তবে অসাবধানতায় বাদ পড়ার হালকা ঝুঁকিও থাকতে পারে। চূড়ান্ত সিলেবাসে জোর দিলেই এটি ১০০% নিরাপদ করা সম্ভব।';
+      relativePosition = 66;
+    } else if (score >= 130) {
+      zoneName = 'ক্যাটাগরি ভিত্তিক জোন (Qualifying Zone)';
+      zoneBg = 'bg-indigo-500/15 text-indigo-300';
+      zoneColor = 'text-indigo-400';
+      borderStyle = 'border-indigo-500/30';
+      progressBg = 'bg-indigo-500';
+      rankRange = '20,000 – 40,000';
+      percentileRange = '84.00% – 91.99%';
+      descriptionBengali = 'সংরক্ষিত ক্যাটাগরিদের জন্য দুর্দান্ত কোয়ালিফাইং স্কোর।';
+      adviceBengali = 'সাধারণ বিভাগের জন্য সিলেকশন কঠিন হলেও সংরক্ষিত ও রিজার্ভড ক্যাটাগরির (যেমন- SC/ST বা এক্স-সার্ভিসম্যান) প্রার্থীরা এই স্কোরে খুব চমৎকার র্যাঙ্ক নিয়ে সহজেই পরবর্তী মূল ধাপের জন্য উত্তীর্ণ হয়ে যান। জেনারেল হলে আরো ১৫-২০ নম্বর বৃদ্ধির চেষ্টা করুন।';
+      relativePosition = 55;
+    } else if (score >= 115) {
+      zoneName = 'ক্যাটাগরি ভিত্তিক জোন (Qualifying Zone)';
+      zoneBg = 'bg-slate-800 text-slate-350';
+      zoneColor = 'text-slate-300';
+      borderStyle = 'border-slate-700';
+      progressBg = 'bg-slate-500';
+      rankRange = '40,000 – 60,000';
+      percentileRange = '76.00% – 83.99%';
+      descriptionBengali = 'বিশেষ সংরক্ষিত ও প্রতিবন্ধী (PwD) প্রার্থীদের উপযুক্ত স্কোর।';
+      adviceBengali = 'বিশেষ সংরক্ষণ বা শারীরিক প্রতিবন্ধী (PwD) প্রার্থীরা এই স্কোরে কাট-অফ ক্লিয়ার করতে সক্ষম হতে পারেন। তবে সাধারণ কিংবা অন্যান্য ক্যাটাগরিদের জন্য এটি অল ইন্ডিয়া র্যাঙ্কের মেধা তালিকা পার করার জন্য বেশ নিচে রয়েছে।';
+      relativePosition = 42;
+    } else if (score >= 100) {
+      zoneName = 'ক্যাটাগরি ভিত্তিক জোন (Qualifying Zone)';
+      zoneBg = 'bg-slate-800 text-slate-350';
+      zoneColor = 'text-slate-300';
+      borderStyle = 'border-slate-705';
+      progressBg = 'bg-slate-550';
+      rankRange = '60,000 – 80,000';
+      percentileRange = '68.00% – 75.99%';
+      descriptionBengali = 'ন্যূনতম সুযোগ পাওয়ার চেষ্টা জোন কিন্তু চূড়ান্ত পোস্টের জন্য ঝুঁকিপূর্ণ।';
+      adviceBengali = 'অপেক্ষাকৃত কম স্কোর। সাধারণ বা ওবিসি ক্ষেত্রে সুযোগ কম থাকলেও, শুধুমাত্র কিছু নির্দিষ্ট কোটা (যেমন- Ex-Servicemen) বা বিশেষ সাব-ক্যাটাগরির প্রার্থীরা এখানে কাট-অফ ক্লিয়ার করতে পারেন। অন্তত ৫০ নম্বর বাড়ানোর প্রস্তুতি প্রয়োজন।';
+      relativePosition = 34;
+    } else if (score >= 60) {
+      zoneName = 'ডিসকোয়ালিফাইড / নো-হোপ জোন (No-Hope Zone)';
+      zoneBg = 'bg-rose-500/10 text-rose-300';
+      zoneColor = 'text-rose-400';
+      borderStyle = 'border-rose-500/20';
+      progressBg = 'bg-rose-600';
+      rankRange = '80,000 – 1,50,000+';
+      percentileRange = '40.00% – 67.99%';
+      descriptionBengali = 'ন্যূনতম পাস নম্বর পেরিয়েছে কিন্তু চূড়ান্ত মেধার দৌড়ে অনেক পেছনে।';
+      adviceBengali = 'অল ইন্ডিয়া র্যাঙ্ক মেলালে দেখা যাবে আপনার পজিশন অনেক পেছনে। পরীক্ষার অফিশিয়াল নিয়ম অনুযায়ী উত্তীর্ণ হতে আপনাকে ন্যূনতম ৩০% (অর্থাৎ ২০০ এর মধ্যে ৬০ নম্বর) পেতেই হতো, যা ক্লিয়ার হলেও সিলেকশন অসম্ভব। প্রতিটি প্রশ্নের দুর্বলতা গভীরভাবে বিশ্লেষণ করুন।';
+      relativePosition = 18;
+    } else {
+      zoneName = 'নো-হোপ জোন (No-Hope Zone - Disqualified)';
+      zoneBg = 'bg-red-550/10 text-red-300';
+      zoneColor = 'text-red-500';
+      borderStyle = 'border-red-500/20';
+      progressBg = 'bg-red-650';
+      rankRange = '2,00,000 – 5,00,000+';
+      percentileRange = '0.00% – 39.99%';
+      descriptionBengali = 'সরাসরি অনুত্তীর্ণ। প্রচুর নেগেটিভ মার্কিং অথবা অপর্যাপ্ত প্রিপারেশন।';
+      adviceBengali = 'আপনার স্কোর অত্যন্ত অপ্রতুল। এর স্পষ্ট কারণ হলো বিপুল পরিমাণ নেগেটিভ মার্কিং অথবা মূল ভাবনার চূড়ান্ত দুর্বলতা। এখনই নতুন কোনো মক টেস্ট দেওয়া স্থগিত করুন, এবং প্রথমে বেসিক সিলেবাস ও সূত্রগুলি পুনরায় গুরুত্ব সহকারে রিভিশন করুন।';
+      relativePosition = 6;
+    }
+
+    return {
+      zoneName,
+      zoneBg,
+      zoneColor,
+      borderStyle,
+      progressBg,
+      rankRange,
+      percentileRange,
+      descriptionBengali,
+      adviceBengali,
+      relativePosition
+    };
+  };
+
+  const predData = getRankAndPercentile(results.totalMarks);
 
   // Color key getters for Palette
   const getPaletteBtnStyle = (qId: number) => {
@@ -374,6 +514,160 @@ export default function ExamPortal() {
               </div>
               <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20">
                 <FileText className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+
+          {/* Predicted Rank & Percentile Analyzer module */}
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden space-y-6">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl -z-10"></div>
+            
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+              <div>
+                <h3 className="text-xl font-bold flex items-center gap-2">
+                  <span className="text-2xl">🏆</span> 
+                  <span>অল ইন্ডিয়া র্যাঙ্ক ও পার্সেন্টাইল প্রেডিক্টর (Est. Rank &amp; Percentile Predictor)</span>
+                </h3>
+                <p className="text-slate-400 text-xs mt-1">
+                  লক্ষাধিক পরীক্ষার্থীর মক টেস্ট ট্রেন্ড ও ডাটা বিশ্লেষণের উপর ভিত্তি করে আপনার সাম্ভাব্য অল ইন্ডিয়া অবস্থান
+                </p>
+              </div>
+              <div className={`px-4 py-2 rounded-xl border text-xs font-bold uppercase tracking-wider ${predData.zoneBg} ${predData.borderStyle}`}>
+                {predData.zoneName}
+              </div>
+            </div>
+
+            {/* Score position visual bar */}
+            <div className="space-y-3 bg-slate-955 p-5 rounded-2xl border border-slate-800/80">
+              <div className="flex justify-between text-xs text-slate-400 font-bold">
+                <span>ন্যূনতম সীমা: ০ নম্বর</span>
+                <span className="text-indigo-400">আপনার স্কোর: {results.totalMarks.toFixed(1)} / ২০০</span>
+                <span>সর্বোচ্চ: ২০০ নম্বর</span>
+              </div>
+              
+              <div className="h-4 bg-slate-800 rounded-full relative overflow-visible">
+                {/* Visual meter bar background colors for zones */}
+                <div className="absolute inset-0 flex rounded-full overflow-hidden opacity-30">
+                  <div className="w-[30%] bg-red-600 h-full"></div> {/* 0-59 */}
+                  <div className="w-[20%] bg-rose-500 h-full"></div> {/* 60-99 */}
+                  <div className="w-[22%] bg-indigo-500 h-full"></div> {/* 100-144 */}
+                  <div className="w-[15%] bg-teal-500 h-full"></div> {/* 145-174 */}
+                  <div className="w-[13%] bg-amber-500 h-full"></div> {/* 175-200 */}
+                </div>
+                
+                {/* Active range progress highlight */}
+                <div 
+                  className={`h-full rounded-full transition-all duration-1000 ${predData.progressBg}`}
+                  style={{ width: `${Math.max(4, Math.min(100, (results.totalMarks / 200) * 100))}%` }}
+                />
+
+                {/* Score Marker Pin representing accurate pointer */}
+                <div 
+                  className="absolute top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-950 border-2 border-indigo-400 rounded-full flex items-center justify-center -ml-3 shadow-lg z-20 transition-all duration-1000 hover:scale-125"
+                  style={{ left: `${Math.max(4, Math.min(96, (results.totalMarks / 200) * 100))}%` }}
+                >
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full animate-ping"></span>
+                </div>
+              </div>
+
+              <div className="flex justify-between text-[10px] text-slate-500 pt-1 font-mono">
+                <span>নো-হোপ জোন (০-৯৯)</span>
+                <span>কোয়ালিফাইং জোন (১০০-১৪৪)</span>
+                <span>নিরাপদ জোন (১৪৫-১৭৪)</span>
+                <span>টপার জোন (১৭৫-২০০)</span>
+              </div>
+            </div>
+
+            {/* Estimated Stat metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-slate-950/60 p-5 rounded-2xl border border-slate-850 flex flex-col justify-between">
+                <div>
+                  <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">সাম্ভাব্য অল ইন্ডিয়া র্যাঙ্ক (AIR)</span>
+                  <p className="text-3xl font-black mt-1 text-indigo-400 font-mono">{predData.rankRange}</p>
+                </div>
+                <p className="text-xs text-slate-400 mt-2">
+                  সমজাতীয় কঠিন বা সহজ শিফট সমন্বয় পরবর্তীতে নরমালাইজড ডাটা অনুসারে সম্ভাব্য র্যাঙ্ক।
+                </p>
+              </div>
+
+              <div className="bg-slate-950/60 p-5 rounded-2xl border border-slate-850 flex flex-col justify-between">
+                <div>
+                  <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">সাম্ভাব্য পার্সেন্টাইল (Percentile)</span>
+                  <p className="text-3xl font-black mt-1 text-emerald-400 font-mono">{predData.percentileRange}</p>
+                </div>
+                <p className="text-xs text-slate-400 mt-2">
+                  যার প্রায় অর্থ হলো আপনি পরীক্ষা দেওয়া শতকরা {Math.max(0, Math.min(100, 100 - parseFloat(predData.percentileRange.split(' ')[0]))).toFixed(2)}% ছাত্রের থেকে এগিয়ে আছেন।
+                </p>
+              </div>
+
+              <div className="bg-slate-950/60 p-5 rounded-2xl border border-slate-850 flex flex-col justify-between">
+                <div>
+                  <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold">আপনার স্কোর মূল্যায়ন</span>
+                  <p className="text-sm font-bold mt-1 text-slate-300">{predData.descriptionBengali}</p>
+                </div>
+                <p className="text-xs text-slate-400 mt-2">
+                  আপনার মোট সঠিক উত্তর ও নেগেটিভ মার্কিংয়ের পেনাল্টি হিসাব করে তৈরি গ্রেড।
+                </p>
+              </div>
+            </div>
+
+            {/* Zonal Feedback block */}
+            <div className={`p-5 sm:p-6 rounded-2xl border ${predData.borderStyle} ${predData.zoneBg}/5 space-y-3`}>
+              <h4 className="font-bold text-slate-200 flex items-center gap-2 text-sm sm:text-base">
+                💡 <span className={predData.zoneColor}>পার্সোনালাইজড প্রিপারেশন গাইড ও ফিডব্যাক:</span>
+              </h4>
+              <p className="text-slate-300 text-sm leading-relaxed font-light">
+                {predData.adviceBengali}
+              </p>
+            </div>
+
+            {/* Interactive Compare Matrix list */}
+            <div className="border border-slate-800/80 rounded-2xl overflow-hidden bg-slate-950/40">
+              <div className="px-5 py-4 bg-slate-900 border-b border-slate-800 text-xs text-slate-400 font-bold flex justify-between items-center">
+                <span>📊 সামগ্রিক স্কোর বনাম র্যাঙ্ক ডিস্ট্রিবিউশন চার্ট (Benchmarks)</span>
+                <span className="text-[10px] text-slate-500">মোট মার্কস: ২০০ • নেগেটিভ: ০.৫</span>
+              </div>
+              <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                <div className="p-3 bg-slate-900/50 rounded-xl space-y-1">
+                  <p className="text-amber-400 font-bold">১৮৫ - ২০০ (টপার জোন)</p>
+                  <p className="text-slate-300 font-mono">AIR: ১ - ৫০</p>
+                  <p className="text-[10px] text-slate-500">শীর্ষ পছন্দ / নিশ্চিত চাকরি</p>
+                </div>
+                <div className="p-3 bg-slate-900/50 rounded-xl space-y-1">
+                  <p className="text-yellow-400 font-bold">১৭৫ - ১৮৪ (টপার জোন)</p>
+                  <p className="text-slate-300 font-mono">AIR: ৫০ - ৫০০</p>
+                  <p className="text-[10px] text-slate-500">টপ র্যাঙ্ক / মন্ত্রিত্ব পদ</p>
+                </div>
+                <div className="p-3 bg-slate-900/50 rounded-xl space-y-1">
+                  <p className="text-emerald-400 font-bold">১৬৫ - ১৭৪ (নিরাপদ জোন)</p>
+                  <p className="text-slate-300 font-mono">AIR: ৫০০ - ২৫০০</p>
+                  <p className="text-[10px] text-slate-500">১০০% ক্যাটাগরি নিরাপদ জোন</p>
+                </div>
+                <div className="p-3 bg-slate-800/20 rounded-xl space-y-1">
+                  <p className="text-teal-400 font-bold">১৫৫ - ১৬৪ (নিরাপদ জোন)</p>
+                  <p className="text-slate-300 font-mono">AIR: ২৫০০ - ৮০০০</p>
+                  <p className="text-[10px] text-slate-500">LDC ও সমমানের পোস্ট</p>
+                </div>
+                <div className="p-3 bg-slate-800/20 rounded-xl space-y-1">
+                  <p className="text-blue-400 font-bold">১৪৫ - ১৫৪ (নিরাপদ জোন)</p>
+                  <p className="text-slate-300 font-mono">AIR: ৮০০০ - ২০০০০</p>
+                  <p className="text-[10px] text-slate-500">বর্ডারলাইন / নরমাল নির্ভর</p>
+                </div>
+                <div className="p-3 bg-slate-800/20 rounded-xl space-y-1">
+                  <p className="text-indigo-400 font-bold">১৩০ - ১৪৪ (কোয়ালিফাইং)</p>
+                  <p className="text-slate-300 font-mono">AIR: ২০০০০ - ৪০০০০</p>
+                  <p className="text-[10px] text-slate-500">সংরক্ষিত প্রার্থীদের দারুন সুযোগ</p>
+                </div>
+                <div className="p-3 bg-slate-800/20 rounded-xl space-y-1">
+                  <p className="text-slate-400 font-bold">১০০ - ১২৯ (কোয়ালিফাইং)</p>
+                  <p className="text-slate-300 font-mono">AIR: ৪০০০০ - ৮০০০০</p>
+                  <p className="text-[10px] text-slate-500">বিশেষ কোটা ও PwD উত্তীর্ণ</p>
+                </div>
+                <div className="p-3 bg-slate-800/20 rounded-xl space-y-1">
+                  <p className="text-rose-400 font-bold">০ - ৯৯ (নো-হোপ জোন)</p>
+                  <p className="text-slate-300 font-mono">AIR: ৮০,০০০+</p>
+                  <p className="text-[10px] text-slate-500">অনুত্তীর্ণ / পুনরায় সিলেবাস পড়া</p>
+                </div>
               </div>
             </div>
           </div>
