@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { questions } from '../data/questions';
+import { questions, comboQuestions } from '../data/questions';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -23,6 +23,8 @@ import {
 export default function ExamPortal() {
   // Candidate Profile State
   const [candidateName, setCandidateName] = useState('Sudarshan Sohan');
+  const [nameEntered, setNameEntered] = useState(false);
+  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'english_gi_combo'>('full_mock_1');
   const [examStarted, setExamStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -43,8 +45,24 @@ export default function ExamPortal() {
   // Filter for post-exam review (All, Correct, Incorrect, Unattempted)
   const [reviewFilter, setReviewFilter] = useState<'all' | 'correct' | 'incorrect' | 'unattempted'>('all');
 
+  // List of questions for the selected test
+  const testQuestions = React.useMemo(() => {
+    if (selectedTest === 'english_gi_combo') {
+      return comboQuestions;
+    }
+    return questions; // 'full_mock_1' uses all 100 questions
+  }, [selectedTest]);
+
+  // Loader for currentSections tab option lists
+  const currentSections = React.useMemo<Section[]>(() => {
+    if (selectedTest === 'english_gi_combo') {
+      return ['English', 'GI'];
+    }
+    return ['English', 'Math', 'GI', 'GK'];
+  }, [selectedTest]);
+
   // Load active question list based on section
-  const sectionQuestions = questions.filter((q) => q.section === activeSection);
+  const sectionQuestions = testQuestions.filter((q) => q.section === activeSection);
 
   // Timer Effect
   useEffect(() => {
@@ -67,25 +85,35 @@ export default function ExamPortal() {
     if (examStarted && !submitted) {
       setVisitedQuestions((prev) => ({ ...prev, [activeQuestionId]: true }));
       // Automatically switch section if question belongs to another section
-      const q = questions.find(q => q.id === activeQuestionId);
+      const q = testQuestions.find(q => q.id === activeQuestionId);
       if (q && q.section !== activeSection) {
         setActiveSection(q.section);
       }
     }
-  }, [activeQuestionId, examStarted, submitted]);
+  }, [activeQuestionId, examStarted, submitted, testQuestions, activeSection]);
 
   // Actions
-  const handleStartExam = (e: React.FormEvent) => {
+  const handleSaveName = (e: React.FormEvent) => {
     e.preventDefault();
     if (!candidateName.trim()) return;
+    setNameEntered(true);
+  };
+
+  const handleStartExam = () => {
     setExamStarted(true);
-    setTimeLeft(3600);
     setSubmitted(false);
     setSelectedAnswers({});
     setMarkedForReview({});
     setVisitedQuestions({ 1: true });
     setActiveQuestionId(1);
     setActiveSection('English');
+    
+    // Set appropriate timer duration
+    if (selectedTest === 'english_gi_combo') {
+      setTimeLeft(1800); // 30 mins
+    } else {
+      setTimeLeft(3600); // 60 mins
+    }
   };
 
   const handleOptionSelect = (questionId: number, optionKey: 'A' | 'B' | 'C' | 'D') => {
@@ -108,7 +136,7 @@ export default function ExamPortal() {
   };
 
   const handleNext = () => {
-    if (activeQuestionId < 100) {
+    if (activeQuestionId < testQuestions.length) {
       setActiveQuestionId((prev) => prev + 1);
     }
   };
@@ -134,6 +162,7 @@ export default function ExamPortal() {
   };
 
   const handleRetake = () => {
+    setNameEntered(false);
     setExamStarted(false);
     setSubmitted(false);
     setSelectedAnswers({});
@@ -158,15 +187,21 @@ export default function ExamPortal() {
     let incorrectCount = 0;
     let unattemptedCount = 0;
 
+    // Dynamically calculate totals per section
+    const englishTotal = testQuestions.filter(q => q.section === 'English').length;
+    const mathTotal = testQuestions.filter(q => q.section === 'Math').length;
+    const giTotal = testQuestions.filter(q => q.section === 'GI').length;
+    const gkTotal = testQuestions.filter(q => q.section === 'GK').length;
+
     // Section wise states
     const sectionStats: Record<Section, { total: number; attempted: number; correct: number; incorrect: number; marks: number }> = {
-      English: { total: 25, attempted: 0, correct: 0, incorrect: 0, marks: 0 },
-      Math: { total: 25, attempted: 0, correct: 0, incorrect: 0, marks: 0 },
-      GI: { total: 25, attempted: 0, correct: 0, incorrect: 0, marks: 0 },
-      GK: { total: 25, attempted: 0, correct: 0, incorrect: 0, marks: 0 }
+      English: { total: englishTotal, attempted: 0, correct: 0, incorrect: 0, marks: 0 },
+      Math: { total: mathTotal, attempted: 0, correct: 0, incorrect: 0, marks: 0 },
+      GI: { total: giTotal, attempted: 0, correct: 0, incorrect: 0, marks: 0 },
+      GK: { total: gkTotal, attempted: 0, correct: 0, incorrect: 0, marks: 0 }
     };
 
-    questions.forEach((q) => {
+    testQuestions.forEach((q) => {
       const selected = selectedAnswers[q.id];
       const sec = q.section;
 
@@ -341,7 +376,8 @@ export default function ExamPortal() {
     };
   };
 
-  const predData = getRankAndPercentile(results.totalMarks);
+  const predictorScore = selectedTest === 'english_gi_combo' ? results.totalMarks * 5 : results.totalMarks;
+  const predData = getRankAndPercentile(predictorScore);
 
   // Color key getters for Palette
   const getPaletteBtnStyle = (qId: number) => {
@@ -373,66 +409,154 @@ export default function ExamPortal() {
     return base;
   };
 
-  // 1. WELCOME SCREEN
+  // 1. WELCOME & TEST SELECTION SCREEN
   if (!examStarted) {
+    if (!nameEntered) {
+      return (
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+          <div className="max-w-xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-8 border border-slate-700 relative overflow-hidden">
+            {/* Accent decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
+            <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+            <div className="text-center mb-8">
+              <div className="inline-flex p-3 rounded-full bg-indigo-500/10 text-indigo-400 mb-3 border border-indigo-500/20">
+                <Award className="w-10 h-10 animate-pulse" />
+              </div>
+              <h1 className="text-3xl font-extrabold tracking-tight">CBT Practice Portal</h1>
+              <p className="text-slate-400 mt-2">Computer Based Test Mock Engine</p>
+            </div>
+
+            <form onSubmit={handleSaveName} className="space-y-6">
+              <div>
+                <label htmlFor="candidate-name" className="block text-sm font-semibold text-slate-300 mb-2">
+                  Please Enter Your Name (আপনার নাম লিখুন)
+                </label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                    <User className="w-5 h-5" />
+                  </span>
+                  <input
+                    id="candidate-name"
+                    type="text"
+                    required
+                    value={candidateName}
+                    onChange={(e) => setCandidateName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full bg-slate-750 border border-slate-600 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-medium"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-500/20 transition-all transform active:scale-98 flex items-center justify-center gap-2 text-lg"
+              >
+                Proceed to Test Selection (পরবর্তী ধাপে যান)
+              </button>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-        <div className="max-w-xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-8 border border-slate-700 relative overflow-hidden">
+        <div className="max-w-2xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-8 border border-slate-700 relative overflow-hidden">
           {/* Accent decoration */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
           <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
 
-          <div className="text-center mb-8">
-            <div className="inline-flex p-3 rounded-full bg-indigo-500/10 text-indigo-400 mb-3 border border-indigo-500/20">
-              <Award className="w-10 h-10 animate-pulse" />
-            </div>
-            <h1 className="text-3xl font-extrabold tracking-tight">CBT Practice Portal</h1>
-            <p className="text-slate-400 mt-2">Computer Based Test Mock Engine</p>
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-black text-slate-100">সিবিটি মক টেস্ট পোর্টাল</h1>
+            <p className="text-indigo-400 mt-1 font-semibold text-sm">CBT Exam Room • Candidate: {candidateName}</p>
           </div>
 
-          <form onSubmit={handleStartExam} className="space-y-6">
-            <div>
-              <label htmlFor="candidate-name" className="block text-sm font-semibold text-slate-300 mb-2">
-                Candidate Name
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
-                  <User className="w-5 h-5" />
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান (Select Test Pool):</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Card 1: Full Mock */}
+              <div
+                onClick={() => setSelectedTest('full_mock_1')}
+                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                  selectedTest === 'full_mock_1'
+                    ? 'border-indigo-500 bg-indigo-500/15 ring-2 ring-indigo-500/35'
+                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                }`}
+              >
+                <span className="absolute top-3 right-3 text-xs bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-full">
+                  Full Set
                 </span>
-                <input
-                  id="candidate-name"
-                  type="text"
-                  required
-                  value={candidateName}
-                  onChange={(e) => setCandidateName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="w-full bg-slate-750 border border-slate-600 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-medium"
-                />
+                <div>
+                  <h3 className="font-extrabold text-lg text-white">Full Mocktest 1</h3>
+                  <p className="text-xs text-slate-300 mt-1">সবকটি সাবজেক্টের সম্পূর্ণ মক টেস্ট।</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
+                  <div className="flex justify-between">
+                    <span>English, Math, GI, GK</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Questions: 100</span>
+                    <span>Marks: 200</span>
+                  </div>
+                  <div className="text-indigo-300">⏳ সময়: ১ ঘন্টা (60 Mins)</div>
+                </div>
+              </div>
+
+              {/* Card 2: Combo Mock */}
+              <div
+                onClick={() => setSelectedTest('english_gi_combo')}
+                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                  selectedTest === 'english_gi_combo'
+                    ? 'border-emerald-500 bg-emerald-500/15 ring-2 ring-emerald-500/35'
+                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                }`}
+              >
+                <span className="absolute top-3 right-3 text-xs bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-full">
+                  Combo Qs
+                </span>
+                <div>
+                  <h3 className="font-extrabold text-lg text-white">English + GI Combo</h3>
+                  <p className="text-xs text-slate-300 mt-1">ইংরেজি এবং রিজননিং সাবজেক্টের স্পেশাল কম্বো সেট।</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
+                  <div className="flex justify-between">
+                    <span>English &amp; GI Sections</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Questions: 20</span>
+                    <span>Marks: 40</span>
+                  </div>
+                  <div className="text-emerald-300">⏳ সময়: ৩০ মিনিট (30 Mins)</div>
+                </div>
               </div>
             </div>
 
-            <div className="bg-slate-750/50 rounded-xl p-5 border border-slate-700/80 space-y-3">
-              <h3 className="font-bold text-slate-200 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-emerald-400" /> Exam Information &amp; Rules:
-              </h3>
-              <ul className="text-sm text-slate-300 space-y-2 list-disc pl-5">
-                <li><strong className="text-white">Total Questions:</strong> 100 questions (4 sections of 25 each).</li>
-                <li><strong className="text-white">Total Marks:</strong> 200 Marks.</li>
-                <li><strong className="text-white">Duration:</strong> 1 Hour (60 minutes).</li>
-                <li><strong className="text-emerald-400">Correct Answer:</strong> +2.0 Marks.</li>
-                <li><strong className="text-rose-400">Negative Marking:</strong> -0.5 Mark for every wrong answer.</li>
-                <li><strong className="text-slate-400">Unattempted:</strong> 0 Marks.</li>
-                <li>Dynamic navigation allowed across any of the questions.</li>
-              </ul>
+            <div className="bg-slate-755 p-4 rounded-xl border border-slate-700/50 text-xs text-slate-300 leading-relaxed">
+              <strong className="text-yellow-400 block mb-1">গুরুত্বপূর্ণ নিয়ম ও মার্কিং স্কিম:</strong>
+              • প্রতিটি সঠিক উত্তরের জন্য পাবেন <span className="text-emerald-400 font-bold">+২.০ নম্বর</span>।<br />
+              • ভুল উত্তরের জন্য ডিক্ট করা হবে <span className="text-rose-400 font-bold">-০.৫ নম্বর</span> নেগেটিভ মার্কিং।<br />
+              • নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে সেভ ও সাবমিট হয়ে যাবে।
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-500/20 transition-all transform active:scale-98 flex items-center justify-center gap-2 text-lg"
-            >
-              Start Practice Test
-            </button>
-          </form>
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setNameEntered(false)}
+                className="order-2 sm:order-1 flex-1 py-3 border border-slate-600 hover:bg-slate-750 rounded-xl font-bold transition text-slate-300 text-center"
+              >
+                ← Back
+              </button>
+              <button
+                type="button"
+                onClick={handleStartExam}
+                className="order-1 sm:order-2 flex-[2] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black py-3 rounded-xl shadow-lg shadow-emerald-500/20 transition-all text-center text-lg uppercase tracking-wider animate-pulse"
+              >
+                পরীক্ষা শুরু করুন (Start Exam)
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -440,8 +564,9 @@ export default function ExamPortal() {
 
   // 2. EXAM SUBMITTED - RESULTS DASHBOARD
   if (submitted) {
-    const scorePercentage = (results.totalMarks / 200) * 100;
-    const isWin = results.totalMarks >= 100; // pass score is 100/200
+    const maxPossibleMarks = testQuestions.length * 2;
+    const scorePercentage = (results.totalMarks / maxPossibleMarks) * 100;
+    const isWin = results.totalMarks >= (maxPossibleMarks / 2); // pass score is 50%
 
     return (
       <div className="min-h-screen bg-slate-950 text-white py-8 px-4 sm:px-6 lg:px-8">
@@ -467,7 +592,7 @@ export default function ExamPortal() {
               <span className={`text-5xl font-black mt-2 ${results.totalMarks >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {results.totalMarks.toFixed(1)}
               </span>
-              <span className="text-slate-500 text-xs mt-1">out of 200.0 Marks</span>
+              <span className="text-slate-500 text-xs mt-1">out of {maxPossibleMarks.toFixed(1)} Marks</span>
             </div>
           </div>
 
@@ -541,8 +666,8 @@ export default function ExamPortal() {
             <div className="space-y-3 bg-slate-955 p-5 rounded-2xl border border-slate-800/80">
               <div className="flex justify-between text-xs text-slate-400 font-bold">
                 <span>ন্যূনতম সীমা: ০ নম্বর</span>
-                <span className="text-indigo-400">আপনার স্কোর: {results.totalMarks.toFixed(1)} / ২০০</span>
-                <span>সর্বোচ্চ: ২০০ নম্বর</span>
+                <span className="text-indigo-400">আপনার স্কোর: {results.totalMarks.toFixed(1)} / {maxPossibleMarks} (Scaled: {predictorScore.toFixed(1)}/২০০)</span>
+                <span>সর্বোচ্চ: {maxPossibleMarks} নম্বর</span>
               </div>
               
               <div className="h-4 bg-slate-800 rounded-full relative overflow-visible">
@@ -558,13 +683,13 @@ export default function ExamPortal() {
                 {/* Active range progress highlight */}
                 <div 
                   className={`h-full rounded-full transition-all duration-1000 ${predData.progressBg}`}
-                  style={{ width: `${Math.max(4, Math.min(100, (results.totalMarks / 200) * 100))}%` }}
+                  style={{ width: `${Math.max(4, Math.min(100, (predictorScore / 200) * 100))}%` }}
                 />
 
                 {/* Score Marker Pin representing accurate pointer */}
                 <div 
                   className="absolute top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-950 border-2 border-indigo-400 rounded-full flex items-center justify-center -ml-3 shadow-lg z-20 transition-all duration-1000 hover:scale-125"
-                  style={{ left: `${Math.max(4, Math.min(96, (results.totalMarks / 200) * 100))}%` }}
+                  style={{ left: `${Math.max(4, Math.min(96, (predictorScore / 200) * 100))}%` }}
                 >
                   <span className="w-2 h-2 bg-indigo-400 rounded-full animate-ping"></span>
                 </div>
@@ -691,7 +816,9 @@ export default function ExamPortal() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800 text-sm">
-                  {(Object.keys(results.sectionStats) as Section[]).map((secName) => {
+              {(Object.keys(results.sectionStats) as Section[])
+                .filter((secName) => results.sectionStats[secName].total > 0)
+                .map((secName) => {
                     const stat = results.sectionStats[secName];
                     return (
                       <tr key={secName} className="hover:bg-slate-850/55 transition">
@@ -751,7 +878,7 @@ export default function ExamPortal() {
 
             {/* Answer Feed */}
             <div className="space-y-6 max-h-[800px] overflow-y-auto pr-2 divide-y divide-slate-800">
-              {questions
+              {testQuestions
                 .filter((q) => {
                   const select = selectedAnswers[q.id];
                   if (reviewFilter === 'correct') return select === q.correctAnswer;
@@ -830,7 +957,7 @@ export default function ExamPortal() {
                   );
                 })}
 
-              {questions.filter((q) => {
+              {testQuestions.filter((q) => {
                 const select = selectedAnswers[q.id];
                 if (reviewFilter === 'correct') return select === q.correctAnswer;
                 if (reviewFilter === 'incorrect') return select && select !== q.correctAnswer;
@@ -859,14 +986,14 @@ export default function ExamPortal() {
   }
 
   // 3. MAIN LIVE EXAM SESSION
-  const activeQuestion = questions.find((q) => q.id === activeQuestionId) || questions[0];
+  const activeQuestion = testQuestions.find((q) => q.id === activeQuestionId) || testQuestions[0];
   const userSelectedOption = selectedAnswers[activeQuestion.id];
   const isQuestionMarked = !!markedForReview[activeQuestion.id];
 
   // Section navigation quick clicks
   const handleSectionSwitch = (sectionName: Section) => {
     setActiveSection(sectionName);
-    const firstQ = questions.find(q => q.section === sectionName);
+    const firstQ = testQuestions.find(q => q.section === sectionName);
     if (firstQ) {
       setActiveQuestionId(firstQ.id);
     }
@@ -874,7 +1001,7 @@ export default function ExamPortal() {
 
   // Section statistics computed for tab labels
   const getSectionStats = (sectionName: Section) => {
-    const secQs = questions.filter(q => q.section === sectionName);
+    const secQs = testQuestions.filter(q => q.section === sectionName);
     const totalCount = secQs.length;
     const answeredCount = secQs.filter(q => !!selectedAnswers[q.id]).length;
     return `${answeredCount}/${totalCount}`;
@@ -890,8 +1017,12 @@ export default function ExamPortal() {
             <Award className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-lg font-extrabold text-white tracking-wide">CBT mock exam</h1>
-            <p className="text-xs text-indigo-400 font-semibold tracking-wider uppercase">Full 100 Q Series • 200 Marks</p>
+            <h1 className="text-lg font-extrabold text-white tracking-wide">
+              {selectedTest === 'english_gi_combo' ? 'English + GI Combo Mock' : 'CBT Full Mocktest 1'}
+            </h1>
+            <p className="text-xs text-indigo-400 font-semibold tracking-wider uppercase">
+              {selectedTest === 'english_gi_combo' ? 'Combo 20 Q Series • 40 Marks' : 'Full 100 Q Series • 200 Marks'}
+            </p>
           </div>
         </div>
 
@@ -950,7 +1081,7 @@ export default function ExamPortal() {
           
           {/* SECTION TAB HEADERS */}
           <div className="bg-slate-900 p-2 rounded-2xl border border-slate-800 flex flex-wrap gap-1.5">
-            {(['English', 'Math', 'GI', 'GK'] as Section[]).map((sec) => (
+            {currentSections.map((sec) => (
               <button
                 key={sec}
                 onClick={() => handleSectionSwitch(sec)}
@@ -1011,7 +1142,7 @@ export default function ExamPortal() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                   <span className="text-indigo-400 text-sm font-bold uppercase tracking-wider">
-                    Question {activeQuestion.id} of 100
+                    Question {activeQuestion.id} of {testQuestions.length}
                   </span>
                   
                   {isQuestionMarked && (
@@ -1091,7 +1222,7 @@ export default function ExamPortal() {
 
                   <button
                     onClick={handleNext}
-                    disabled={activeQuestionId === 100}
+                    disabled={activeQuestionId === testQuestions.length}
                     className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center gap-1"
                   >
                     Save &amp; Next <ChevronRight className="w-4 h-4" />
@@ -1103,7 +1234,7 @@ export default function ExamPortal() {
             /* BULK SECTION MATRIX VIEW */
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-8 shadow-xl max-h-[650px] overflow-y-auto">
               <div className="border-b border-slate-800 pb-3 flex justify-between items-center">
-                <h2 className="text-lg font-bold">All 25 questions in {activeSection}</h2>
+                <h2 className="text-lg font-bold">All {sectionQuestions.length} questions in {activeSection}</h2>
                 <span className="text-slate-400 text-xs">Scroll to browse &amp; answer</span>
               </div>
               <div className="space-y-8 divide-y divide-slate-800">
@@ -1213,7 +1344,7 @@ export default function ExamPortal() {
 
             {/* Quick Filter Section for the Palette */}
             <div className="flex bg-slate-950 p-1.5 rounded-xl border border-slate-850 gap-1 text-[11px]">
-              {(['English', 'Math', 'GI', 'GK'] as Section[]).map((sec) => (
+              {currentSections.map((sec) => (
                 <button
                   key={sec}
                   onClick={() => handleSectionSwitch(sec)}
@@ -1228,9 +1359,9 @@ export default function ExamPortal() {
               ))}
             </div>
 
-            {/* Dynamic 100-button Grid */}
+            {/* Dynamic Button Grid */}
             <div className="grid grid-cols-5 sm:grid-cols-5 gap-2 max-h-[300px] overflow-y-auto pr-1">
-              {questions.map((q) => {
+              {testQuestions.map((q) => {
                 const isSelected = !!selectedAnswers[q.id];
                 const isMarked = !!markedForReview[q.id];
                 const isVisited = !!visitedQuestions[q.id];
@@ -1303,7 +1434,7 @@ export default function ExamPortal() {
             <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-left text-slate-350 space-y-2 font-medium">
               <div className="flex justify-between">
                 <span>Total Questions:</span>
-                <span className="font-mono text-white">100</span>
+                <span className="font-mono text-white">{testQuestions.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Attempted / Answered:</span>
@@ -1317,7 +1448,7 @@ export default function ExamPortal() {
               </div>
               <div className="flex justify-between">
                 <span>Unattempted:</span>
-                <span className="font-mono text-rose-400 font-bold">{100 - Object.keys(selectedAnswers).length}</span>
+                <span className="font-mono text-rose-400 font-bold">{testQuestions.length - Object.keys(selectedAnswers).length}</span>
               </div>
             </div>
 
@@ -1342,7 +1473,7 @@ export default function ExamPortal() {
 
       {/* FOOTER SYSTEM LABEL */}
       <footer className="bg-slate-950 border-t border-slate-900 py-4 text-center text-[11px] text-slate-500">
-        System Protocol: TCS iON Style CBT Simulator • Max marks: 200.0 • Verified server-controlled timer.
+        System Protocol: TCS iON Style CBT Simulator • Max marks: {testQuestions.length * 2}.0 • Verified server-controlled timer.
       </footer>
 
     </div>

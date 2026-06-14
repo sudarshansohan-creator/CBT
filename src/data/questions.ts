@@ -109,3 +109,269 @@ export const questions: Question[] = [
   { id: 99, section: 'GK', question: 'Who was the first Indian woman to win an Olympic medal?', options: ['P.T. Usha', 'Karnam Malleswari', 'Saina Nehwal', 'Mary Kom'], correctAnswer: 'B', explanation: 'Weightlifter Karnam Malleswari won a bronze medal in the 69 kg category at the 2000 Sydney Olympics, becoming the first Indian woman to win an Olympic medal.' },
   { id: 100, section: 'GK', question: 'The famous world heritage site \'Ellora Caves\' is located in which state of India?', options: ['Madhya Pradesh', 'Maharashtra', 'Karnataka', 'Odisha'], correctAnswer: 'B', explanation: 'The Ellora Caves are located in the Aurangabad (Chhatrapati Sambhajinagar) district of Maharashtra, India.' }
 ];
+
+export const comboQuestions: Question[] = [
+  // ==================== ENGLISH (1 - 10) ====================
+  {
+    id: 1,
+    section: 'English',
+    question: 'Neither the teacher (A) / nor the students (B) / was convinced by the explanation. (C) / No error (D)',
+    options: [
+      'Neither the teacher',
+      'nor the students',
+      'was convinced by the explanation.',
+      'No error'
+    ],
+    correctAnswer: 'C',
+    explanation: "'Neither...nor' থাকলে দ্বিতীয় Subject অনুযায়ী Verb হয়। এখানে 'students' Plural, তাই 'was'-এর জায়গায় 'were' হবে।"
+  },
+  {
+    id: 2,
+    section: 'English',
+    question: 'Each of the participants (A) / are requested to stay (B) / back after the seminar. (C) / No error (D)',
+    options: [
+      'Each of the participants',
+      'are requested to stay',
+      'back after the seminar.',
+      'No error'
+    ],
+    correctAnswer: 'B',
+    explanation: "'Each' দিয়ে শুরু হলে Singular Verb বসে। তাই 'are'-এর জায়গায় 'is' হবে।"
+  },
+  {
+    id: 3,
+    section: 'English',
+    question: 'Between you and I, (A) / I don’t think (B) / he will pass the examination. (C) / No error (D)',
+    options: [
+      'Between you and I,',
+      'I don’t think',
+      'he will pass the examination.',
+      'No error'
+    ],
+    correctAnswer: 'A',
+    explanation: "Preposition ('between') এর পর Objective case বসে। তাই 'you and I'-এর জায়গায় 'you and me' হবে।"
+  },
+  {
+    id: 4,
+    section: 'English',
+    question: 'One must take care of (A) / his own things (B) / to avoid any losses. (C) / No error (D)',
+    options: [
+      'One must take care of',
+      'his own things',
+      'to avoid any losses.',
+      'No error'
+    ],
+    correctAnswer: 'B',
+    explanation: "Subject 'One' হলে তার পজেসিভ ফর্ম 'one's' হয়, 'his' নয়।"
+  },
+  {
+    id: 5,
+    section: 'English',
+    question: 'The program involves (A) / collecting data, analyzing results, (B) / and to write the final report. (C) / No error (D)',
+    options: [
+      'The program involves',
+      'collecting data, analyzing results,',
+      'and to write the final report.',
+      'No error'
+    ],
+    correctAnswer: 'C',
+    explanation: "Parallelism-এর নিয়ম অনুযায়ী সবকটি '-ing' ফর্মে হবে (collecting, analyzing)। তাই 'to write'-এর জায়গায় 'writing' হবে।"
+  },
+  {
+    id: 6,
+    section: 'English',
+    question: 'Between the two brothers, Rahul is the **tallest**.',
+    options: [
+      'taller',
+      'more tall',
+      'most tallest',
+      'No improvement'
+    ],
+    correctAnswer: 'A',
+    explanation: 'দুজনের মধ্যে তুলনা হলে Comparative degree (taller) বসে।'
+  },
+  {
+    id: 7,
+    section: 'English',
+    question: 'The employees are expected to **comply to** the new safety regulations.',
+    options: [
+      'comply with',
+      'comply by',
+      'comply at',
+      'No improvement'
+    ],
+    correctAnswer: 'A',
+    explanation: "Fixed Preposition-এর নিয়ম অনুযায়ী Comply-এর সাথে সবসময় 'with' বসে (Comply with = মেনে চলা)।"
+  },
+  {
+    id: 8,
+    section: 'English',
+    question: 'If I **was** the Prime Minister, I would change the education system.',
+    options: [
+      'am',
+      'were',
+      'had been',
+      'No improvement'
+    ],
+    correctAnswer: 'B',
+    explanation: 'কাল্পনিক বা শর্তমূলক বাক্যে (Unreal/Imaginary situation) Subject যাই হোক না কেন, Verb সবসময় "were" হয়।'
+  },
+  {
+    id: 9,
+    section: 'English',
+    question: 'She __________ in this city since her childhood.',
+    options: [
+      'is living',
+      'lived',
+      'has been living',
+      'was living'
+    ],
+    correctAnswer: 'C',
+    explanation: "'Since' বা 'For' থাকলে Present Perfect Continuous tense হয়। তাই 'has been living' হবে।"
+  },
+  {
+    id: 10,
+    section: 'English',
+    question: 'The sudden change in weather had a severe __________ on his health.',
+    options: [
+      'affect',
+      'effect',
+      'effective',
+      'affection'
+    ],
+    correctAnswer: 'B',
+    explanation: "এখানে Noun ফর্ম প্রয়োজন। 'Affect' হলো Verb (প্রভাব ফেলা) আর 'Effect' হলো Noun (প্রভাব)। তাই সঠিক উত্তর 'effect'।"
+  },
+
+  // ==================== GENERAL INTELLIGENCE (11 - 20) ====================
+  {
+    id: 11,
+    section: 'GI',
+    question: "If 'STAGE' is coded as 'TUAGE', how will 'SERIES' be coded in that logic?",
+    options: [
+      'TERIES',
+      'TIESER',
+      'SFRIES',
+      'REISSE'
+    ],
+    correctAnswer: 'A',
+    explanation: 'এখানে শুধু প্রথম অক্ষরটিকে (+1) করা হয়েছে (S -> T), বাকি অক্ষরগুলো একই আছে। তাই SERIES হয়ে যাবে TERIES।'
+  },
+  {
+    id: 12,
+    section: 'GI',
+    question: 'In a row of 35 students, Rohan is 14th from the right end. What is his position from the left end?',
+    options: [
+      '21st',
+      '22nd',
+      '20th',
+      '23rd'
+    ],
+    correctAnswer: 'B',
+    explanation: 'সূত্র: Total = Left + Right - 1\n35 = Left + 14 - 1 => 35 = Left + 13 => Left = 22।'
+  },
+  {
+    id: 13,
+    section: 'GI',
+    question: "If 'MONKEY' is coded as 'XDJMNL', how will 'TIGER' be coded?",
+    options: [
+      'QDFHS',
+      'SDFHS',
+      'SHFDQ',
+      'UJHFS'
+    ],
+    correctAnswer: 'A',
+    explanation: 'শব্দটিকে উল্টো করে লিখে প্রত্যেকটি থেকে 1 বিয়োগ করা হয়েছে (Reverse Pattern - 1)। TIGER-কে উল্টো করলে হয় REGIT। এবার ১ ঘর করে পেছালে হয়: R-1=Q, E-1=D, G-1=F, I-1=H, T-1=S -> QDFHS।'
+  },
+  {
+    id: 14,
+    section: 'GI',
+    question: "What is the opposite character pair of 'J' and 'Q' respectively based on alphabetical opposite tracking?",
+    options: [
+      'J-Q are already opposites',
+      'J-P',
+      'K-Q',
+      'J-O'
+    ],
+    correctAnswer: 'A',
+    explanation: 'তোমার শর্টকাট নোটেই ছিল—"JacQueline (J-Q)"। তাই J এর অপোজিট Q।'
+  },
+  {
+    id: 15,
+    section: 'GI',
+    question: "In a class of 40 students, Amit's rank is 12th from the top. Ravi is 5 ranks below Amit. What is Ravi's rank from the bottom?",
+    options: [
+      '23rd',
+      '24th',
+      '25th',
+      '22nd'
+    ],
+    correctAnswer: 'B',
+    explanation: 'অমিতের র্যাঙ্ক টপ থেকে ১২। রবি তার ৫ র্যাঙ্ক নিচে, অর্থাৎ রবির র্যাঙ্ক উপর থেকে 12 + 5 = 17।\nনিচ থেকে র্যাঙ্ক = (Total - Top) + 1 = (40 - 17) + 1 = 24।'
+  },
+  {
+    id: 16,
+    section: 'GI',
+    question: 'If A = 1, CAT = 24, then what is the numerical value of POLICE?',
+    options: [
+      '57',
+      '60',
+      '62',
+      '55'
+    ],
+    correctAnswer: 'B',
+    explanation: 'বর্ণমালার পজিশন যোগ করা হয়েছে। P(16) + O(15) + L(12) + I(9) + C(3) + E(5) = 60।'
+  },
+  {
+    id: 17,
+    section: 'GI',
+    question: 'Rahul and Nitesh are standing in a row. Rahul is 12th from the left and Nitesh is 18th from the right. If they interchange their positions, Rahul becomes 25th from the left. How many people are there in the row?',
+    options: [
+      '42',
+      '43',
+      '41',
+      '40'
+    ],
+    correctAnswer: 'A',
+    explanation: 'ইন্টারচেঞ্জ করার পর রাহুলের নতুন পজিশন (২৫তম বাম থেকে) আসলে নিতেশের পুরনো পজিশন (১৮তম ডান থেকে)।\nমোট সংখ্যা = (রাহুলের নতুন পজিশন + নিতেশের পুরনো পজিশন) - 1 = (25 + 18) - 1 = 42।'
+  },
+  {
+    id: 18,
+    section: 'GI',
+    question: 'Identify the missing term in the series: C, F, I, L, ?, R',
+    options: [
+      'M',
+      'N',
+      'O',
+      'P'
+    ],
+    correctAnswer: 'C',
+    explanation: 'এখানে +3 করে সিরিজ এগোচ্ছে। C(3)+3=F(6), F+3=I(9), I+3=L(12), L(12)+3=O(15)।'
+  },
+  {
+    id: 19,
+    section: 'GI',
+    question: "If 'CHAIR' is coded as 'XSZRI' using opposite letters, how will 'BENCH' be coded?",
+    options: [
+      'YVMXS',
+      'YUMXS',
+      'YVNWZ',
+      'XUMYS'
+    ],
+    correctAnswer: 'A',
+    explanation: 'সম্পূর্ণ Opposite pair লজিক (B-Y, E-V, M-N, C-X, H-S)।'
+  },
+  {
+    id: 20,
+    section: 'GI',
+    question: 'In a row of boys, Deepak is 7th from the left and Madhav is 12th from the right. If there are 4 boys between them, what is the maximum number of boys that can be in the row?',
+    options: [
+      '19',
+      '21',
+      '23',
+      '15'
+    ],
+    correctAnswer: 'C',
+    explanation: 'সর্বোচ্চ (Maximum) সংখ্যা জানতে চাইলে সিম্পল যোগ করতে হয়: Left + Right + Middle = 7 + 12 + 4 = 23।'
+  }
+];
