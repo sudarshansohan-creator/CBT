@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { questions, comboQuestions, artCultureQuestions } from '../data/questions';
+import { questions, comboQuestions, artCultureQuestions, grammarQuestions } from '../data/questions';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -24,7 +24,7 @@ export default function ExamPortal() {
   // Candidate Profile State
   const [candidateName, setCandidateName] = useState('Sudarshan Sohan');
   const [nameEntered, setNameEntered] = useState(false);
-  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'english_gi_combo' | 'indian_art_culture'>('full_mock_1');
+  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar'>('full_mock_1');
   const [examStarted, setExamStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -53,6 +53,9 @@ export default function ExamPortal() {
     if (selectedTest === 'indian_art_culture') {
       return artCultureQuestions;
     }
+    if (selectedTest === 'english_grammar') {
+      return grammarQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -63,6 +66,9 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'indian_art_culture') {
       return ['GK'];
+    }
+    if (selectedTest === 'english_grammar') {
+      return ['English'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
@@ -119,6 +125,8 @@ export default function ExamPortal() {
       setTimeLeft(1800); // 30 mins
     } else if (selectedTest === 'indian_art_culture') {
       setTimeLeft(900); // 15 mins
+    } else if (selectedTest === 'english_grammar') {
+      setTimeLeft(3600); // 60 mins (1 hour)
     } else {
       setTimeLeft(3600); // 60 mins
     }
@@ -485,7 +493,7 @@ export default function ExamPortal() {
           <div className="space-y-4">
             <h2 className="text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান (Select Test Pool):</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Card 1: Full Mock */}
               <div
                 onClick={() => setSelectedTest('full_mock_1')}
@@ -567,6 +575,34 @@ export default function ExamPortal() {
                     <span>Marks: 50</span>
                   </div>
                   <div className="text-amber-300">⏳ সময়: ১৫ মিনিট (15 Mins)</div>
+                </div>
+              </div>
+
+              {/* Card 4: English Grammar Practice Set */}
+              <div
+                onClick={() => setSelectedTest('english_grammar')}
+                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                  selectedTest === 'english_grammar'
+                    ? 'border-violet-500 bg-violet-500/15 ring-2 ring-violet-500/35'
+                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                }`}
+              >
+                <span className="absolute top-3 right-3 text-xs bg-violet-600 text-white font-bold px-2 py-0.5 rounded-full">
+                  Grammar
+                </span>
+                <div>
+                  <h3 className="font-extrabold text-lg text-white">English Grammar Set</h3>
+                  <p className="text-xs text-slate-300 mt-1">Error Spotting, Fill in Blanks, Improvement, Voice &amp; Narration।</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
+                  <div className="flex justify-between">
+                    <span>English Section</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Questions: 100</span>
+                    <span>Marks: 200</span>
+                  </div>
+                  <div className="text-violet-300">⏳ সময়: ১ ঘন্টা (60 Mins)</div>
                 </div>
               </div>
             </div>
@@ -1058,12 +1094,16 @@ export default function ExamPortal() {
             <h1 className="text-lg font-extrabold text-white tracking-wide">
               {selectedTest === 'english_gi_combo' 
                 ? 'English + GI Combo Mock' 
-                : (selectedTest === 'indian_art_culture' ? 'Indian Art & Culture Special Set' : 'CBT Full Mocktest 1')}
+                : (selectedTest === 'indian_art_culture' 
+                  ? 'Indian Art & Culture Special Set' 
+                  : (selectedTest === 'english_grammar' ? 'English Grammar Special Set' : 'CBT Full Mocktest 1'))}
             </h1>
             <p className="text-xs text-indigo-400 font-semibold tracking-wider uppercase">
               {selectedTest === 'english_gi_combo' 
                 ? 'Combo 20 Q Series • 40 Marks' 
-                : (selectedTest === 'indian_art_culture' ? 'GK Special 25 Q Series • 50 Marks' : 'Full 100 Q Series • 200 Marks')}
+                : (selectedTest === 'indian_art_culture' 
+                  ? 'GK Special 25 Q Series • 50 Marks' 
+                  : (selectedTest === 'english_grammar' ? 'English Special 100 Q Series • 200 Marks' : 'Full 100 Q Series • 200 Marks'))}
             </p>
           </div>
         </div>

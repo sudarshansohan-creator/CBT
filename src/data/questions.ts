@@ -704,3 +704,806 @@ export const artCultureQuestions: Question[] = [
   }
 ];
 
+export const grammarQuestions: Question[] = [
+  {
+    id: 1,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: The number of students (A) / are increasing (B) / every year. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'are-এর জায়গায় is হবে, কারণ \'The number of\' থাকলে singular verb বসে।'
+  },
+  {
+    id: 2,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: Neither Rahul nor his friends (A) / was present (B) / at the party. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'was-এর জায়গায় were হবে, কারণ \'Neither... nor\' থাকলে দ্বিতীয় subject অনুযায়ী verb বসে।'
+  },
+  {
+    id: 3,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: If I was a king, (A) / I would help (B) / the poor. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'was-এর জায়গায় were হবে, অবাস্তব বা কাল্পনিক শর্তে \'were\' বসে।'
+  },
+  {
+    id: 4,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: Scarcely had he arrived (A) / than it started (B) / raining heavily. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'than-এর জায়গায় when বা before হবে, কারণ Scarcely-র সাথে when বসে।'
+  },
+  {
+    id: 5,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: He is senior (A) / than me (B) / in service. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'than-এর জায়গায় to হবে, senior/junior-এর পর \'to\' বসে।'
+  },
+  {
+    id: 6,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: Each of the boys (A) / have completed (B) / their homework. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'have-এর জায়গায় has এবং their-এর জায়গায় his হবে, \'Each\' সবসময় singular।'
+  },
+  {
+    id: 7,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: She has been working (A) / here (B) / since five years. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'C',
+    explanation: 'since-এর জায়গায় for হবে, নির্দিষ্ট সময়সীমা বা period of time-এর জন্য for বসে।'
+  },
+  {
+    id: 8,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: The police has (A) / caught (B) / the thief. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'has-এর জায়গায় have হবে, \'Police\' শব্দটি plural।'
+  },
+  {
+    id: 9,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: He works hard (A) / lest he (B) / may fail. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'C',
+    explanation: 'may-এর জায়গায় should হবে, \'lest\'-এর পর সবসময় should বসে।'
+  },
+  {
+    id: 10,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: One must do (A) / his duty (B) / honestly. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'his-এর জায়গায় one\'s হবে, subject \'one\' হলে possessive-এ one\'s বসে।'
+  },
+  {
+    id: 11,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: The cattle is (A) / grazing (B) / in the field. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'is-এর জায়গায় are হবে, \'cattle\' সবসময় plural।'
+  },
+  {
+    id: 12,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: The scenery of Himachal Pradesh (A) / are (B) / very beautiful. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'are-এর জায়গায় is হবে, \'scenery\' একটি uncountable noun এবং singular।'
+  },
+  {
+    id: 13,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: Unless you do not work hard, (A) / you cannot (B) / pass the exam. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'do not বাদ যাবে, কারণ \'Unless\' নিজেই একটি নেতিবাচক শব্দ।'
+  },
+  {
+    id: 14,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: He prefers (A) / tea (B) / than coffee. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'C',
+    explanation: 'than-এর জায়গায় to হবে, prefer-এর পর to বসে।'
+  },
+  {
+    id: 15,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: The news (A) / are (B) / true. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'are-এর জায়গায় is হবে, \'news\' দেখতে plural হলেও এটি singular।'
+  },
+  {
+    id: 16,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: I have read (A) / two-third (B) / of this book. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'two-third-এর জায়গায় two-thirds হবে।'
+  },
+  {
+    id: 17,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: He died (A) / from (B) / cancer. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'from-এর জায়গায় of হবে, রোগে মারা গেলে \'die of\' হয়।'
+  },
+  {
+    id: 18,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: Supposing if it rains, (A) / what shall (B) / we do? (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'Supposing এবং if একসাথে বসে না, যেকোনো একটি ব্যবহার করতে হবে।'
+  },
+  {
+    id: 19,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: She is the most cleverest (A) / girl (B) / in the class. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'most বাদ যাবে, ডবল superlative ব্যবহার করা ভুল।'
+  },
+  {
+    id: 20,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: Everyday (A) / he goes to the office (B) / by foot. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'C',
+    explanation: 'by foot-এর জায়গায় on foot হবে।'
+  },
+  {
+    id: 21,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: The rich (A) / is generally (B) / arrogant. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'is-এর জায়গায় are হবে, \'The rich\' পুরো ধনী শ্রেণীকে বোঝায় যা plural।'
+  },
+  {
+    id: 22,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: I look forward (A) / to meet (B) / you soon. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'meet-এর জায়গায় meeting হবে, \'look forward to\'-এর পর verb+ing বসে।'
+  },
+  {
+    id: 23,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: He distributed the sweets (A) / between (B) / the three children. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'between-এর জায়গায় among হবে, দুইয়ের বেশির ক্ষেত্রে among বসে।'
+  },
+  {
+    id: 24,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: No sooner did I reach the station (A) / when the train (B) / left. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'B',
+    explanation: 'when-এর জায়গায় than হবে, No sooner-এর সাথে than বসে।'
+  },
+  {
+    id: 25,
+    section: 'English',
+    question: 'Error Spotting (১ - ২৫) নিচের বাক্যগুলির কোন অংশে ভুল আছে তা চিহ্নিত করুন: My brother-in-laws (A) / have come (B) / to visit us. (C) / No Error (D)',
+    options: ['A', 'B', 'C', 'D'],
+    correctAnswer: 'A',
+    explanation: 'brother-in-laws-এর জায়গায় brothers-in-law হবে।'
+  },
+  {
+    id: 26,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He has been living here ________ 2010.',
+    options: ['for', 'since', 'from', 'in'],
+    correctAnswer: 'B',
+    explanation: 'since (নির্দিষ্ট শুরুর সময় বা point of time বোঝাতে since ব্যবহৃত হয়)।'
+  },
+  {
+    id: 27,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: The train ________ before I reached the station.',
+    options: ['left', 'has left', 'had left', 'leaves'],
+    correctAnswer: 'C',
+    explanation: 'had left (অতীতকালে দুটি কাজের মধ্যে যেটি আগে ঘটেছিল সেটি Past Perfect Tense হয়)।'
+  },
+  {
+    id: 28,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: She is afraid ________ spiders.',
+    options: ['with', 'of', 'from', 'at'],
+    correctAnswer: 'B',
+    explanation: 'of (afraid-এর পর উপযুক্ত preposition হিসেবে of বসে)।'
+  },
+  {
+    id: 29,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: Copper is ________ useful metal.',
+    options: ['a', 'an', 'the', 'no article'],
+    correctAnswer: 'A',
+    explanation: 'a (\'u\'-এর উচ্চারণ \'ইউ\' এর মতো হলে vowel থাকা সত্ত্বেও তার পূর্বে a বসে)।'
+  },
+  {
+    id: 30,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He jumped ________ the river.',
+    options: ['in', 'into', 'on', 'to'],
+    correctAnswer: 'B',
+    explanation: 'into (বাহির থেকে ভেতরের দিকে গতিশীলতা বোঝাতে into বসে)।'
+  },
+  {
+    id: 31,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: Neither of the two candidates ________ selected.',
+    options: ['were', 'was', 'have been', 'are'],
+    correctAnswer: 'B',
+    explanation: 'was (Neither of-এর পর plural noun থাকলেও verb সবসময় singular হয়)।'
+  },
+  {
+    id: 32,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He is ________ honest man.',
+    options: ['a', 'an', 'the', 'no article'],
+    correctAnswer: 'B',
+    explanation: 'an (honest শব্দের \'h\' অনুচ্চারিত থাকে, তাই এর উচ্চারণ ভাওয়েলের মতো হওয়ায় an বসে)।'
+  },
+  {
+    id: 33,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: You must abstain ________ smoking.',
+    options: ['from', 'to', 'with', 'of'],
+    correctAnswer: 'A',
+    explanation: 'from (abstain-এর পর উপযুক্ত preposition \'from\' বসে)।'
+  },
+  {
+    id: 34,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: If I ________ rich, I would buy a car.',
+    options: ['am', 'was', 'were', 'have been'],
+    correctAnswer: 'C',
+    explanation: 'were (অবাস্তব বা কাল্পনিক শর্ত বোঝাতে subject যাই হোক না কেন were বসে)।'
+  },
+  {
+    id: 35,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: The quality of these mangoes ________ not good.',
+    options: ['are', 'is', 'were', 'have been'],
+    correctAnswer: 'B',
+    explanation: 'is (এখানে আসল subject হলো \'The quality\', যা singular)।'
+  },
+  {
+    id: 36,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: She congratulated him ________ his success.',
+    options: ['on', 'for', 'at', 'with'],
+    correctAnswer: 'A',
+    explanation: 'on (congratulate-এর সাথে preposition \'on\' ব্যবহৃত হয়)।'
+  },
+  {
+    id: 37,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: Physics ________ a difficult subject.',
+    options: ['are', 'is', 'were', 'have been'],
+    correctAnswer: 'B',
+    explanation: 'is (Physics দেখতে প্লুরাল হলেও এটি একটি নির্দিষ্ট বিষয়ের নাম এবং singular)।'
+  },
+  {
+    id: 38,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He behaves as if he ________ everything.',
+    options: ['knows', 'knew', 'has known', 'was knowing'],
+    correctAnswer: 'B',
+    explanation: 'knew (\'as if\' বা \'as though\'-এর পর কাল্পনিক परिस्थिति প্রকাশ করতে simple past tense ব্যবহৃত হয়)।'
+  },
+  {
+    id: 39,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: The climate of Delhi is better than ________.',
+    options: ['Mumbai', 'that of Mumbai', 'those of Mumbai', 'Mumbai\'s climate'],
+    correctAnswer: 'B',
+    explanation: 'that of Mumbai (তুলনা সমজাতীয় জিনিসের মধ্যে হতে হবে, তাই দিল্লির জলবায়ুর সাথে মুম্বাইয়ের জলবায়ুর অর্থাৎ that of Mumbai-এর তুলনা হবে)।'
+  },
+  {
+    id: 40,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: I am tired ________ waiting for him.',
+    options: ['with', 'from', 'of', 'by'],
+    correctAnswer: 'C',
+    explanation: 'of (tired-এর পর \'of\' preposition বসে কোনো কিছুতে ক্লান্ত হওয়া বোঝাতে)।'
+  },
+  {
+    id: 41,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He is ________ unique boy in the class.',
+    options: ['a', 'an', 'the', 'no article'],
+    correctAnswer: 'A',
+    explanation: 'a (unique শব্দের শুরুতে \'u\' এর উচ্চারণ \'ইউ\' এর মতো হওয়ায় এর পূর্বে a বসে)।'
+  },
+  {
+    id: 42,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: Many a student ________ failed in the test.',
+    options: ['have', 'has', 'are', 'were'],
+    correctAnswer: 'B',
+    explanation: 'has (\'Many a\'-এর পর singular noun এবং singular verb বসে)।'
+  },
+  {
+    id: 43,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He deals ________ rice.',
+    options: ['in', 'with', 'at', 'out'],
+    correctAnswer: 'A',
+    explanation: 'in (ব্যবসা করা বোঝাতে deal in এবং আচরণ করা বোঝাতে deal with ব্যবহৃত হয়। চালের ব্যবসা বোঝাতে deal in সঠিক)।'
+  },
+  {
+    id: 44,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: You should comply ________ the rules.',
+    options: ['with', 'by', 'to', 'for'],
+    correctAnswer: 'A',
+    explanation: 'with (comply with মানে নিয়মকানুন মেনে চলা বা সম্মত হওয়া)।'
+  },
+  {
+    id: 45,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He is blind ________ one eye.',
+    options: ['of', 'in', 'with', 'to'],
+    correctAnswer: 'B',
+    explanation: 'in (এক চোখে অন্ধ বোঝাতে blind in বা blind of হয়, তবে blind in বহুল প্রচলিত এবং সঠিক)।'
+  },
+  {
+    id: 46,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: She is senior ________ five years.',
+    options: ['than me by', 'to me by', 'to me with', 'than me with'],
+    correctAnswer: 'B',
+    explanation: 'to me by (senior-এর পর to বসে, এবং পরিমাপ বোঝাতে by বসে)।'
+  },
+  {
+    id: 47,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: I have not seen him ________ a long time.',
+    options: ['since', 'for', 'before', 'from'],
+    correctAnswer: 'B',
+    explanation: 'for (period of time বা সময়ের পরিমাপ বোঝাতে for ব্যবহৃত হয়)।'
+  },
+  {
+    id: 48,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: Bread and butter ________ my favourite breakfast.',
+    options: ['are', 'is', 'were', 'have been'],
+    correctAnswer: 'B',
+    explanation: 'is (রুটি ও মাখন মিলে একটি একক খাবারের ধারণা বা breakfast তৈরি করছে, তাই singular verb হবে)।'
+  },
+  {
+    id: 49,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: He stood ________ his word.',
+    options: ['by', 'to', 'on', 'with'],
+    correctAnswer: 'A',
+    explanation: 'by (stand by one\'s word মানে নিজের দেওয়া কথা বা প্রতিশ্রুতি রক্ষা করা)।'
+  },
+  {
+    id: 50,
+    section: 'English',
+    question: 'Fill in the Blanks (২৬ - ৫০) সঠিক বিকল্পটি বেছে নিয়ে শূন্যস্থান পূরণ করুন: Do not laugh ________ the poor.',
+    options: ['at', 'on', 'to', 'with'],
+    correctAnswer: 'A',
+    explanation: 'at (laugh at মানে কাউকে উপহাস করা বা ঠাট্টা করা)।'
+  },
+  {
+    id: 51,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He is (too weak that he cannot) walk.',
+    options: ['so weak that he cannot', 'too weak to', 'very weak that he cannot', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'sentence-এর অবশিষ্টাংশের সাথে সামঞ্জস্য রেখে \'so weak that he cannot\' সঠিক গঠন।'
+  },
+  {
+    id: 52,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: I (have seen) him yesterday.',
+    options: ['saw', 'had seen', 'am seeing', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'saw (অতীত নির্দেশক শব্দ \'yesterday\' থাকলে কেবল simple past tense হয়)।'
+  },
+  {
+    id: 53,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: She is more taller (than her sister).',
+    options: ['than her sister\'s', 'to her sister', 'taller than her sister', 'No improvement'],
+    correctAnswer: 'C',
+    explanation: 'taller than her sister (ডবল কম্পারেটিভ \'more taller\' ভুল, শুধু taller বসবে)।'
+  },
+  {
+    id: 54,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He asked me (where did I live).',
+    options: ['where I lived', 'where I live', 'where do I live', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'where I lived (পরোক্ষ উক্তি বা indirect speech-এ প্রশ্নবোধক অংশটি সাধারণ বাক্যের মতো assertive হিসেবে গঠিত হয়)।'
+  },
+  {
+    id: 55,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: The committee (were) divided in their opinion.',
+    options: ['was', 'are', 'has been', 'No improvement'],
+    correctAnswer: 'D',
+    explanation: 'No improvement (collective noun যখন তাদের মতামতে বিভক্ত বা ভিন্নতা দেখায়, তখন plural verb \'were\' এবং pronoun হিসেবে \'their\' একদম সঠিক)।'
+  },
+  {
+    id: 56,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He does not like (me coming) late.',
+    options: ['my coming', 'I coming', 'mine coming', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'my coming (ইংল্যান্ডে প্রচলিত নিয়ম অনুসারে gerund-এর পূর্বে possessive pronoun বা noun-এর possessive case বসে)।'
+  },
+  {
+    id: 57,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: Hardly had I arrived (than) the phone rang.',
+    options: ['when', 'then', 'before', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'when (Hardly/Scarcely-এর সাথে conjunction হিসেবে \'when\' বসে)।'
+  },
+  {
+    id: 58,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He is the (bravest of all other) boys.',
+    options: ['bravest of all', 'braver of all', 'bravest than all', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'bravest of all (Superlative degree-তে \'other\' শব্দটি ব্যবহৃত হয় না)।'
+  },
+  {
+    id: 59,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: It is high time you (start) studying.',
+    options: ['started', 'would start', 'have started', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'started (\'It is high time/It is time\'-এর পর subject থাকলে verb-এর past form অর্থাৎ V2 বসে)।'
+  },
+  {
+    id: 60,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: The teacher made the student (to repeat) the exercise.',
+    options: ['repeat', 'repeating', 'repeated', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'repeat (causative verb \'make\'-এর পর active voice-এ bare infinitive বা to ছাড়া verb বসে)।'
+  },
+  {
+    id: 61,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He enjoys (to watch) cricket.',
+    options: ['watching', 'watch', 'watched', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'watching (কিছু নির্দিষ্ট verb যেমন enjoy, mind, avoid ইত্যাদির পর infinitive না বসে gerund বসে)।'
+  },
+  {
+    id: 62,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: I cannot cope (up with) this stress.',
+    options: ['cope with', 'cope up', 'coping with', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'cope with (সঠিক ফ্রেজটি হলো cope with যার অর্থ পরিস্থিতির সাথে মানিয়ে নেওয়া। এর মাঝে \'up\' বসে না)।'
+  },
+  {
+    id: 63,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: You (need not to) worry.',
+    options: ['need not', 'needs not to', 'don\'t need to', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'need not (এখানে need একটি semi-modal verb হিসেবে ব্যবহৃত হয়েছে যার পর direct bare infinitive বসে, \'to\' বসে না)।'
+  },
+  {
+    id: 64,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: This is the (same book which) I lost.',
+    options: ['same book that', 'same book as', 'same book who', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'same book that (\'same\'-এর পরে relative pronoun হিসেবে which-এর চেয়ে \'that\' বেশি উপযুক্ত ও সঠিক)।'
+  },
+  {
+    id: 65,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He is (good in) English.',
+    options: ['good at', 'good with', 'good on', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'good at (কোনো বিষয়ে দক্ষ বোঝাতে good at ব্যবহৃত হয়)।'
+  },
+  {
+    id: 66,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: Open your book (at) page ten.',
+    options: ['on', 'to', 'upon', 'No improvement'],
+    correctAnswer: 'D',
+    explanation: 'No improvement (বইয়ের কোনো নির্দিষ্ট পৃষ্ঠা খোলার ক্ষেত্রে preposition \'at\' বসানো একদম সঠিক)।'
+  },
+  {
+    id: 67,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He told to me (a story).',
+    options: ['told me a story', 'said me a story', 'told a story to me', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'told me a story (tell-এর পর সরাসরি indirect object বসে, preposition \'to\' বসে না)।'
+  },
+  {
+    id: 68,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: If I (have had) money, I would have helped you.',
+    options: ['had had', 'had', 'have', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'had had (কন্ডিশনাল ক্লজের মূল অংশে \'would have + V3\' থাকলে ইফযুক্ত ক্লজে Past Perfect Tense অর্থাৎ \'had had\' হবে)।'
+  },
+  {
+    id: 69,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: She (is having) a large house.',
+    options: ['has', 'owns', 'possesses', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'has (অধিকার বা ownership বোঝাতে possess, have, own ইত্যাদি static verb-এর সাধারণত continuous form হয় না)।'
+  },
+  {
+    id: 70,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: The flock of sheep (were) running.',
+    options: ['was', 'are', 'have been', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'was (এখানে subject হলো \'flock of sheep\' যা একটি singular collective noun, তাই singular verb \'was\' হবে)।'
+  },
+  {
+    id: 71,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He is (elder than) me.',
+    options: ['older than', 'elder to', 'older to', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'older than (পরিবারের ভেতরের সম্পর্কের বাইরে বয়স বেশি বোঝাতে এবং \'than\' কনজাংশন থাকলে older than বসে)।'
+  },
+  {
+    id: 72,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: The two sisters shouted at (one another).',
+    options: ['each other', 'themselves', 'each one', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'each other (দুজনের মধ্যে পারস্পরিক বোঝাতে each other বসে, দুইয়ের অধিক ব্যক্তি হলে এক অপরের বোঝাতে one another বসে)।'
+  },
+  {
+    id: 73,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He is (intelligent enough) to solve this.',
+    options: ['enough intelligent', 'too intelligent', 'intelligent more', 'No improvement'],
+    correctAnswer: 'D',
+    explanation: 'No improvement (Adjective-এর পরে adverb হিসেবে \'enough\' বসে এবং এটি একদম নির্ভেজাল সঠিক নিয়ম)।'
+  },
+  {
+    id: 74,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: He went to Delhi (with a view to find) a job.',
+    options: ['with a view to finding', 'with a view to found', 'to finding', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'with a view to finding (\'with a view to\', \'look forward to\' ইত্যাদির পর verb-এর সাথে ing যুক্ত হয়)।'
+  },
+  {
+    id: 75,
+    section: 'English',
+    question: 'Sentence Improvement (৫১ - ৭৫) ব্র্যাকেটে থাকা অংশটি ব্যাকরণগতভাবে উন্নত করার জন্য সঠিক বিকল্পটি বাছুন: Nothing but books (were) sold.',
+    options: ['was', 'are', 'have been', 'No improvement'],
+    correctAnswer: 'A',
+    explanation: 'was (\'Nothing but\'-এর পর noun প্লুরাল হলেও আসল subject \'Nothing\' হওয়ায় verb সবসময় singular \'was\' হবে)।'
+  },
+  {
+    id: 76,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "The boy killed the snake." -> Passive:',
+    options: ['The snake was killed by the boy.', 'The snake is killed by the boy.', 'The snake had been killed by the boy.', 'The snake has been killed by the boy.'],
+    correctAnswer: 'A',
+    explanation: 'সহজ past indefinite tense এর প্যাসিভ গঠন অনুযায়ী \'was killed\' সঠিক।'
+  },
+  {
+    id: 77,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Passive: "A letter is being written by her." -> Active:',
+    options: ['She writes a letter.', 'She is writing a letter.', 'She was writing a letter.', 'She has written a letter.'],
+    correctAnswer: 'B',
+    explanation: 'Present continuous passive থেকে একটিভে রূপান্তর: She is writing a letter।'
+  },
+  {
+    id: 78,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "Shut the door." -> Passive:',
+    options: ['Let the door be shut.', 'The door should be shut.', 'Let the door shut.', 'The door let be shut.'],
+    correctAnswer: 'A',
+    explanation: 'অনুমতি বা আদেশসূচক বাক্যের প্যাসিভ রূপান্তর: Let + object + be + V3।'
+  },
+  {
+    id: 79,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "Who wrote this book?" -> Passive:',
+    options: ['By whom was this book written?', 'Who was written this book?', 'By whom this book was written?', 'By whom is this book written?'],
+    correctAnswer: 'A',
+    explanation: 'Who দিয়ে প্রশ্ন থাকলে By whom + auxiliary + object + V3 বসে।'
+  },
+  {
+    id: 80,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Passive: "The match has been won by us." -> Active:',
+    options: ['We won the match.', 'We have won the match.', 'We had won the match.', 'We will win the match.'],
+    correctAnswer: 'B',
+    explanation: 'Present perfect passive থেকে একটিভ: We have won the match।'
+  },
+  {
+    id: 81,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "They are painting the house." -> Passive:',
+    options: ['The house is painted by them.', 'The house is being painted by them.', 'The house was being painted by them.', 'The house has been painted.'],
+    correctAnswer: 'B',
+    explanation: 'Present continuous passive গঠন: Object + is/am/are + being + V3।'
+  },
+  {
+    id: 82,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "He will help me." -> Passive:',
+    options: ['I will be helped by him.', 'I shall be helped by him.', 'I am helped by him.', 'I would be helped by him.'],
+    correctAnswer: 'B',
+    explanation: 'Simple future tense under passive: I shall be helped by him. (I-এর সাথে shall প্রধানত বসে)।'
+  },
+  {
+    id: 83,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "Please sit down." -> Passive:',
+    options: ['You are requested to sit down.', 'Let you sit down.', 'You should sit down.', 'Please you sit down.'],
+    correctAnswer: 'A',
+    explanation: 'অনুরোধমূলক বাক্য \'Please\' থাকলে \'You are requested to\' দিয়ে প্যাসিভ করতে হয়।'
+  },
+  {
+    id: 84,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Passive: "America was discovered by Columbus." -> Active:',
+    options: ['Columbus discovers America.', 'Columbus discovered America.', 'Columbus had discovered America.', 'Columbus is discovering America.'],
+    correctAnswer: 'B',
+    explanation: 'Simple past active রূপ: Subject + V2 + Object.'
+  },
+  {
+    id: 85,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "Do you know him?" -> Passive:',
+    options: ['Is he known to you?', 'Is he known by you?', 'Was he known to you?', 'Is he knew to you?'],
+    correctAnswer: 'A',
+    explanation: 'know-এর পর passive-এ preposition হিসেবে \'to\' বসে, \'by\' নয়।'
+  },
+  {
+    id: 86,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: He said, "I am unwell." -> Indirect:',
+    options: ['He said that he was unwell.', 'He said that I am unwell.', 'He told he was unwell.', 'He says that he is unwell.'],
+    correctAnswer: 'A',
+    explanation: 'Direct speech present/simple continuous থাকলে indirect context অনুযায়ী simple past হয়।'
+  },
+  {
+    id: 87,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: She said to me, "What are you doing?" -> Indirect:',
+    options: ['She asked me what I was doing.', 'She asked me what was I doing.', 'She told me what I did.', 'She asked me what am I doing.'],
+    correctAnswer: 'A',
+    explanation: 'প্রশ্নবোধক indirect-এ asked বসে এবং wh-শব্দটির পর subject + auxiliary verb বসে।'
+  },
+  {
+    id: 88,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: Ram said, "The sun rises in the east." -> Indirect:',
+    options: ['Ram said that the sun rose in the east.', 'Ram said that the sun rises in the east.', 'Ram told the sun rises in the east.', 'Ram says that sun rise in east.'],
+    correctAnswer: 'B',
+    explanation: 'চিরন্তন সত্য বা Universal Truth থাকলে indirect speech-এর verb tense কখনো পরিবর্তন হয় না।'
+  },
+  {
+    id: 89,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Indirect: He asked me if I would go. -> Direct:',
+    options: ['He said to me, "Will you go?"', 'He said to me, "Would you go?"', 'He asked, "Do you go?"', 'He said me, "Shall I go?"'],
+    correctAnswer: 'A',
+    explanation: 'Direct with \'Will you go?\' gets converted to \'would go\' with conditional \'if\'.'
+  },
+  {
+    id: 90,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: The teacher said to the boys, "Work hard." -> Indirect:',
+    options: ['The teacher advised the boys to work hard.', 'The teacher told to the boys to work hard.', 'The teacher ordered the boys for working hard.', 'The teacher advised the boys for hard work.'],
+    correctAnswer: 'A',
+    explanation: 'উপদেশ দেওয়ার ক্ষেত্রে reporting verb-এ advised এবং link-এ \'to\' বসে।'
+  },
+  {
+    id: 91,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: He said, "Hurrah! We have won." -> Indirect:',
+    options: ['He exclaimed with joy that they had won.', 'He said with joy that we have won.', 'He exclaimed that he won.', 'He exclaimed with sorrow they won.'],
+    correctAnswer: 'A',
+    explanation: 'আনন্দসূচক আবেগ থাকলে exclaimed with joy and present perfect becomes past perfect.'
+  },
+  {
+    id: 92,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: She said, "May God bless you." -> Indirect:',
+    options: ['She prayed that God might bless me.', 'She wished that God may bless me.', 'She prayed God to bless me.', 'She prayed that God may bless me.'],
+    correctAnswer: 'A',
+    explanation: 'প্রার্থনাসূচক বাক্যে \'prayed\' এবং may পরিবর্তিত হয়ে \'might\' বসে।'
+  },
+  {
+    id: 93,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: He said to her, "I cannot help you at this time." -> Indirect:',
+    options: ['He told her that he could not help her at that time.', 'He told her that I could not help you at that time.', 'He said her that he cannot help her.', 'He told her he can\'t help her now.'],
+    correctAnswer: 'A',
+    explanation: 'cannot রূপান্তরিত হয়ে \'could not help\', এবং \'this time\' পরিবর্তিত হয়ে \'that time\' হবে।'
+  },
+  {
+    id: 94,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: "Where do you live?" asked the stranger. -> Indirect:',
+    options: ['The stranger asked where I lived.', 'The stranger asked where did I live.', 'The stranger enquired where I live.', 'The stranger asks where I lived.'],
+    correctAnswer: 'A',
+    explanation: 'Assertive structure with simple past: \'where I lived\'.'
+  },
+  {
+    id: 95,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: He said, "I bought a book yesterday." -> Indirect:',
+    options: ['He said that he had bought a book the previous day.', 'He said that he bought a book yesterday.', 'He said that he has bought a book the day before.', 'He said he bought a book previous day.'],
+    correctAnswer: 'A',
+    explanation: 'Simple past reporting speech \'bought\' converts to past perfect \'had bought\', and \'yesterday\' becomes \'the previous day\'.'
+  },
+  {
+    id: 96,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "One should keep one\'s promises." -> Passive:',
+    options: ['Promises should be kept.', 'One\'s promises should be kept by one.', 'Promises should keep.', 'Promises should be kept by someone.'],
+    correctAnswer: 'A',
+    explanation: 'সাধারণ নৈতিক উপদেশমূলক বাক্যের প্যাসিভে \'by one\' উহ্য রাখা হয়।'
+  },
+  {
+    id: 97,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "They elected him chairman." -> Passive:',
+    options: ['He was elected chairman by them.', 'Chairman was elected him by them.', 'He had been elected chairman.', 'Subject was elected chairman.'],
+    correctAnswer: 'A',
+    explanation: 'Factitive object বা complement-যুক্ত বাক্যে মূল object-টি (him) passive-এর subject (He) হয়।'
+  },
+  {
+    id: 98,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: He said to me, "Don\'t smoke." -> Indirect:',
+    options: ['He forbade me to smoke.', 'He advised me not to smoke.', 'Both A and B.', 'He told me to not smoke.'],
+    correctAnswer: 'C',
+    explanation: 'forbade-এর সাথে link-এ positively to এবং advised-এর সাথে link-এ not to বসে, তাই দুটি বাক্যই সঠিক।'
+  },
+  {
+    id: 99,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Active: "Honey tastes sweet." -> Passive:',
+    options: ['Honey is sweet when it is tasted.', 'Honey is tasted sweet.', 'Honey was sweet when tasted.', 'Honey tastes sweet by tasting.'],
+    correctAnswer: 'A',
+    explanation: 'Quasi-passive voice-এর রূপান্তর সূত্র: Subject + be-verb + Adjective + when + it/they + be-verb + V3।'
+  },
+  {
+    id: 100,
+    section: 'English',
+    question: 'Voice & Narration Change (৭৬ - ১০০) সঠিক Active/Passive বা Direct/Indirect রূপটি নির্বাচন করুন: Direct: She said, "Goodbye, my friends!" -> Indirect:',
+    options: ['She bade goodbye to her friends.', 'She said goodbye to her friends.', 'She wished her friends goodbye.', 'She bade her friends for goodbye.'],
+    correctAnswer: 'A',
+    explanation: 'বিদায় জানানোর উক্তি থাকলে reporting verb-এ \'bade\' বসে (She bade goodbye to her friends / She bade her friends goodbye)।'
+  }
+];
+
