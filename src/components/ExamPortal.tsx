@@ -491,158 +491,158 @@ export default function ExamPortal() {
     }
 
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-        <div className="max-w-4xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-8 border border-slate-700 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-2 sm:p-4">
+        <div className="max-w-4xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-4 sm:p-8 border border-slate-700 relative overflow-hidden">
           {/* Accent decoration */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
           <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
 
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-black text-slate-100">সিবিটি মক টেস্ট পোর্টাল</h1>
-            <p className="text-indigo-400 mt-1 font-semibold text-sm">CBT Exam Room • Candidate: {candidateName}</p>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-100">সিবিটি মক টেস্ট পোর্টাল</h1>
+            <p className="text-indigo-400 mt-1 font-semibold text-xs sm:text-sm">CBT Exam Room • Candidate: {candidateName}</p>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান (Select Test Pool):</h2>
+            <h2 className="text-sm sm:text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান (Select Test Pool):</h2>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
               {/* Card 1: Full Mock */}
               <div
                 onClick={() => setSelectedTest('full_mock_1')}
-                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
                   selectedTest === 'full_mock_1'
                     ? 'border-indigo-500 bg-indigo-500/15 ring-2 ring-indigo-500/35'
-                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
                 }`}
               >
-                <span className="absolute top-3 right-3 text-xs bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-indigo-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
                   Full Set
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-lg text-white">Full Mocktest 1</h3>
-                  <p className="text-xs text-slate-300 mt-1">সবকটি সাবজেক্টের সম্পূর্ণ মক টেস্ট।</p>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Full Mock 1</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">সবকটি সাবজেক্টের সম্পূর্ণ টেস্ট।</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
-                  <div className="flex justify-between">
-                    <span>English, Math, GI, GK</span>
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
+                    <span>Eng, Math, GI, GK</span>
                   </div>
                   <div className="flex justify-between text-slate-300">
-                    <span>Questions: 100</span>
-                    <span>Marks: 200</span>
+                    <span>Q: 100</span>
+                    <span>M: 200</span>
                   </div>
-                  <div className="text-indigo-300">⏳ সময়: ১ ঘন্টা (60 Mins)</div>
+                  <div className="text-indigo-300 truncate">⏳ ৬০ মিনিট (60m)</div>
                 </div>
               </div>
 
               {/* Card 2: Combo Mock */}
               <div
                 onClick={() => setSelectedTest('english_gi_combo')}
-                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
                   selectedTest === 'english_gi_combo'
                     ? 'border-emerald-500 bg-emerald-500/15 ring-2 ring-emerald-500/35'
-                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
                 }`}
               >
-                <span className="absolute top-3 right-3 text-xs bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
                   Combo Qs
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-lg text-white">English + GI Combo</h3>
-                  <p className="text-xs text-slate-300 mt-1">ইংরেজি এবং রিজননিং সাবজেক্টের স্পেশাল কম্বো সেট।</p>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">English + GI</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">ইংরেজি এবং রিজননিং স্পেশাল কম্বো সেট।</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
-                  <div className="flex justify-between">
-                    <span>English &amp; GI Sections</span>
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
+                    <span>English &amp; GI</span>
                   </div>
                   <div className="flex justify-between text-slate-300">
-                    <span>Questions: 20</span>
-                    <span>Marks: 40</span>
+                    <span>Q: 20</span>
+                    <span>M: 40</span>
                   </div>
-                  <div className="text-emerald-300">⏳ সময়: ৩০ মিনিট (30 Mins)</div>
+                  <div className="text-emerald-300 truncate">⏳ ৩০ মিনিট (30m)</div>
                 </div>
               </div>
 
               {/* Card 3: Art & Culture Special Set */}
               <div
                 onClick={() => setSelectedTest('indian_art_culture')}
-                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
                   selectedTest === 'indian_art_culture'
                     ? 'border-amber-500 bg-amber-500/15 ring-2 ring-amber-500/35'
-                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
                 }`}
               >
-                <span className="absolute top-3 right-3 text-xs bg-amber-600 text-white font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
                   GK Special
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-lg text-white">Art &amp; Culture Set</h3>
-                  <p className="text-xs text-slate-300 mt-1">Indian Musicians &amp; Instruments (Special GK Set)।</p>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Art &amp; Culture</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">Musicians &amp; Instruments GK।</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
-                  <div className="flex justify-between">
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
                     <span>GK Section</span>
                   </div>
                   <div className="flex justify-between text-slate-300">
-                    <span>Questions: 25</span>
-                    <span>Marks: 50</span>
+                    <span>Q: 25</span>
+                    <span>M: 50</span>
                   </div>
-                  <div className="text-amber-300">⏳ সময়: ১৫ মিনিট (15 Mins)</div>
+                  <div className="text-amber-300 truncate">⏳ ১৫ মিনিট (15m)</div>
                 </div>
               </div>
 
               {/* Card 4: English Grammar Practice Set */}
               <div
                 onClick={() => setSelectedTest('english_grammar')}
-                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
                   selectedTest === 'english_grammar'
                     ? 'border-violet-500 bg-violet-500/15 ring-2 ring-violet-500/35'
-                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
                 }`}
               >
-                <span className="absolute top-3 right-3 text-xs bg-violet-600 text-white font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-violet-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
                   Grammar
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-lg text-white">English Grammar Set</h3>
-                  <p className="text-xs text-slate-300 mt-1">Error Spotting, Fill in Blanks, Improvement, Voice &amp; Narration।</p>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">English Grammar</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">Error Spotting, Voice, Narration।</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
-                  <div className="flex justify-between">
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
                     <span>English Section</span>
                   </div>
                   <div className="flex justify-between text-slate-300">
-                    <span>Questions: 100</span>
-                    <span>Marks: 200</span>
+                    <span>Q: 100</span>
+                    <span>M: 200</span>
                   </div>
-                  <div className="text-violet-300">⏳ সময়: ১ ঘন্টা (60 Mins)</div>
+                  <div className="text-violet-300 truncate">⏳ ১ ঘন্টা (60m)</div>
                 </div>
               </div>
 
               {/* Card 5: GI Special Practice Set */}
               <div
                 onClick={() => setSelectedTest('gi_special')}
-                className={`cursor-pointer rounded-xl p-5 border transition-all relative flex flex-col justify-between ${
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
                   selectedTest === 'gi_special'
                     ? 'border-cyan-500 bg-cyan-500/15 ring-2 ring-cyan-500/35'
-                    : 'border-slate-705 bg-slate-750/70 hover:border-slate-600'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
                 }`}
               >
-                <span className="absolute top-3 right-3 text-xs bg-cyan-600 text-white font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-cyan-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
                   Reasoning
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-lg text-white">GI Special Set</h3>
-                  <p className="text-xs text-slate-300 mt-1">কোডিং-ডিকোডিং, যুক্তি ও সিদ্ধান্ত, র্যাংকিং, নম্বর সিরিজ ও সমস্যা সমাধান।</p>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">GI Special</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">কোডিং, যুক্তি, অর্ডার, নম্বর সিরিজ।</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-700/50 space-y-1.5 text-xs font-semibold text-slate-400">
-                  <div className="flex justify-between">
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
                     <span>GI Section</span>
                   </div>
                   <div className="flex justify-between text-slate-300">
-                    <span>Questions: 25</span>
-                    <span>Marks: 50</span>
+                    <span>Q: 25</span>
+                    <span>M: 50</span>
                   </div>
-                  <div className="text-cyan-300">⏳ সময়: ২০ মিনিট (20 Mins)</div>
+                  <div className="text-cyan-300 truncate">⏳ ২০ মিনিট (20m)</div>
                 </div>
               </div>
             </div>
