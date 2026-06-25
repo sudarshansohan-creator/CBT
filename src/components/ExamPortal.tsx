@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { questions, comboQuestions, artCultureQuestions, grammarQuestions, giQuestions } from '../data/questions';
+import { fullMock2Questions } from '../data/questions2';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -25,7 +26,7 @@ export default function ExamPortal() {
   // Candidate Profile State
   const [candidateName, setCandidateName] = useState('');
   const [nameEntered, setNameEntered] = useState(false);
-  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special'>('full_mock_1');
+  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special'>('full_mock_1');
   const [examStarted, setExamStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -61,6 +62,9 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'gi_special') {
       return giQuestions;
+    }
+    if (selectedTest === 'full_mock_2') {
+      return fullMock2Questions;
     }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
@@ -216,7 +220,9 @@ export default function ExamPortal() {
         ? 'Indian Art & Culture Special Set' 
         : (selectedTest === 'english_grammar' 
           ? 'English Grammar Special Set' 
-          : (selectedTest === 'gi_special' ? 'GI Special Practice Set' : 'CBT Full Mocktest 1')));
+          : (selectedTest === 'gi_special' 
+            ? 'GI Special Practice Set' 
+            : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))));
 
     const totalQuestionsCount = testQuestions.length;
     const maxMarksVal = totalQuestionsCount * 2;
@@ -567,11 +573,39 @@ https://cbt-sudarshan.vercel.app/`;
                 }`}
               >
                 <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-indigo-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Full Set
+                  Full Set 1
                 </span>
                 <div>
                   <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Full Mock 1</h3>
                   <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">সবকটি সাবজেক্টের সম্পূর্ণ টেস্ট।</p>
+                </div>
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
+                    <span>Eng, Math, GI, GK</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Q: 100</span>
+                    <span>M: 200</span>
+                  </div>
+                  <div className="text-indigo-300 truncate">⏳ ৬০ মিনিট (60m)</div>
+                </div>
+              </div>
+
+              {/* Card 1b: Full Mock 2 */}
+              <div
+                onClick={() => setSelectedTest('full_mock_2')}
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
+                  selectedTest === 'full_mock_2'
+                    ? 'border-indigo-500 bg-indigo-500/15 ring-2 ring-indigo-500/35'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
+                }`}
+              >
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-pink-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
+                  Full Set 2
+                </span>
+                <div>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Full Mock 2</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">নতুন ১০০টি প্রশ্নের সম্পূর্ণ সিলেবাস মক টেস্ট।</p>
                 </div>
                 <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
                   <div className="hidden sm:block truncate text-slate-500">
@@ -1257,7 +1291,9 @@ https://cbt-sudarshan.vercel.app/`;
                     ? 'Indian Art & Culture Special Set' 
                     : (selectedTest === 'english_grammar' 
                       ? 'English Grammar Special Set' 
-                      : (selectedTest === 'gi_special' ? 'GI Special Practice Set' : 'CBT Full Mocktest 1')))}
+                      : (selectedTest === 'gi_special' 
+                        ? 'GI Special Practice Set' 
+                        : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))))}
               </h1>
               <p className="text-[10px] sm:text-xs text-indigo-400 font-semibold tracking-wider uppercase leading-none mt-1">
                 {selectedTest === 'english_gi_combo' 
