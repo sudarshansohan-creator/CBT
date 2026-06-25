@@ -17,7 +17,8 @@ import {
   ChevronRight,
   List,
   Grid,
-  FileText
+  FileText,
+  Share2
 } from 'lucide-react';
 
 export default function ExamPortal() {
@@ -33,6 +34,8 @@ export default function ExamPortal() {
   const [activeQuestionId, setActiveQuestionId] = useState<number>(1);
   const [viewMode, setViewMode] = useState<'single' | 'list'>('single');
   const [confirmSubmitOpen, setConfirmSubmitOpen] = useState(false);
+  const [hasShared, setHasShared] = useState(false);
+  const [sharePromptOpen, setSharePromptOpen] = useState(false);
   
   // Exam Response States
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, 'A' | 'B' | 'C' | 'D'>>({});
@@ -190,6 +193,10 @@ export default function ExamPortal() {
   };
 
   const handleRetake = () => {
+    if (!hasShared) {
+      setSharePromptOpen(true);
+      return;
+    }
     setNameEntered(false);
     setExamStarted(false);
     setSubmitted(false);
@@ -199,6 +206,35 @@ export default function ExamPortal() {
     setActiveQuestionId(1);
     setActiveSection('English');
     setTimeLeft(3600);
+  };
+
+  const handleChallengeFriend = () => {
+    setHasShared(true);
+    const testTitle = selectedTest === 'english_gi_combo' 
+      ? 'English + GI Combo Mock' 
+      : (selectedTest === 'indian_art_culture' 
+        ? 'Indian Art & Culture Special Set' 
+        : (selectedTest === 'english_grammar' 
+          ? 'English Grammar Special Set' 
+          : (selectedTest === 'gi_special' ? 'GI Special Practice Set' : 'CBT Full Mocktest 1')));
+
+    const totalQuestionsCount = testQuestions.length;
+    const maxMarksVal = totalQuestionsCount * 2;
+
+    const textMessage = `*🔥 CHALLENGE ALERT! can you beat my CBT Mock Test score? 🎯*
+
+*👤 Candidate:* ${candidateName}
+*📝 Mock Test:* ${testTitle}
+*📊 Obtained Score:* ${results.totalMarks.toFixed(1)} / ${maxMarksVal.toFixed(1)} Marks
+*🎯 Accuracy:* ${results.accuracy}%
+*🏆 Estimated AIR:* ${predData.rankRange}
+*📈 Percentile:* ${predData.percentileRange}
+
+👉 Try taking the test now and beat my score! 👇
+https://cbt-sudarshan.vercel.app/`;
+
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textMessage)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   // Helper formats
@@ -485,6 +521,21 @@ export default function ExamPortal() {
                 Proceed to Test Selection (পরবর্তী ধাপে যান)
               </button>
             </form>
+
+            <div className="mt-8 pt-6 border-t border-slate-700/50 flex flex-col items-center">
+              <p className="text-sm text-slate-400 mb-3 font-medium">Join our community for daily practice</p>
+              <a
+                href="https://whatsapp.com/channel/0029VbB1PecFcow9ajKRDT1g"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-[#25D366]/20 transition-all transform active:scale-98 flex items-center justify-center gap-2 text-base"
+              >
+                <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                Join our WhatsApp Channel
+              </a>
+            </div>
           </div>
         </div>
       );
@@ -670,6 +721,20 @@ export default function ExamPortal() {
                 পরীক্ষা শুরু করুন (Start Exam)
               </button>
             </div>
+
+            <div className="mt-4 pt-4 border-t border-slate-700/50 flex justify-center">
+              <a
+                href="https://whatsapp.com/channel/0029VbB1PecFcow9ajKRDT1g"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-6 py-3 bg-[#25D366] hover:bg-[#1DA851] text-white font-bold rounded-xl shadow-lg shadow-[#25D366]/20 transition-all flex items-center justify-center gap-2 text-sm"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                Join our WhatsApp Channel
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -686,22 +751,36 @@ export default function ExamPortal() {
       <div className="min-h-screen bg-slate-950 text-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Congratulations Block */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
             
-            <div className="space-y-4 text-center md:text-left z-10">
+            <div className="space-y-4 text-center md:text-left z-10 flex-1">
               <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-1.5 rounded-full text-sm font-semibold border border-emerald-500/20">
                 <CheckCircle className="w-4 h-4" /> Exam Completed Safely
               </div>
-              <h2 className="text-3xl font-extrabold tracking-tight">
+              <h2 className="text-3xl font-extrabold tracking-tight text-white">
                 Mock Test Report: {candidateName}
               </h2>
               <p className="text-slate-400 max-w-xl">
                 Here is your comprehensive Computer Based Test scorecard. Review correct keys, negative mark deductions, and detailed performance metrics below.
               </p>
+              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleChallengeFriend}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-6 rounded-xl shadow-lg hover:shadow-emerald-950/40 transition transform active:scale-97 text-sm cursor-pointer"
+                >
+                  <Share2 className="w-4 h-4" /> Challenge Your Friend
+                </button>
+                <button
+                  onClick={() => document.getElementById('review-section')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-extrabold py-3 px-6 rounded-xl shadow-lg hover:shadow-slate-900/40 transition transform active:scale-97 text-sm cursor-pointer"
+                >
+                  <BookOpen className="w-4 h-4" /> Review Answers
+                </button>
+              </div>
             </div>
 
-            <div className="flex flex-col items-center justify-center bg-slate-850 p-6 rounded-2xl border border-slate-750 z-10 min-w-[200px]">
+            <div className="flex flex-col items-center justify-center bg-slate-850 p-6 rounded-2xl border border-slate-750 z-10 min-w-[200px] w-full md:w-auto">
               <span className="text-sm text-slate-400 uppercase tracking-widest font-bold">Total Score</span>
               <span className={`text-5xl font-black mt-2 ${results.totalMarks >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {results.totalMarks.toFixed(1)}
@@ -960,10 +1039,10 @@ export default function ExamPortal() {
           </div>
 
           {/* Interactive Answer Key & Question review */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+          <div id="review-section" className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xl space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-800">
               <div>
-                <h3 className="text-xl font-bold flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-bold flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-indigo-400" /> Complete Question Review Keys
                 </h3>
                 <p className="text-slate-400 text-xs mt-1">Review correct options, explanation rationale, and your responses</p>
@@ -981,7 +1060,7 @@ export default function ExamPortal() {
                         : 'bg-slate-800 text-slate-400 hover:bg-slate-750'
                     }`}
                   >
-                    {mode === 'all' ? 'All (100)' : 
+                    {mode === 'all' ? 'All' : 
                      mode === 'correct' ? `Correct (${results.correctCount})` : 
                      mode === 'incorrect' ? `Incorrect (${results.incorrectCount})` : 
                      `Unattempted (${results.unattemptedCount})`}
@@ -991,7 +1070,7 @@ export default function ExamPortal() {
             </div>
 
             {/* Answer Feed */}
-            <div className="space-y-6 max-h-[800px] overflow-y-auto pr-2 divide-y divide-slate-800">
+            <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2 divide-y divide-slate-800">
               {testQuestions
                 .filter((q) => {
                   const select = selectedAnswers[q.id];
@@ -1000,7 +1079,7 @@ export default function ExamPortal() {
                   if (reviewFilter === 'unattempted') return !select;
                   return true;
                 })
-                .map((q, index) => {
+                .map((q) => {
                   const select = selectedAnswers[q.id];
                   const isCorrect = select === q.correctAnswer;
                   const isUnattempted = !select;
@@ -1023,7 +1102,7 @@ export default function ExamPortal() {
                         </span>
                       </div>
 
-                      <p className="text-lg font-medium text-slate-100">{q.question}</p>
+                      <p className="text-base sm:text-lg font-medium text-slate-100">{q.question}</p>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {q.options.map((opt, idx) => {
@@ -1031,7 +1110,7 @@ export default function ExamPortal() {
                           const isPicked = select === optionKey;
                           const isCorrectKey = q.correctAnswer === optionKey;
 
-                          let optStyle = 'p-3.5 rounded-xl border text-sm text-left transition flex items-start gap-2.5 ';
+                          let optStyle = 'p-3 rounded-xl border text-xs sm:text-sm text-left transition flex items-start gap-2.5 ';
                           if (isCorrectKey) {
                             optStyle += 'bg-emerald-500/10 border-emerald-500/50 text-emerald-300 font-medium';
                           } else if (isPicked) {
@@ -1055,7 +1134,7 @@ export default function ExamPortal() {
                       </div>
 
                       {/* Explanation box */}
-                      <div className="p-4 bg-slate-850 rounded-xl border border-slate-755 text-sm space-y-1.5">
+                      <div className="p-4 bg-slate-850 rounded-xl border border-slate-755 text-xs sm:text-sm space-y-1.5">
                         <p className="font-semibold text-slate-250 flex items-center gap-1.5">
                           <CheckCircle className="w-4 h-4 text-emerald-400" />
                           <span>Correct Answer Key: <strong className="text-emerald-400 text-base">{q.correctAnswer}</strong></span>
@@ -1078,28 +1157,67 @@ export default function ExamPortal() {
                 if (reviewFilter === 'unattempted') return !select;
                 return true;
               }).length === 0 && (
-                <div className="text-center py-12 text-slate-500">
+                <div className="text-center py-12 text-slate-500 text-xs sm:text-sm">
                   No questions match your selected filter criteria.
                 </div>
               )}
             </div>
 
             {/* Bottom Actions */}
-            <div className="flex justify-center pt-6 border-t border-slate-800">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 border-t border-slate-800">
               <button
                 onClick={handleRetake}
-                className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition transform active:scale-97"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition transform active:scale-97 cursor-pointer text-sm"
               >
-                <RotateCcw className="w-5 h-5" /> Retake Mock Exam
+                <RotateCcw className="w-4.5 h-4.5" /> Retake Mock Exam
+              </button>
+              
+              <button
+                onClick={handleChallengeFriend}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-8 rounded-xl shadow-lg hover:shadow-emerald-900/30 transition transform active:scale-97 cursor-pointer text-sm"
+              >
+                <Share2 className="w-4.5 h-4.5" /> Challenge Your Friend
               </button>
             </div>
           </div>
         </div>
+
+        {/* SHARE PROMPT MODAL */}
+        {sharePromptOpen && (
+          <div className="fixed inset-0 min-h-screen z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-center">
+              <div className="mb-6 flex items-center justify-center">
+                <div className="w-16 h-16 bg-[#25D366]/10 rounded-full flex items-center justify-center text-[#25D366]">
+                  <Share2 className="w-8 h-8" />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-center mb-2">Challenge a Friend</h3>
+              <p className="text-slate-400 text-center mb-6 text-sm">
+                To continue the retake attempt for free, you need to challenge your friend first.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setSharePromptOpen(false)}
+                  className="flex-1 px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold transition text-sm text-center"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    setSharePromptOpen(false);
+                    handleChallengeFriend();
+                  }}
+                  className="flex-1 px-4 py-3 bg-[#25D366] hover:bg-[#1DA851] rounded-xl font-bold transition flex items-center justify-center gap-2 text-sm text-white"
+                >
+                  <Share2 className="w-4 h-4" /> Share Now
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
-
-  // 3. MAIN LIVE EXAM SESSION
   const activeQuestion = testQuestions.find((q) => q.id === activeQuestionId) || testQuestions[0];
   const userSelectedOption = selectedAnswers[activeQuestion.id];
   const isQuestionMarked = !!markedForReview[activeQuestion.id];
@@ -1125,62 +1243,82 @@ export default function ExamPortal() {
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
       
       {/* EXAM STATUS TOP NAV */}
-      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="bg-indigo-500/10 p-2 rounded-lg text-indigo-400 border border-indigo-500/20">
-            <Award className="w-6 h-6" />
+      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-3 sm:px-6 py-2.5 sm:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-indigo-500/10 p-1.5 sm:p-2 rounded-lg text-indigo-400 border border-indigo-500/20">
+              <Award className="w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+            <div>
+              <h1 className="text-sm sm:text-lg font-extrabold text-white tracking-wide leading-tight">
+                {selectedTest === 'english_gi_combo' 
+                  ? 'English + GI Combo Mock' 
+                  : (selectedTest === 'indian_art_culture' 
+                    ? 'Indian Art & Culture Special Set' 
+                    : (selectedTest === 'english_grammar' 
+                      ? 'English Grammar Special Set' 
+                      : (selectedTest === 'gi_special' ? 'GI Special Practice Set' : 'CBT Full Mocktest 1')))}
+              </h1>
+              <p className="text-[10px] sm:text-xs text-indigo-400 font-semibold tracking-wider uppercase leading-none mt-1">
+                {selectedTest === 'english_gi_combo' 
+                  ? 'Combo 20 Q Series • 40 Marks' 
+                  : (selectedTest === 'indian_art_culture' 
+                    ? 'GK Special 25 Q Series • 50 Marks' 
+                    : (selectedTest === 'english_grammar' 
+                      ? 'English Special 100 Q Series • 200 Marks' 
+                      : (selectedTest === 'gi_special' ? 'GI Special 25 Q Series • 50 Marks' : 'Full 100 Q Series • 200 Marks')))}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg font-extrabold text-white tracking-wide">
-              {selectedTest === 'english_gi_combo' 
-                ? 'English + GI Combo Mock' 
-                : (selectedTest === 'indian_art_culture' 
-                  ? 'Indian Art & Culture Special Set' 
-                  : (selectedTest === 'english_grammar' 
-                    ? 'English Grammar Special Set' 
-                    : (selectedTest === 'gi_special' ? 'GI Special Practice Set' : 'CBT Full Mocktest 1')))}
-            </h1>
-            <p className="text-xs text-indigo-400 font-semibold tracking-wider uppercase">
-              {selectedTest === 'english_gi_combo' 
-                ? 'Combo 20 Q Series • 40 Marks' 
-                : (selectedTest === 'indian_art_culture' 
-                  ? 'GK Special 25 Q Series • 50 Marks' 
-                  : (selectedTest === 'english_grammar' 
-                    ? 'English Special 100 Q Series • 200 Marks' 
-                    : (selectedTest === 'gi_special' ? 'GI Special 25 Q Series • 50 Marks' : 'Full 100 Q Series • 200 Marks')))}
-            </p>
+
+          {/* Mobile-only Timer & Submit (next to title to save vertical space) */}
+          <div className="flex items-center gap-2 md:hidden">
+            <div className={`flex items-center gap-1 border px-2.5 py-1 rounded-lg font-mono text-sm font-bold transition-all ${
+              timeLeft < 300 
+                ? 'bg-rose-500/10 border-rose-500 text-rose-500 animate-pulse' 
+                : 'bg-slate-950 border-slate-800 text-emerald-400'
+            }`}>
+              <Clock className="w-3.5 h-3.5" />
+              <span>{formatTime(timeLeft)}</span>
+            </div>
+            <button
+              onClick={triggerManualSubmit}
+              className="bg-red-600 hover:bg-red-700 active:bg-red-800 px-3 py-1 rounded-lg text-white font-extrabold transition-all text-[11px]"
+            >
+              Submit
+            </button>
           </div>
         </div>
 
-        {/* Real-time stats display */}
-        <div className="flex flex-wrap items-center gap-3 bg-slate-950 p-2 rounded-xl border border-slate-800">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 text-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span className="font-semibold text-slate-300">Answered:</span>
+        {/* Real-time stats display - tighter and beautifully styled on all screen sizes */}
+        <div className="flex items-center justify-between sm:justify-start flex-wrap gap-2 bg-slate-950 p-1.5 sm:p-2 rounded-xl border border-slate-800 w-full md:w-auto">
+          <div className="flex items-center gap-1 px-2 py-0.5 text-[10px] sm:text-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="font-semibold text-slate-400 sm:text-slate-300">Answered:</span>
             <span className="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-emerald-400 font-bold">
               {Object.keys(selectedAnswers).length}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 px-2.5 py-1 text-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
-            <span className="font-semibold text-slate-300">Marked:</span>
+          <div className="flex items-center gap-1 px-2 py-0.5 text-[10px] sm:text-xs border-l border-slate-800 pl-2">
+            <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+            <span className="font-semibold text-slate-400 sm:text-slate-300">Marked:</span>
             <span className="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-purple-400 font-bold">
               {Object.keys(markedForReview).filter(k => !!markedForReview[Number(k)]).length}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 px-2.5 py-1 text-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-            <span className="font-semibold text-slate-300">Not Answered:</span>
+          <div className="flex items-center gap-1 px-2 py-0.5 text-[10px] sm:text-xs border-l border-slate-800 pl-2">
+            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+            <span className="font-semibold text-slate-400 sm:text-slate-300">Not Answered:</span>
             <span className="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-rose-400 font-bold">
               {Object.keys(visitedQuestions).length - Object.keys(selectedAnswers).length}
             </span>
           </div>
         </div>
 
-        {/* Timer countdown and Submit action */}
-        <div className="flex items-center gap-4">
+        {/* Desktop-only Timer countdown and Submit action */}
+        <div className="hidden md:flex items-center gap-4">
           <div className={`flex items-center gap-2 border px-4 py-2 rounded-xl font-mono text-xl font-bold transition-all ${
             timeLeft < 300 
               ? 'bg-rose-500/10 border-rose-500 text-rose-500 animate-pulse' 
@@ -1200,30 +1338,30 @@ export default function ExamPortal() {
       </header>
 
       {/* EXAM CONTENT LAYER */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
         
         {/* LEFT CONTAINER (8 COLS): TABS, QUESTION SPACE & BUTTONS */}
-        <div className="lg:col-span-8 flex flex-col space-y-6">
+        <div className="lg:col-span-8 flex flex-col space-y-4 sm:space-y-6">
           
           {/* SECTION TAB HEADERS */}
-          <div className="bg-slate-900 p-2 rounded-2xl border border-slate-800 flex flex-wrap gap-1.5">
+          <div className="bg-slate-900 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border border-slate-800 grid grid-cols-4 gap-1 sm:flex sm:flex-wrap sm:gap-1.5">
             {currentSections.map((sec) => (
               <button
                 key={sec}
                 onClick={() => handleSectionSwitch(sec)}
-                className={`flex-1 min-w-[100px] text-center px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 ${
+                className={`text-center py-2 sm:py-3 rounded-lg sm:rounded-xl text-[10px] sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 flex-1 ${
                   activeSection === sec
                     ? 'bg-indigo-600 text-white shadow-md'
                     : 'bg-slate-850 text-slate-400 hover:bg-slate-800'
                 }`}
               >
-                <span>
+                <span className="truncate max-w-[42px] xs:max-w-[60px] sm:max-w-none">
                   {sec === 'English' ? 'English' : 
                    sec === 'Math' ? 'Math' : 
                    sec === 'GI' ? 'GI (Logic)' : 
                    'GK/GA'}
                 </span>
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono leading-none ${
+                <span className={`px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded-full text-[8px] sm:text-[10px] font-mono leading-none ${
                   activeSection === sec ? 'bg-indigo-800 text-indigo-200' : 'bg-slate-950 text-slate-500'
                 }`}>
                   {getSectionStats(sec)}
@@ -1233,17 +1371,17 @@ export default function ExamPortal() {
           </div>
 
           {/* VIEW SWITCHER & TITLE */}
-          <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-sm font-semibold uppercase tracking-widest flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-ping"></span>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-slate-900/55 p-2.5 sm:p-0 rounded-xl sm:bg-transparent border border-slate-800/60 sm:border-none">
+            <span className="text-slate-400 text-xs sm:text-sm font-semibold uppercase tracking-widest flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 animate-ping"></span>
               Active Section: <strong className="text-white bg-indigo-900/40 px-2 py-0.5 rounded border border-indigo-500/20">{activeSection}</strong>
             </span>
 
             {/* Mode switch allows listing all questions in section, or showing one by one */}
-            <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
+            <div className="flex bg-slate-950 sm:bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs self-stretch sm:self-auto justify-center sm:justify-start">
               <button
                 onClick={() => setViewMode('single')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 ${
+                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 ${
                   viewMode === 'single' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -1251,7 +1389,7 @@ export default function ExamPortal() {
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 ${
+                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg font-bold transition flex items-center justify-center gap-1 ${
                   viewMode === 'list' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -1263,29 +1401,29 @@ export default function ExamPortal() {
           {/* VIEW RENDERER */}
           {viewMode === 'single' ? (
             /* SINGLE QUESTION MODE */
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col min-h-[420px] justify-between relative shadow-xl">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col min-h-[350px] sm:min-h-[420px] justify-between relative shadow-xl">
               {/* Question title index header */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <span className="text-indigo-400 text-sm font-bold uppercase tracking-wider">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-2">
+                  <span className="text-indigo-400 text-xs sm:text-sm font-bold uppercase tracking-wider">
                     Question {activeQuestion.id} of {testQuestions.length}
                   </span>
                   
                   {isQuestionMarked && (
-                    <span className="inline-flex items-center gap-1 bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-lg text-xs font-bold leading-none">
-                      <Bookmark className="w-3 h-3 fill-current" /> Marked for Review
+                    <span className="inline-flex items-center gap-1 bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-xs font-bold leading-none shrink-0">
+                      <Bookmark className="w-3 h-3 fill-current" /> Marked
                     </span>
                   )}
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-5 sm:space-y-6">
                   {/* The actual question message */}
-                  <h3 className="text-xl font-semibold text-slate-100 leading-relaxed">
+                  <h3 className="text-base sm:text-xl font-semibold text-slate-100 leading-relaxed">
                     {activeQuestion.question}
                   </h3>
 
                   {/* Options layout */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {activeQuestion.options.map((opt, idx) => {
                       const optionKey = String.fromCharCode(65 + idx) as 'A' | 'B' | 'C' | 'D';
                       const isSelected = userSelectedOption === optionKey;
@@ -1295,18 +1433,18 @@ export default function ExamPortal() {
                           key={idx}
                           id={`option-${idx}`}
                           onClick={() => handleOptionSelect(activeQuestion.id, optionKey)}
-                          className={`text-left p-4 rounded-2xl border text-sm transition-all focus:outline-none flex items-start gap-3 min-h-[56px] ${
+                          className={`text-left p-3 sm:p-4 rounded-xl sm:rounded-2xl border text-xs sm:text-sm transition-all focus:outline-none flex items-start gap-2.5 sm:gap-3 min-h-[48px] sm:min-h-[56px] ${
                             isSelected
                               ? 'bg-indigo-600 text-white border-indigo-500 shadow-lg shadow-indigo-600/10'
                               : 'bg-slate-850 hover:bg-slate-800 border-slate-750 text-slate-300'
                           }`}
                         >
-                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                          <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold flex-shrink-0 ${
                             isSelected ? 'bg-white text-indigo-600' : 'bg-slate-700 text-slate-400'
                           }`}>
                             {optionKey}
                           </span>
-                          <span className="leading-snug">{opt}</span>
+                          <span className="leading-snug pt-0.5 sm:pt-0">{opt}</span>
                         </button>
                       );
                     })}
@@ -1315,43 +1453,43 @@ export default function ExamPortal() {
               </div>
 
               {/* ACTION COMMAND BAR */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-8 mt-8 border-t border-slate-800">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 pt-5 sm:pt-8 mt-6 sm:mt-8 border-t border-slate-800">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <button
                     onClick={() => handleToggleReview(activeQuestion.id)}
-                    className={`px-4 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition flex items-center gap-1.5 ${
+                    className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border text-[11px] sm:text-sm font-bold transition flex items-center gap-1 sm:gap-1.5 ${
                       isQuestionMarked 
                         ? 'bg-purple-600 text-white border-purple-700' 
-                        : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-750'
+                        : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-755'
                     }`}
                   >
-                    <Bookmark className="w-4 h-4 fill-none" /> Mark for Review
+                    <Bookmark className="w-3.5 h-3.5" /> <span className="inline-block">Mark for Review</span>
                   </button>
 
                   <button
                     onClick={() => handleClearResponse(activeQuestion.id)}
-                    className="px-4 py-2.5 bg-slate-800 hover:bg-slate-75 hover:text-white border border-slate-705 text-slate-400 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5"
+                    className="px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-800 hover:bg-slate-750 hover:text-white border border-slate-700 text-slate-400 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold transition flex items-center gap-1 sm:gap-1.5"
                     disabled={!userSelectedOption}
                   >
-                    <Trash2 className="w-4 h-4" /> Clear
+                    <Trash2 className="w-3.5 h-3.5" /> Clear
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 ml-auto sm:ml-0">
                   <button
                     onClick={handlePrev}
                     disabled={activeQuestionId === 1}
-                    className="p-2.5 bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-800 rounded-xl border border-slate-700 transition"
+                    className="p-2 sm:p-2.5 bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-800 rounded-lg sm:rounded-xl border border-slate-700 transition"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
 
                   <button
                     onClick={handleNext}
                     disabled={activeQuestionId === testQuestions.length}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center gap-1"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-6 rounded-lg sm:rounded-xl text-[11px] sm:text-sm shadow-md transition-all flex items-center gap-1"
                   >
-                    Save &amp; Next <ChevronRight className="w-4 h-4" />
+                    Save &amp; Next <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
                 </div>
               </div>
@@ -1539,6 +1677,40 @@ export default function ExamPortal() {
           </div>
         </div>
       </main>
+
+      {/* SHARE PROMPT MODAL */}
+      {sharePromptOpen && (
+        <div className="fixed inset-0 min-h-screen z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-center">
+            <div className="mb-6 flex items-center justify-center">
+              <div className="w-16 h-16 bg-[#25D366]/10 rounded-full flex items-center justify-center text-[#25D366]">
+                <Share2 className="w-8 h-8" />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-center mb-2">Challenge a Friend</h3>
+            <p className="text-slate-400 text-center mb-6 text-sm">
+              To continue the retake attempt for free, you need to challenge your friend first.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setSharePromptOpen(false)}
+                className="flex-1 px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-xl font-bold transition text-sm text-center"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setSharePromptOpen(false);
+                  handleChallengeFriend();
+                }}
+                className="flex-1 px-4 py-3 bg-[#25D366] hover:bg-[#1DA851] rounded-xl font-bold transition flex items-center justify-center gap-2 text-sm text-white"
+              >
+                <Share2 className="w-4 h-4" /> Share Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* CONFIRMATION SUBMIT DIALOG MODAL */}
       {confirmSubmitOpen && (
