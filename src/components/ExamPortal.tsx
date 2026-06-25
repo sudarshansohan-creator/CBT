@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { questions, comboQuestions, artCultureQuestions, grammarQuestions, giQuestions } from '../data/questions';
 import { fullMock2Questions } from '../data/questions2';
+import { censusGkQuestions } from '../data/questions_gk';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -26,7 +27,7 @@ export default function ExamPortal() {
   // Candidate Profile State
   const [candidateName, setCandidateName] = useState('');
   const [nameEntered, setNameEntered] = useState(false);
-  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special'>('full_mock_1');
+  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census'>('full_mock_1');
   const [examStarted, setExamStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -66,6 +67,9 @@ export default function ExamPortal() {
     if (selectedTest === 'full_mock_2') {
       return fullMock2Questions;
     }
+    if (selectedTest === 'static_gk_census') {
+      return censusGkQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -82,6 +86,9 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'gi_special') {
       return ['GI'];
+    }
+    if (selectedTest === 'static_gk_census') {
+      return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
@@ -132,7 +139,7 @@ export default function ExamPortal() {
     setVisitedQuestions({ 1: true });
     setActiveQuestionId(1);
     setActiveSection(
-      selectedTest === 'indian_art_culture' 
+      (selectedTest === 'indian_art_culture' || selectedTest === 'static_gk_census') 
         ? 'GK' 
         : (selectedTest === 'gi_special' ? 'GI' : 'English')
     );
@@ -146,6 +153,8 @@ export default function ExamPortal() {
       setTimeLeft(3600); // 60 mins (1 hour)
     } else if (selectedTest === 'gi_special') {
       setTimeLeft(1200); // 20 mins
+    } else if (selectedTest === 'static_gk_census') {
+      setTimeLeft(900); // 15 mins
     } else {
       setTimeLeft(3600); // 60 mins
     }
@@ -222,7 +231,9 @@ export default function ExamPortal() {
           ? 'English Grammar Special Set' 
           : (selectedTest === 'gi_special' 
             ? 'GI Special Practice Set' 
-            : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))));
+            : (selectedTest === 'static_gk_census'
+              ? 'Static GK Census of India Set'
+              : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1')))));
 
     const totalQuestionsCount = testQuestions.length;
     const maxMarksVal = totalQuestionsCount * 2;
@@ -448,7 +459,7 @@ https://cbt-sudarshan.vercel.app/`;
 
   const predictorScore = selectedTest === 'english_gi_combo' 
     ? results.totalMarks * 5 
-    : (selectedTest === 'indian_art_culture' || selectedTest === 'gi_special' ? results.totalMarks * 4 : results.totalMarks);
+    : (selectedTest === 'indian_art_culture' || selectedTest === 'gi_special' || selectedTest === 'static_gk_census' ? results.totalMarks * 4 : results.totalMarks);
   const predData = getRankAndPercentile(predictorScore);
 
   // Color key getters for Palette
@@ -728,6 +739,34 @@ https://cbt-sudarshan.vercel.app/`;
                     <span>M: 50</span>
                   </div>
                   <div className="text-cyan-300 truncate">⏳ ২০ মিনিট (20m)</div>
+                </div>
+              </div>
+
+              {/* Card 6: Static GK Census of India Mock Test */}
+              <div
+                onClick={() => setSelectedTest('static_gk_census')}
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
+                  selectedTest === 'static_gk_census'
+                    ? 'border-teal-500 bg-teal-500/15 ring-2 ring-teal-500/35'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
+                }`}
+              >
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-teal-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
+                  Census GK
+                </span>
+                <div>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Census of India</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">জনগণনা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।</p>
+                </div>
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
+                    <span>GK Section</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Q: 25</span>
+                    <span>M: 50</span>
+                  </div>
+                  <div className="text-teal-300 truncate">⏳ ১৫ মিনিট (15m)</div>
                 </div>
               </div>
             </div>
@@ -1293,7 +1332,9 @@ https://cbt-sudarshan.vercel.app/`;
                       ? 'English Grammar Special Set' 
                       : (selectedTest === 'gi_special' 
                         ? 'GI Special Practice Set' 
-                        : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))))}
+                        : (selectedTest === 'static_gk_census'
+                          ? 'Static GK Census of India Set'
+                          : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1')))))}
               </h1>
               <p className="text-[10px] sm:text-xs text-indigo-400 font-semibold tracking-wider uppercase leading-none mt-1">
                 {selectedTest === 'english_gi_combo' 
@@ -1302,7 +1343,11 @@ https://cbt-sudarshan.vercel.app/`;
                     ? 'GK Special 25 Q Series • 50 Marks' 
                     : (selectedTest === 'english_grammar' 
                       ? 'English Special 100 Q Series • 200 Marks' 
-                      : (selectedTest === 'gi_special' ? 'GI Special 25 Q Series • 50 Marks' : 'Full 100 Q Series • 200 Marks')))}
+                      : (selectedTest === 'gi_special' 
+                        ? 'GI Special 25 Q Series • 50 Marks' 
+                        : (selectedTest === 'static_gk_census'
+                          ? 'GK Special 25 Q Series • 50 Marks'
+                          : 'Full 100 Q Series • 200 Marks'))))}
               </p>
             </div>
           </div>
