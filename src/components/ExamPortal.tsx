@@ -23,7 +23,7 @@ import {
 
 export default function ExamPortal() {
   // Candidate Profile State
-  const [candidateName, setCandidateName] = useState('Sudarshan Sohan');
+  const [candidateName, setCandidateName] = useState('');
   const [nameEntered, setNameEntered] = useState(false);
   const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special'>('full_mock_1');
   const [examStarted, setExamStarted] = useState(false);
