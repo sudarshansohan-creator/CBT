@@ -4,6 +4,7 @@ import { fullMock2Questions } from '../data/questions2';
 import { censusGkQuestions } from '../data/questions_gk';
 import { sportsGkQuestions } from '../data/questions_sports_gk';
 import { computerQuestions } from '../data/questions_computer';
+import { geographyQuestions } from '../data/questions_geography';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -29,7 +30,7 @@ export default function ExamPortal() {
   // Candidate Profile State
   const [candidateName, setCandidateName] = useState('');
   const [nameEntered, setNameEntered] = useState(false);
-  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge'>('full_mock_1');
+  const [selectedTest, setSelectedTest] = useState<'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge'>('full_mock_1');
   const [examStarted, setExamStarted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -78,6 +79,9 @@ export default function ExamPortal() {
     if (selectedTest === 'computer_knowledge') {
       return computerQuestions;
     }
+    if (selectedTest === 'geography_knowledge') {
+      return geographyQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -102,6 +106,9 @@ export default function ExamPortal() {
       return ['GK'];
     }
     if (selectedTest === 'computer_knowledge') {
+      return ['GK'];
+    }
+    if (selectedTest === 'geography_knowledge') {
       return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
@@ -153,7 +160,7 @@ export default function ExamPortal() {
     setVisitedQuestions({ 1: true });
     setActiveQuestionId(1);
     setActiveSection(
-      (selectedTest === 'indian_art_culture' || selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge') 
+      (selectedTest === 'indian_art_culture' || selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' || selectedTest === 'geography_knowledge') 
         ? 'GK' 
         : (selectedTest === 'gi_special' ? 'GI' : 'English')
     );
@@ -172,6 +179,8 @@ export default function ExamPortal() {
     } else if (selectedTest === 'static_gk_sports') {
       setTimeLeft(900); // 15 mins
     } else if (selectedTest === 'computer_knowledge') {
+      setTimeLeft(900); // 15 mins
+    } else if (selectedTest === 'geography_knowledge') {
       setTimeLeft(900); // 15 mins
     } else {
       setTimeLeft(3600); // 60 mins
@@ -255,7 +264,9 @@ export default function ExamPortal() {
                 ? 'Static GK Sports Set'
                 : (selectedTest === 'computer_knowledge'
                   ? 'Computer Knowledge Set'
-                  : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1')))))));
+                  : (selectedTest === 'geography_knowledge'
+                    ? 'Geography (Rivers & Dams) Set'
+                    : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))))))));
 
     const totalQuestionsCount = testQuestions.length;
     const maxMarksVal = totalQuestionsCount * 2;
@@ -481,7 +492,7 @@ https://cbt-sudarshan.vercel.app/`;
 
   const predictorScore = selectedTest === 'english_gi_combo' 
     ? results.totalMarks * 5 
-    : (selectedTest === 'indian_art_culture' || selectedTest === 'gi_special' || selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' ? results.totalMarks * 4 : results.totalMarks);
+    : (selectedTest === 'indian_art_culture' || selectedTest === 'gi_special' || selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' || selectedTest === 'geography_knowledge' ? results.totalMarks * 4 : results.totalMarks);
   const predData = getRankAndPercentile(predictorScore);
 
   // Color key getters for Palette
@@ -845,6 +856,34 @@ https://cbt-sudarshan.vercel.app/`;
                     <span>M: 50</span>
                   </div>
                   <div className="text-fuchsia-300 truncate">⏳ ১৫ মিনিট (15m)</div>
+                </div>
+              </div>
+
+              {/* Card 9: Geography (Rivers & Dams) Mock Test */}
+              <div
+                onClick={() => setSelectedTest('geography_knowledge')}
+                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
+                  selectedTest === 'geography_knowledge'
+                    ? 'border-sky-500 bg-sky-500/15 ring-2 ring-sky-500/35'
+                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
+                }`}
+              >
+                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-sky-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
+                  Geography
+                </span>
+                <div>
+                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Rivers & Dams</h3>
+                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">Geography Practice Quiz: Rivers and Dams of India (25 Q).</p>
+                </div>
+                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                  <div className="hidden sm:block truncate text-slate-500">
+                    <span>GK Section</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Q: 25</span>
+                    <span>M: 50</span>
+                  </div>
+                  <div className="text-sky-300 truncate">⏳ ১৫ মিনিট (15m)</div>
                 </div>
               </div>
             </div>
@@ -1416,7 +1455,9 @@ https://cbt-sudarshan.vercel.app/`;
                             ? 'Static GK Sports Set'
                             : (selectedTest === 'computer_knowledge'
                               ? 'Computer Knowledge Set'
-                              : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1')))))))}
+                              : (selectedTest === 'geography_knowledge'
+                                ? 'Geography (Rivers & Dams) Set'
+                                : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))))))))}
               </h1>
               <p className="text-[10px] sm:text-xs text-indigo-400 font-semibold tracking-wider uppercase leading-none mt-1">
                 {selectedTest === 'english_gi_combo' 
@@ -1427,7 +1468,7 @@ https://cbt-sudarshan.vercel.app/`;
                       ? 'English Special 100 Q Series • 200 Marks' 
                       : (selectedTest === 'gi_special' 
                         ? 'GI Special 25 Q Series • 50 Marks' 
-                        : (selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge'
+                        : (selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' || selectedTest === 'geography_knowledge'
                           ? 'GK Special 25 Q Series • 50 Marks'
                           : 'Full 100 Q Series • 200 Marks'))))}
               </p>
