@@ -23,8 +23,51 @@ import {
   List,
   Grid,
   FileText,
-  Share2
+  Share2,
+  Filter,
+  ArrowUpDown
 } from 'lucide-react';
+
+type TestCategory = 'full' | 'subject' | 'topic';
+
+interface TestOption {
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge';
+  category: TestCategory;
+  title: string;
+  badge: string;
+  badgeColor: string;
+  description: string;
+  sections: string;
+  questionCount: number;
+  totalMarks: number;
+  durationMinutes: number;
+  createdAt: number;
+}
+
+const TEST_OPTIONS: TestOption[] = [
+  { id: 'full_mock_2', category: 'full', title: 'Full Mock 2', badge: 'Full Set 2', badgeColor: 'indigo', description: 'সম্পূর্ণ ১০০ টি প্রশ্নের সিবিটি (CBT) মক টেস্ট (নতুন)।', sections: 'Eng, Math, GI, GK', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 10 },
+  { id: 'full_mock_1', category: 'full', title: 'Full Mock 1', badge: 'Full Set 1', badgeColor: 'indigo', description: 'সবকটি সাবজেক্টের সম্পূর্ণ টেস্ট।', sections: 'Eng, Math, GI, GK', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 1 },
+  { id: 'english_gi_combo', category: 'subject', title: 'English + GI Combo', badge: 'Combo', badgeColor: 'rose', description: '৫০টি ইংরেজি এবং ৫০টি জিআই (GI) প্রশ্নের সমন্বয়ে বিশেষ টেস্ট।', sections: 'English, GI', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 2 },
+  { id: 'english_grammar', category: 'subject', title: 'English Grammar', badge: 'Grammar', badgeColor: 'blue', description: 'ইংরেজি গ্রামার এবং ভোকাবুলারির ১০০টি বিশেষ প্রশ্ন।', sections: 'English Section', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 4 },
+  { id: 'gi_special', category: 'subject', title: 'General Intelligence', badge: 'GI Special', badgeColor: 'purple', description: 'জেনারেল ইন্টেলিজেন্স বা জিআই-এর ২৫টি স্পেশাল প্রশ্ন।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 5 },
+  { id: 'indian_art_culture', category: 'topic', title: 'Indian Art & Culture', badge: 'Art & Culture', badgeColor: 'amber', description: 'ভারতের শিল্প ও সংস্কৃতি থেকে ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 3 },
+  { id: 'static_gk_census', category: 'topic', title: 'Census of India', badge: 'Census', badgeColor: 'teal', description: 'ভারতের জনগণনা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 6 },
+  { id: 'static_gk_sports', category: 'topic', title: 'Sports GK', badge: 'Sports', badgeColor: 'orange', description: 'খেলাধুলা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 7 },
+  { id: 'computer_knowledge', category: 'topic', title: 'Computer Knowledge', badge: 'Computer', badgeColor: 'fuchsia', description: 'কম্পিউটার সম্পর্কিত ২৫টি গুরুত্বপূর্ণ প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 8 },
+  { id: 'geography_knowledge', category: 'topic', title: 'Rivers & Dams', badge: 'Geography', badgeColor: 'sky', description: 'Geography Practice Quiz: Rivers and Dams of India (25 Q).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 9 }
+];
+
+const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
+  indigo: { borderSelected: 'border-indigo-500', bgSelected: 'bg-indigo-500/15', ringSelected: 'ring-indigo-500/35', badgeBg: 'bg-indigo-600', textMain: 'text-indigo-300' },
+  rose: { borderSelected: 'border-rose-500', bgSelected: 'bg-rose-500/15', ringSelected: 'ring-rose-500/35', badgeBg: 'bg-rose-600', textMain: 'text-rose-300' },
+  amber: { borderSelected: 'border-amber-500', bgSelected: 'bg-amber-500/15', ringSelected: 'ring-amber-500/35', badgeBg: 'bg-amber-600', textMain: 'text-amber-300' },
+  blue: { borderSelected: 'border-blue-500', bgSelected: 'bg-blue-500/15', ringSelected: 'ring-blue-500/35', badgeBg: 'bg-blue-600', textMain: 'text-blue-300' },
+  purple: { borderSelected: 'border-purple-500', bgSelected: 'bg-purple-500/15', ringSelected: 'ring-purple-500/35', badgeBg: 'bg-purple-600', textMain: 'text-purple-300' },
+  teal: { borderSelected: 'border-teal-500', bgSelected: 'bg-teal-500/15', ringSelected: 'ring-teal-500/35', badgeBg: 'bg-teal-600', textMain: 'text-teal-300' },
+  orange: { borderSelected: 'border-orange-500', bgSelected: 'bg-orange-500/15', ringSelected: 'ring-orange-500/35', badgeBg: 'bg-orange-600', textMain: 'text-orange-300' },
+  fuchsia: { borderSelected: 'border-fuchsia-500', bgSelected: 'bg-fuchsia-500/15', ringSelected: 'ring-fuchsia-500/35', badgeBg: 'bg-fuchsia-600', textMain: 'text-fuchsia-300' },
+  sky: { borderSelected: 'border-sky-500', bgSelected: 'bg-sky-500/15', ringSelected: 'ring-sky-500/35', badgeBg: 'bg-sky-600', textMain: 'text-sky-300' },
+};
 
 export default function ExamPortal() {
   // Candidate Profile State
@@ -41,6 +84,10 @@ export default function ExamPortal() {
   const [confirmSubmitOpen, setConfirmSubmitOpen] = useState(false);
   const [hasShared, setHasShared] = useState(false);
   const [sharePromptOpen, setSharePromptOpen] = useState(false);
+
+  // Filter & Sort States
+  const [filterCategory, setFilterCategory] = useState<'all' | 'full' | 'subject' | 'topic'>('all');
+  const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
   
   // Exam Response States
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, 'A' | 'B' | 'C' | 'D'>>({});
@@ -604,288 +651,76 @@ https://cbt-sudarshan.vercel.app/`;
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-sm sm:text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান (Select Test Pool):</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <h2 className="text-sm sm:text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান:</h2>
+              
+              <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex-1 sm:flex-none relative bg-slate-750 border border-slate-700 rounded-lg flex items-center px-2 focus-within:ring-2 focus-within:ring-indigo-500">
+                  <Filter className="w-4 h-4 text-slate-400 mr-2" />
+                  <select 
+                    value={filterCategory} 
+                    onChange={(e) => setFilterCategory(e.target.value as any)}
+                    className="bg-transparent text-xs sm:text-sm text-slate-200 outline-none w-full py-2 appearance-none cursor-pointer"
+                  >
+                    <option value="all" className="bg-slate-800">All Topics</option>
+                    <option value="full" className="bg-slate-800">Full Mocks</option>
+                    <option value="subject" className="bg-slate-800">Subject Mocks</option>
+                    <option value="topic" className="bg-slate-800">Topic Mocks</option>
+                  </select>
+                </div>
+                
+                <div className="flex-1 sm:flex-none relative bg-slate-750 border border-slate-700 rounded-lg flex items-center px-2 focus-within:ring-2 focus-within:ring-indigo-500">
+                  <ArrowUpDown className="w-4 h-4 text-slate-400 mr-2" />
+                  <select 
+                    value={sortBy} 
+                    onChange={(e) => setSortBy(e.target.value as any)}
+                    className="bg-transparent text-xs sm:text-sm text-slate-200 outline-none w-full py-2 appearance-none cursor-pointer"
+                  >
+                    <option value="latest" className="bg-slate-800">Latest</option>
+                    <option value="oldest" className="bg-slate-800">Oldest</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
-              {/* Card 1: Full Mock */}
-              <div
-                onClick={() => setSelectedTest('full_mock_1')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'full_mock_1'
-                    ? 'border-indigo-500 bg-indigo-500/15 ring-2 ring-indigo-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-indigo-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Full Set 1
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Full Mock 1</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">সবকটি সাবজেক্টের সম্পূর্ণ টেস্ট।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>Eng, Math, GI, GK</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 100</span>
-                    <span>M: 200</span>
-                  </div>
-                  <div className="text-indigo-300 truncate">⏳ ৬০ মিনিট (60m)</div>
-                </div>
-              </div>
-
-              {/* Card 1b: Full Mock 2 */}
-              <div
-                onClick={() => setSelectedTest('full_mock_2')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'full_mock_2'
-                    ? 'border-indigo-500 bg-indigo-500/15 ring-2 ring-indigo-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-pink-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Full Set 2
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Full Mock 2</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">নতুন ১০০টি প্রশ্নের সম্পূর্ণ সিলেবাস মক টেস্ট।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>Eng, Math, GI, GK</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 100</span>
-                    <span>M: 200</span>
-                  </div>
-                  <div className="text-indigo-300 truncate">⏳ ৬০ মিনিট (60m)</div>
-                </div>
-              </div>
-
-              {/* Card 2: Combo Mock */}
-              <div
-                onClick={() => setSelectedTest('english_gi_combo')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'english_gi_combo'
-                    ? 'border-emerald-500 bg-emerald-500/15 ring-2 ring-emerald-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Combo Qs
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">English + GI</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">ইংরেজি এবং রিজননিং স্পেশাল কম্বো সেট।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>English &amp; GI</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 20</span>
-                    <span>M: 40</span>
-                  </div>
-                  <div className="text-emerald-300 truncate">⏳ ৩০ মিনিট (30m)</div>
-                </div>
-              </div>
-
-              {/* Card 3: Art & Culture Special Set */}
-              <div
-                onClick={() => setSelectedTest('indian_art_culture')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'indian_art_culture'
-                    ? 'border-amber-500 bg-amber-500/15 ring-2 ring-amber-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-amber-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  GK Special
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Art &amp; Culture</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">Musicians &amp; Instruments GK।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>GK Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 25</span>
-                    <span>M: 50</span>
-                  </div>
-                  <div className="text-amber-300 truncate">⏳ ১৫ মিনিট (15m)</div>
-                </div>
-              </div>
-
-              {/* Card 4: English Grammar Practice Set */}
-              <div
-                onClick={() => setSelectedTest('english_grammar')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'english_grammar'
-                    ? 'border-violet-500 bg-violet-500/15 ring-2 ring-violet-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-violet-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Grammar
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">English Grammar</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">Error Spotting, Voice, Narration।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>English Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 100</span>
-                    <span>M: 200</span>
-                  </div>
-                  <div className="text-violet-300 truncate">⏳ ১ ঘন্টা (60m)</div>
-                </div>
-              </div>
-
-              {/* Card 5: GI Special Practice Set */}
-              <div
-                onClick={() => setSelectedTest('gi_special')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'gi_special'
-                    ? 'border-cyan-500 bg-cyan-500/15 ring-2 ring-cyan-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-cyan-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Reasoning
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">GI Special</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">কোডিং, যুক্তি, অর্ডার, নম্বর সিরিজ।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>GI Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 25</span>
-                    <span>M: 50</span>
-                  </div>
-                  <div className="text-cyan-300 truncate">⏳ ২০ মিনিট (20m)</div>
-                </div>
-              </div>
-
-              {/* Card 6: Static GK Census of India Mock Test */}
-              <div
-                onClick={() => setSelectedTest('static_gk_census')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'static_gk_census'
-                    ? 'border-teal-500 bg-teal-500/15 ring-2 ring-teal-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-teal-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Census GK
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Census of India</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">জনগণনা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>GK Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 25</span>
-                    <span>M: 50</span>
-                  </div>
-                  <div className="text-teal-300 truncate">⏳ ১৫ মিনিট (15m)</div>
-                </div>
-              </div>
-
-              {/* Card 7: Static GK Sports Mock Test */}
-              <div
-                onClick={() => setSelectedTest('static_gk_sports')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'static_gk_sports'
-                    ? 'border-orange-500 bg-orange-500/15 ring-2 ring-orange-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-orange-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Sports GK
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Sports GK</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">খেলাধুলা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>GK Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 25</span>
-                    <span>M: 50</span>
-                  </div>
-                  <div className="text-orange-300 truncate">⏳ ১৫ মিনিট (15m)</div>
-                </div>
-              </div>
-
-              {/* Card 8: Computer Knowledge Mock Test */}
-              <div
-                onClick={() => setSelectedTest('computer_knowledge')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'computer_knowledge'
-                    ? 'border-fuchsia-500 bg-fuchsia-500/15 ring-2 ring-fuchsia-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-fuchsia-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Computer
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Computer Knowledge</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">কম্পিউটার সম্পর্কিত ২৫টি গুরুত্বপূর্ণ প্রশ্ন।</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>GK Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 25</span>
-                    <span>M: 50</span>
-                  </div>
-                  <div className="text-fuchsia-300 truncate">⏳ ১৫ মিনিট (15m)</div>
-                </div>
-              </div>
-
-              {/* Card 9: Geography (Rivers & Dams) Mock Test */}
-              <div
-                onClick={() => setSelectedTest('geography_knowledge')}
-                className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                  selectedTest === 'geography_knowledge'
-                    ? 'border-sky-500 bg-sky-500/15 ring-2 ring-sky-500/35'
-                    : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                }`}
-              >
-                <span className="absolute top-2 right-2 text-[8px] sm:text-xs bg-sky-600 text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right">
-                  Geography
-                </span>
-                <div>
-                  <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">Rivers & Dams</h3>
-                  <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">Geography Practice Quiz: Rivers and Dams of India (25 Q).</p>
-                </div>
-                <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                  <div className="hidden sm:block truncate text-slate-500">
-                    <span>GK Section</span>
-                  </div>
-                  <div className="flex justify-between text-slate-300">
-                    <span>Q: 25</span>
-                    <span>M: 50</span>
-                  </div>
-                  <div className="text-sky-300 truncate">⏳ ১৫ মিনিট (15m)</div>
-                </div>
-              </div>
+              {TEST_OPTIONS
+                .filter(test => filterCategory === 'all' || test.category === filterCategory)
+                .sort((a, b) => sortBy === 'latest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt)
+                .map((test) => {
+                  const colors = COLOR_MAP[test.badgeColor];
+                  const isSelected = selectedTest === test.id;
+                  
+                  return (
+                    <div
+                      key={test.id}
+                      onClick={() => setSelectedTest(test.id)}
+                      className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
+                        isSelected
+                          ? `${colors.borderSelected} ${colors.bgSelected} ring-2 ${colors.ringSelected}`
+                          : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
+                      }`}
+                    >
+                      <span className={`absolute top-2 right-2 text-[8px] sm:text-xs text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right ${colors.badgeBg}`}>
+                        {test.badge}
+                      </span>
+                      <div>
+                        <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">{test.title}</h3>
+                        <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">{test.description}</p>
+                      </div>
+                      <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
+                        <div className="hidden sm:block truncate text-slate-500">
+                          <span>{test.sections}</span>
+                        </div>
+                        <div className="flex justify-between text-slate-300">
+                          <span>Q: {test.questionCount}</span>
+                          <span>M: {test.totalMarks}</span>
+                        </div>
+                        <div className={`${colors.textMain} truncate`}>⏳ {test.durationMinutes > 15 ? '৬০' : '১৫'} মিনিট ({test.durationMinutes}m)</div>
+                      </div>
+                    </div>
+                  );
+              })}
             </div>
 
             <div className="bg-slate-755 p-4 rounded-xl border border-slate-700/50 text-xs text-slate-300 leading-relaxed">
