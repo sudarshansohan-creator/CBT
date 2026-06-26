@@ -186,6 +186,15 @@ export default function ExamPortal() {
   // Load active question list based on section
   const sectionQuestions = testQuestions.filter((q) => q.section === activeSection);
 
+  // Auto-load candidate name from local storage
+  useEffect(() => {
+    const storedName = localStorage.getItem('cbt_candidate_name');
+    if (storedName) {
+      setCandidateName(storedName);
+      setNameEntered(true);
+    }
+  }, []);
+
   // Timer Effect
   useEffect(() => {
     if (!examStarted || submitted) return;
@@ -218,6 +227,7 @@ export default function ExamPortal() {
   const handleSaveName = (e: React.FormEvent) => {
     e.preventDefault();
     if (!candidateName.trim()) return;
+    localStorage.setItem('cbt_candidate_name', candidateName.trim());
     setNameEntered(true);
   };
 
@@ -303,7 +313,6 @@ Address: ${joinAddress}`;
       setSharePromptOpen(true);
       return;
     }
-    setNameEntered(false);
     setExamStarted(false);
     setSubmitted(false);
     setSelectedAnswers({});
@@ -816,23 +825,6 @@ https://cbt-sudarshan.vercel.app/`;
               • নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে সেভ ও সাবমিট হয়ে যাবে।
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setNameEntered(false)}
-                className="order-2 sm:order-1 flex-1 py-3 border border-slate-600 hover:bg-slate-750 rounded-xl font-bold transition text-slate-300 text-center"
-              >
-                ← Back
-              </button>
-              <button
-                type="button"
-                onClick={handleStartExam}
-                className="order-1 sm:order-2 flex-[2] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black py-3 rounded-xl shadow-lg shadow-emerald-500/20 transition-all text-center text-lg uppercase tracking-wider animate-pulse"
-              >
-                পরীক্ষা শুরু করুন (Start Exam)
-              </button>
-            </div>
-
             <div className="mt-4 pt-4 border-t border-slate-700/50 flex justify-center">
               <a
                 href="https://whatsapp.com/channel/0029VbB1PecFcow9ajKRDT1g"
@@ -845,6 +837,27 @@ https://cbt-sudarshan.vercel.app/`;
                 </svg>
                 Join our WhatsApp Channel
               </a>
+            </div>
+            
+            <div className="h-24 sm:h-32 w-full"></div>
+
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-800 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.5)] px-4 py-3 sm:px-6 sm:py-4">
+              <div className="max-w-3xl mx-auto flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => setNameEntered(false)}
+                  className="order-2 sm:order-1 flex-1 py-3 sm:py-3.5 border border-slate-600 hover:bg-slate-750 rounded-xl font-bold transition text-slate-300 text-center"
+                >
+                  ← Back
+                </button>
+                <button
+                  type="button"
+                  onClick={handleStartExam}
+                  className="order-1 sm:order-2 flex-[2] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black py-3 sm:py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all text-center text-lg uppercase tracking-wider animate-pulse"
+                >
+                  পরীক্ষা শুরু করুন (Start Exam)
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1274,21 +1287,25 @@ https://cbt-sudarshan.vercel.app/`;
               )}
             </div>
 
+            <div className="h-24 sm:h-32 w-full"></div>
+
             {/* Bottom Actions */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 border-t border-slate-800">
-              <button
-                onClick={handleRetake}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition transform active:scale-97 cursor-pointer text-sm"
-              >
-                <RotateCcw className="w-4.5 h-4.5" /> Retake Mock Exam
-              </button>
-              
-              <button
-                onClick={handleChallengeFriend}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-8 rounded-xl shadow-lg hover:shadow-emerald-900/30 transition transform active:scale-97 cursor-pointer text-sm"
-              >
-                <Share2 className="w-4.5 h-4.5" /> Challenge Your Friend
-              </button>
+            <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.5)] px-4 py-3 sm:px-6 sm:py-4">
+              <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button
+                  onClick={handleRetake}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 sm:py-3.5 px-8 rounded-xl shadow-lg transition transform active:scale-97 cursor-pointer text-sm"
+                >
+                  <RotateCcw className="w-4.5 h-4.5" /> Retake Mock Exam
+                </button>
+                
+                <button
+                  onClick={handleChallengeFriend}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 sm:py-3.5 px-8 rounded-xl shadow-lg hover:shadow-emerald-900/30 transition transform active:scale-97 cursor-pointer text-sm"
+                >
+                  <Share2 className="w-4.5 h-4.5" /> Challenge Your Friend
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1317,6 +1334,15 @@ https://cbt-sudarshan.vercel.app/`;
                   onClick={() => {
                     setSharePromptOpen(false);
                     handleChallengeFriend();
+                    // Also trigger the retake logic so they don't have to click the button again
+                    setExamStarted(false);
+                    setSubmitted(false);
+                    setSelectedAnswers({});
+                    setMarkedForReview({});
+                    setVisitedQuestions({ 1: true });
+                    setActiveQuestionId(1);
+                    setActiveSection('English');
+                    setTimeLeft(3600);
                   }}
                   className="flex-1 px-4 py-3 bg-[#25D366] hover:bg-[#1DA851] rounded-xl font-bold transition flex items-center justify-center gap-2 text-sm text-white"
                 >
@@ -1351,7 +1377,7 @@ https://cbt-sudarshan.vercel.app/`;
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans pb-24 sm:pb-32">
       
       {/* EXAM STATUS TOP NAV */}
       <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-3 sm:px-6 py-2.5 sm:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
@@ -1560,46 +1586,51 @@ https://cbt-sudarshan.vercel.app/`;
               </div>
 
               {/* ACTION COMMAND BAR */}
-              <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 pt-5 sm:pt-8 mt-6 sm:mt-8 border-t border-slate-800">
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <button
-                    onClick={() => handleToggleReview(activeQuestion.id)}
-                    className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border text-[11px] sm:text-sm font-bold transition flex items-center gap-1 sm:gap-1.5 ${
-                      isQuestionMarked 
-                        ? 'bg-purple-600 text-white border-purple-700' 
-                        : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-755'
-                    }`}
-                  >
-                    <Bookmark className="w-3.5 h-3.5" /> <span className="inline-block">Mark for Review</span>
-                  </button>
+              <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 px-4 py-3 sm:px-8 sm:py-4 bg-slate-900 border-t border-slate-800 shadow-xl lg:left-0 lg:w-full">
+                <div className="flex items-center gap-1.5 sm:gap-2 max-w-7xl w-full mx-auto justify-between">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <button
+                      onClick={() => handleToggleReview(activeQuestion.id)}
+                      className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border text-[11px] sm:text-sm font-bold transition flex items-center gap-1 sm:gap-1.5 ${
+                        isQuestionMarked 
+                          ? 'bg-purple-600 text-white border-purple-700' 
+                          : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-755'
+                      }`}
+                    >
+                      <Bookmark className="w-3.5 h-3.5" /> <span className="hidden sm:inline-block">Mark for Review</span><span className="sm:hidden">Mark</span>
+                    </button>
 
-                  <button
-                    onClick={() => handleClearResponse(activeQuestion.id)}
-                    className="px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-800 hover:bg-slate-750 hover:text-white border border-slate-700 text-slate-400 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold transition flex items-center gap-1 sm:gap-1.5"
-                    disabled={!userSelectedOption}
-                  >
-                    <Trash2 className="w-3.5 h-3.5" /> Clear
-                  </button>
-                </div>
+                    <button
+                      onClick={() => handleClearResponse(activeQuestion.id)}
+                      className="px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-800 hover:bg-slate-750 hover:text-white border border-slate-700 text-slate-400 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold transition flex items-center gap-1 sm:gap-1.5"
+                      disabled={!userSelectedOption}
+                    >
+                      <Trash2 className="w-3.5 h-3.5" /> Clear
+                    </button>
+                  </div>
 
-                <div className="flex items-center gap-1.5 sm:gap-2 ml-auto sm:ml-0">
-                  <button
-                    onClick={handlePrev}
-                    disabled={activeQuestionId === 1}
-                    className="p-2 sm:p-2.5 bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-800 rounded-lg sm:rounded-xl border border-slate-700 transition"
-                  >
-                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </button>
+                  <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
+                    <button
+                      onClick={handlePrev}
+                      disabled={activeQuestionId === 1}
+                      className="p-2 sm:p-2.5 bg-slate-800 hover:bg-slate-750 text-white disabled:opacity-30 disabled:hover:bg-slate-800 rounded-lg sm:rounded-xl border border-slate-700 transition"
+                    >
+                      <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
 
-                  <button
-                    onClick={handleNext}
-                    disabled={activeQuestionId === testQuestions.length}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-6 rounded-lg sm:rounded-xl text-[11px] sm:text-sm shadow-md transition-all flex items-center gap-1"
-                  >
-                    Save &amp; Next <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </button>
+                    <button
+                      onClick={handleNext}
+                      disabled={activeQuestionId === testQuestions.length}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-6 rounded-lg sm:rounded-xl text-[11px] sm:text-sm shadow-md transition-all flex items-center gap-1"
+                    >
+                      Save &amp; Next <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
+              
+              {/* Spacer for fixed footer */}
+              <div className="h-24 sm:h-32 w-full"></div>
             </div>
           ) : (
             /* BULK SECTION MATRIX VIEW */
@@ -1809,6 +1840,14 @@ https://cbt-sudarshan.vercel.app/`;
                 onClick={() => {
                   setSharePromptOpen(false);
                   handleChallengeFriend();
+                  setExamStarted(false);
+                  setSubmitted(false);
+                  setSelectedAnswers({});
+                  setMarkedForReview({});
+                  setVisitedQuestions({ 1: true });
+                  setActiveQuestionId(1);
+                  setActiveSection('English');
+                  setTimeLeft(3600);
                 }}
                 className="flex-1 px-4 py-3 bg-[#25D366] hover:bg-[#1DA851] rounded-xl font-bold transition flex items-center justify-center gap-2 text-sm text-white"
               >
