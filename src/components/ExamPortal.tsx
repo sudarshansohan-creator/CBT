@@ -5,6 +5,8 @@ import { censusGkQuestions } from '../data/questions_gk';
 import { sportsGkQuestions } from '../data/questions_sports_gk';
 import { computerQuestions } from '../data/questions_computer';
 import { geographyQuestions } from '../data/questions_geography';
+import { giMock2Questions } from '../data/questions_gi_2';
+import { englishMockQuestions } from '../data/questions_english_mock';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -31,7 +33,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock';
   category: TestCategory;
   title: string;
   badge: string;
@@ -54,7 +56,9 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'static_gk_census', category: 'topic', title: 'Census of India', badge: 'Census', badgeColor: 'teal', description: 'ভারতের জনগণনা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 6 },
   { id: 'static_gk_sports', category: 'topic', title: 'Sports GK', badge: 'Sports', badgeColor: 'orange', description: 'খেলাধুলা সম্পর্কিত ২৫টি গুরুত্বপূর্ণ সাধারণ জ্ঞান প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 7 },
   { id: 'computer_knowledge', category: 'topic', title: 'Computer Knowledge', badge: 'Computer', badgeColor: 'fuchsia', description: 'কম্পিউটার সম্পর্কিত ২৫টি গুরুত্বপূর্ণ প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 8 },
-  { id: 'geography_knowledge', category: 'topic', title: 'Rivers & Dams', badge: 'Geography', badgeColor: 'sky', description: 'Geography Practice Quiz: Rivers and Dams of India (25 Q).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 9 }
+  { id: 'geography_knowledge', category: 'topic', title: 'Rivers & Dams', badge: 'Geography', badgeColor: 'sky', description: 'Geography Practice Quiz: Rivers and Dams of India (25 Q).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 9 },
+  { id: 'gi_mock_2', category: 'subject', title: 'General Intelligence 2', badge: 'GI Mock 2', badgeColor: 'purple', description: 'জেনারেল ইন্টেলিজেন্স বা জিআই-এর ২৫টি নতুন স্পেশাল প্রশ্ন।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 11 },
+  { id: 'english_mock', category: 'subject', title: 'English Mock Test', badge: 'English', badgeColor: 'blue', description: 'SSC CHSL Full Mock Test: English Language (25 Questions).', sections: 'English Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 12 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -88,7 +92,13 @@ export default function ExamPortal() {
   // Filter & Sort States
   const [filterCategory, setFilterCategory] = useState<'all' | 'full' | 'subject' | 'topic'>('all');
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
-  
+
+  // Paid Batch State
+  const [joinModalOpen, setJoinModalOpen] = useState(false);
+  const [joinName, setJoinName] = useState('');
+  const [joinAge, setJoinAge] = useState('');
+  const [joinAddress, setJoinAddress] = useState('');
+
   // Exam Response States
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, 'A' | 'B' | 'C' | 'D'>>({});
   const [markedForReview, setMarkedForReview] = useState<Record<number, boolean>>({});
@@ -129,6 +139,12 @@ export default function ExamPortal() {
     if (selectedTest === 'geography_knowledge') {
       return geographyQuestions;
     }
+    if (selectedTest === 'gi_mock_2') {
+      return giMock2Questions;
+    }
+    if (selectedTest === 'english_mock') {
+      return englishMockQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -157,6 +173,12 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'geography_knowledge') {
       return ['GK'];
+    }
+    if (selectedTest === 'gi_mock_2') {
+      return ['GI'];
+    }
+    if (selectedTest === 'english_mock') {
+      return ['English'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
@@ -199,6 +221,20 @@ export default function ExamPortal() {
     setNameEntered(true);
   };
 
+  const handleJoinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = `Hi, I want to join the paid batch.
+Name: ${joinName}
+Age: ${joinAge}
+Address: ${joinAddress}`;
+    const encodedText = encodeURIComponent(text);
+    window.open(`https://wa.me/+916289658623?text=${encodedText}`, '_blank');
+    setJoinModalOpen(false);
+    setJoinName('');
+    setJoinAge('');
+    setJoinAddress('');
+  };
+
   const handleStartExam = () => {
     setExamStarted(true);
     setSubmitted(false);
@@ -206,32 +242,15 @@ export default function ExamPortal() {
     setMarkedForReview({});
     setVisitedQuestions({ 1: true });
     setActiveQuestionId(1);
-    setActiveSection(
-      (selectedTest === 'indian_art_culture' || selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' || selectedTest === 'geography_knowledge') 
-        ? 'GK' 
-        : (selectedTest === 'gi_special' ? 'GI' : 'English')
-    );
+    
+    const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+    const initialSection = activeTestDef?.sections === 'GI Section' ? 'GI' : 
+                           activeTestDef?.sections === 'GK Section' ? 'GK' : 
+                           'English';
+    setActiveSection(initialSection);
     
     // Set appropriate timer duration
-    if (selectedTest === 'english_gi_combo') {
-      setTimeLeft(1800); // 30 mins
-    } else if (selectedTest === 'indian_art_culture') {
-      setTimeLeft(900); // 15 mins
-    } else if (selectedTest === 'english_grammar') {
-      setTimeLeft(3600); // 60 mins (1 hour)
-    } else if (selectedTest === 'gi_special') {
-      setTimeLeft(1200); // 20 mins
-    } else if (selectedTest === 'static_gk_census') {
-      setTimeLeft(900); // 15 mins
-    } else if (selectedTest === 'static_gk_sports') {
-      setTimeLeft(900); // 15 mins
-    } else if (selectedTest === 'computer_knowledge') {
-      setTimeLeft(900); // 15 mins
-    } else if (selectedTest === 'geography_knowledge') {
-      setTimeLeft(900); // 15 mins
-    } else {
-      setTimeLeft(3600); // 60 mins
-    }
+    setTimeLeft((activeTestDef?.durationMinutes || 60) * 60);
   };
 
   const handleOptionSelect = (questionId: number, optionKey: 'A' | 'B' | 'C' | 'D') => {
@@ -297,23 +316,8 @@ export default function ExamPortal() {
 
   const handleChallengeFriend = () => {
     setHasShared(true);
-    const testTitle = selectedTest === 'english_gi_combo' 
-      ? 'English + GI Combo Mock' 
-      : (selectedTest === 'indian_art_culture' 
-        ? 'Indian Art & Culture Special Set' 
-        : (selectedTest === 'english_grammar' 
-          ? 'English Grammar Special Set' 
-          : (selectedTest === 'gi_special' 
-            ? 'GI Special Practice Set' 
-            : (selectedTest === 'static_gk_census'
-              ? 'Static GK Census of India Set'
-              : (selectedTest === 'static_gk_sports'
-                ? 'Static GK Sports Set'
-                : (selectedTest === 'computer_knowledge'
-                  ? 'Computer Knowledge Set'
-                  : (selectedTest === 'geography_knowledge'
-                    ? 'Geography (Rivers & Dams) Set'
-                    : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))))))));
+    const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+    const testTitle = activeTestDef ? activeTestDef.title : 'Mock Test';
 
     const totalQuestionsCount = testQuestions.length;
     const maxMarksVal = totalQuestionsCount * 2;
@@ -537,9 +541,7 @@ https://cbt-sudarshan.vercel.app/`;
     };
   };
 
-  const predictorScore = selectedTest === 'english_gi_combo' 
-    ? results.totalMarks * 5 
-    : (selectedTest === 'indian_art_culture' || selectedTest === 'gi_special' || selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' || selectedTest === 'geography_knowledge' ? results.totalMarks * 4 : results.totalMarks);
+  const predictorScore = Math.round((results.totalMarks * 100) / testQuestions.length);
   const predData = getRankAndPercentile(predictorScore);
 
   // Color key getters for Palette
@@ -576,7 +578,16 @@ https://cbt-sudarshan.vercel.app/`;
   if (!examStarted) {
     if (!nameEntered) {
       return (
-        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 relative">
+          
+          <button 
+            onClick={() => setJoinModalOpen(true)}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-400 hover:to-yellow-400 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-transform transform hover:scale-105 flex items-center gap-2 z-10 border border-orange-400/30"
+          >
+            <span className="hidden sm:inline">Explore our batch</span>
+            <span className="sm:hidden">Explore batch</span>
+          </button>
+
           <div className="max-w-xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-8 border border-slate-700 relative overflow-hidden">
             {/* Accent decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
@@ -634,6 +645,81 @@ https://cbt-sudarshan.vercel.app/`;
               </a>
             </div>
           </div>
+
+          {joinModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+              <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative">
+                <button 
+                  onClick={() => setJoinModalOpen(false)}
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white"
+                >
+                  <XCircle className="w-6 h-6" />
+                </button>
+                <h3 className="text-xl font-bold text-white mb-2 text-center">Join Paid Batch</h3>
+                <p className="text-slate-300 text-sm mb-4 text-center">
+                  To get live lecture, suggestion notes, you can join our paid batch for just <span className="font-bold text-emerald-400">100 INR per month</span>.
+                </p>
+                
+                <div className="bg-slate-750/50 border border-slate-700 rounded-lg p-4 mb-6">
+                  <h4 className="text-emerald-400 font-semibold text-sm mb-2">Features Included:</h4>
+                  <ul className="text-slate-300 text-sm space-y-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> Small batch
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> Live lecture
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> 1 to 1 conversation
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> Suggestion notes
+                    </li>
+                  </ul>
+                </div>
+                
+                <form onSubmit={handleJoinSubmit} className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      value={joinName}
+                      onChange={(e) => setJoinName(e.target.value)}
+                      placeholder="Your Name"
+                      className="w-full bg-slate-750 border border-slate-600 rounded-lg py-2.5 px-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      required
+                      value={joinAge}
+                      onChange={(e) => setJoinAge(e.target.value)}
+                      placeholder="Your Age"
+                      className="w-full bg-slate-750 border border-slate-600 rounded-lg py-2.5 px-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      required
+                      value={joinAddress}
+                      onChange={(e) => setJoinAddress(e.target.value)}
+                      placeholder="Your Address"
+                      rows={2}
+                      className="w-full bg-slate-750 border border-slate-600 rounded-lg py-2.5 px-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition-colors mt-2 shadow-lg shadow-emerald-500/20"
+                  >
+                    Join Now
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       );
     }
@@ -1276,36 +1362,18 @@ https://cbt-sudarshan.vercel.app/`;
             </div>
             <div>
               <h1 className="text-sm sm:text-lg font-extrabold text-white tracking-wide leading-tight">
-                {selectedTest === 'english_gi_combo' 
-                  ? 'English + GI Combo Mock' 
-                  : (selectedTest === 'indian_art_culture' 
-                    ? 'Indian Art & Culture Special Set' 
-                    : (selectedTest === 'english_grammar' 
-                      ? 'English Grammar Special Set' 
-                      : (selectedTest === 'gi_special' 
-                        ? 'GI Special Practice Set' 
-                        : (selectedTest === 'static_gk_census'
-                          ? 'Static GK Census of India Set'
-                          : (selectedTest === 'static_gk_sports'
-                            ? 'Static GK Sports Set'
-                            : (selectedTest === 'computer_knowledge'
-                              ? 'Computer Knowledge Set'
-                              : (selectedTest === 'geography_knowledge'
-                                ? 'Geography (Rivers & Dams) Set'
-                                : (selectedTest === 'full_mock_2' ? 'CBT Full Mocktest 2' : 'CBT Full Mocktest 1'))))))))}
+                {(() => {
+                  const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+                  return activeTestDef?.title || 'Mock Test';
+                })()}
               </h1>
               <p className="text-[10px] sm:text-xs text-indigo-400 font-semibold tracking-wider uppercase leading-none mt-1">
-                {selectedTest === 'english_gi_combo' 
-                  ? 'Combo 20 Q Series • 40 Marks' 
-                  : (selectedTest === 'indian_art_culture' 
-                    ? 'GK Special 25 Q Series • 50 Marks' 
-                    : (selectedTest === 'english_grammar' 
-                      ? 'English Special 100 Q Series • 200 Marks' 
-                      : (selectedTest === 'gi_special' 
-                        ? 'GI Special 25 Q Series • 50 Marks' 
-                        : (selectedTest === 'static_gk_census' || selectedTest === 'static_gk_sports' || selectedTest === 'computer_knowledge' || selectedTest === 'geography_knowledge'
-                          ? 'GK Special 25 Q Series • 50 Marks'
-                          : 'Full 100 Q Series • 200 Marks'))))}
+                {(() => {
+                  const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+                  return activeTestDef 
+                    ? `${activeTestDef.badge} ${activeTestDef.questionCount} Q Series • ${activeTestDef.totalMarks} Marks` 
+                    : 'Mock Test';
+                })()}
               </p>
             </div>
           </div>
