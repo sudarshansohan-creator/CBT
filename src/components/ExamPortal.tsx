@@ -7,6 +7,10 @@ import { computerQuestions } from '../data/questions_computer';
 import { geographyQuestions } from '../data/questions_geography';
 import { giMock2Questions } from '../data/questions_gi_2';
 import { englishMockQuestions } from '../data/questions_english_mock';
+import { englishMock2Questions } from '../data/questions_english_mock_2';
+import { giMock3Questions } from '../data/questions_gi_mock_3';
+import { mathMock1Questions } from '../data/questions_math_mock_1';
+import { gkMock1Questions } from '../data/questions_gk_mock_1';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -33,7 +37,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -58,7 +62,11 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'computer_knowledge', category: 'topic', title: 'Computer Knowledge', badge: 'Computer', badgeColor: 'fuchsia', description: 'কম্পিউটার সম্পর্কিত ২৫টি গুরুত্বপূর্ণ প্রশ্ন।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 8 },
   { id: 'geography_knowledge', category: 'topic', title: 'Rivers & Dams', badge: 'Geography', badgeColor: 'sky', description: 'Geography Practice Quiz: Rivers and Dams of India (25 Q).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 9 },
   { id: 'gi_mock_2', category: 'subject', title: 'General Intelligence 2', badge: 'GI Mock 2', badgeColor: 'purple', description: 'জেনারেল ইন্টেলিজেন্স বা জিআই-এর ২৫টি নতুন স্পেশাল প্রশ্ন।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 11 },
-  { id: 'english_mock', category: 'subject', title: 'English Mock Test', badge: 'English', badgeColor: 'blue', description: 'SSC CHSL Full Mock Test: English Language (25 Questions).', sections: 'English Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 12 }
+  { id: 'english_mock', category: 'subject', title: 'English Mock Test', badge: 'English', badgeColor: 'blue', description: 'SSC CHSL Full Mock Test: English Language (25 Questions).', sections: 'English Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 12 },
+  { id: 'english_mock_2', category: 'subject', title: 'English Mock Test 2', badge: 'English 2', badgeColor: 'blue', description: 'SSC CHSL Full Mock Test 2: English Language (25 Questions).', sections: 'English Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 13 },
+  { id: 'gi_mock_3', category: 'subject', title: 'General Intelligence 3', badge: 'GI Mock 3', badgeColor: 'purple', description: 'জেনারেল ইন্টেলিজেন্স বা জিআই-এর ২৫টি নতুন স্পেশাল প্রশ্ন (Set 3)।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 14 },
+  { id: 'math_mock_1', category: 'subject', title: 'Math Mock Test 1', badge: 'Math', badgeColor: 'indigo', description: 'Quantitative Aptitude Mock Test 1 (25 Questions).', sections: 'Math Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 15 },
+  { id: 'gk_mock_1', category: 'subject', title: 'GK Mock Test 1', badge: 'GK', badgeColor: 'orange', description: 'General Awareness Mock Test 1 (25 Questions).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 16 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -145,6 +153,18 @@ export default function ExamPortal() {
     if (selectedTest === 'english_mock') {
       return englishMockQuestions;
     }
+    if (selectedTest === 'english_mock_2') {
+      return englishMock2Questions;
+    }
+    if (selectedTest === 'gi_mock_3') {
+      return giMock3Questions;
+    }
+    if (selectedTest === 'math_mock_1') {
+      return mathMock1Questions;
+    }
+    if (selectedTest === 'gk_mock_1') {
+      return gkMock1Questions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -179,6 +199,18 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'english_mock') {
       return ['English'];
+    }
+    if (selectedTest === 'english_mock_2') {
+      return ['English'];
+    }
+    if (selectedTest === 'gi_mock_3') {
+      return ['GI'];
+    }
+    if (selectedTest === 'math_mock_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'gk_mock_1') {
+      return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
@@ -256,6 +288,7 @@ Address: ${joinAddress}`;
     const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
     const initialSection = activeTestDef?.sections === 'GI Section' ? 'GI' : 
                            activeTestDef?.sections === 'GK Section' ? 'GK' : 
+                           activeTestDef?.sections === 'Math Section' ? 'Math' : 
                            'English';
     setActiveSection(initialSection);
     
