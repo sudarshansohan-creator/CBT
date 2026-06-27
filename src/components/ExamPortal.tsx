@@ -31,7 +31,9 @@ import {
   FileText,
   Share2,
   Filter,
-  ArrowUpDown
+  ArrowUpDown,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 
 type TestCategory = 'full' | 'subject' | 'topic';
@@ -114,6 +116,66 @@ export default function ExamPortal() {
   
   // Timer State (60 minutes = 3600 seconds)
   const [timeLeft, setTimeLeft] = useState(3600);
+
+  // Fullscreen State & Control
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(
+        !!document.fullscreenElement ||
+        !!(document as any).webkitFullscreenElement ||
+        !!(document as any).mozFullScreenElement ||
+        !!(document as any).msFullscreenElement
+      );
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
+
+  const requestFullscreen = () => {
+    const el = document.documentElement as any;
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch((err: any) => console.log('Fullscreen request failed:', err));
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    } else if (el.mozRequestFullScreen) {
+      el.mozRequestFullScreen();
+    } else if (el.msRequestFullscreen) {
+      el.msRequestFullscreen();
+    }
+  };
+
+  const exitFullscreen = () => {
+    const doc = document as any;
+    if (doc.exitFullscreen) {
+      doc.exitFullscreen().catch((err: any) => console.log('Fullscreen exit failed:', err));
+    } else if (doc.webkitExitFullscreen) {
+      doc.webkitExitFullscreen();
+    } else if (doc.mozCancelFullScreen) {
+      doc.mozCancelFullScreen();
+    } else if (doc.msExitFullscreen) {
+      doc.msExitFullscreen();
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      requestFullscreen();
+    } else {
+      exitFullscreen();
+    }
+  };
 
   // Filter for post-exam review (All, Correct, Incorrect, Unattempted)
   const [reviewFilter, setReviewFilter] = useState<'all' | 'correct' | 'incorrect' | 'unattempted'>('all');
@@ -278,6 +340,9 @@ Address: ${joinAddress}`;
   };
 
   const handleStartExam = () => {
+    // Request fullscreen mode for computer and phone
+    requestFullscreen();
+
     setExamStarted(true);
     setSubmitted(false);
     setSelectedAnswers({});
@@ -328,6 +393,7 @@ Address: ${joinAddress}`;
   };
 
   const handleAutoSubmit = () => {
+    exitFullscreen();
     setSubmitted(true);
     setConfirmSubmitOpen(false);
   };
@@ -337,6 +403,7 @@ Address: ${joinAddress}`;
   };
 
   const confirmSubmit = () => {
+    exitFullscreen();
     setSubmitted(true);
     setConfirmSubmitOpen(false);
   };
@@ -855,6 +922,7 @@ https://cbt-sudarshan.vercel.app/`;
               <strong className="text-yellow-400 block mb-1">গুরুত্বপূর্ণ নিয়ম ও মার্কিং স্কিম:</strong>
               • প্রতিটি সঠিক উত্তরের জন্য পাবেন <span className="text-emerald-400 font-bold">+২.০ নম্বর</span>।<br />
               • ভুল উত্তরের জন্য ডিক্ট করা হবে <span className="text-rose-400 font-bold">-০.৫ নম্বর</span> নেগেটিভ মার্কিং।<br />
+              • পরীক্ষা শুরু হওয়ার সাথে সাথেই ওয়েবসাইটটি ফুল স্ক্রিন মোডে চলে যাবে (Toggle Fullscreen বা Esc প্রেস করে বের হতে পারবেন)।<br />
               • নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে সেভ ও সাবমিট হয়ে যাবে।
             </div>
 
