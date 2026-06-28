@@ -16,6 +16,8 @@ import { mathDecimalsQuestions } from '../data/questions_math_decimals';
 import { mathFractionsQuestions } from '../data/questions_math_fractions';
 import { mathPercentageQuestions } from '../data/questions_math_percentage';
 import { mathRationalIrrationalQuestions } from '../data/questions_math_rational_irrational';
+import { mathIntegersQuestions } from '../data/questions_math_integers';
+import { gkCensusSportsQuestions } from '../data/questions_gk_census_sports';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -44,7 +46,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -78,7 +80,9 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'math_decimals_1', category: 'subject', title: 'SSC CHSL - CT 02: Decimals', badge: 'Math Decimals', badgeColor: 'indigo', description: 'SSC CHSL - CT 02: Decimals (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 18 },
   { id: 'math_fractions_1', category: 'subject', title: 'SSC CHSL - CT 03: Fractions', badge: 'Math Fractions', badgeColor: 'indigo', description: 'SSC CHSL - CT 03: Fractions (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 19 },
   { id: 'math_percentage_1', category: 'subject', title: 'SSC CHSL - CT 04: Simplification - Percentage', badge: 'Math Percentage', badgeColor: 'indigo', description: 'SSC CHSL - CT 04: Simplification - Percentage (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 20 },
-  { id: 'math_rational_irrational_1', category: 'subject', title: 'SSC CHSL - CT 05: Rational or Irrational Numbers', badge: 'Math Rational', badgeColor: 'indigo', description: 'SSC CHSL - CT 05: Rational or Irrational Numbers (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 21 }
+  { id: 'math_rational_irrational_1', category: 'subject', title: 'SSC CHSL - CT 05: Rational or Irrational Numbers', badge: 'Math Rational', badgeColor: 'indigo', description: 'SSC CHSL - CT 05: Rational or Irrational Numbers (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 21 },
+  { id: 'math_integers_1', category: 'subject', title: 'SSC CHSL - CT 06: Integers', badge: 'Math Integers', badgeColor: 'indigo', description: 'SSC CHSL - CT 06: Integers Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 22 },
+  { id: 'gk_census_sports_1', category: 'subject', title: 'SSC CHSL MOCK TEST: CENSUS 2011 & SPORTS', badge: 'Census & Sports', badgeColor: 'orange', description: 'Census 2011 & Sports Mock Test (25 Questions).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 23 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -260,6 +264,12 @@ export default function ExamPortal() {
     if (selectedTest === 'math_rational_irrational_1') {
       return mathRationalIrrationalQuestions;
     }
+    if (selectedTest === 'math_integers_1') {
+      return mathIntegersQuestions;
+    }
+    if (selectedTest === 'gk_census_sports_1') {
+      return gkCensusSportsQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -321,6 +331,12 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'math_rational_irrational_1') {
       return ['Math'];
+    }
+    if (selectedTest === 'math_integers_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'gk_census_sports_1') {
+      return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
