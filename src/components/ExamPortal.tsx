@@ -15,6 +15,7 @@ import { mathBodmasQuestions } from '../data/questions_math_bodmas';
 import { mathDecimalsQuestions } from '../data/questions_math_decimals';
 import { mathFractionsQuestions } from '../data/questions_math_fractions';
 import { mathPercentageQuestions } from '../data/questions_math_percentage';
+import { mathRationalIrrationalQuestions } from '../data/questions_math_rational_irrational';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -43,7 +44,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -76,7 +77,8 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'math_bodmas_1', category: 'subject', title: 'SSC CHSL - CT 01: Bodmas Rule', badge: 'Math BODMAS', badgeColor: 'indigo', description: 'SSC CHSL - CT 01: Bodmas Rule (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 17 },
   { id: 'math_decimals_1', category: 'subject', title: 'SSC CHSL - CT 02: Decimals', badge: 'Math Decimals', badgeColor: 'indigo', description: 'SSC CHSL - CT 02: Decimals (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 18 },
   { id: 'math_fractions_1', category: 'subject', title: 'SSC CHSL - CT 03: Fractions', badge: 'Math Fractions', badgeColor: 'indigo', description: 'SSC CHSL - CT 03: Fractions (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 19 },
-  { id: 'math_percentage_1', category: 'subject', title: 'SSC CHSL - CT 04: Simplification - Percentage', badge: 'Math Percentage', badgeColor: 'indigo', description: 'SSC CHSL - CT 04: Simplification - Percentage (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 20 }
+  { id: 'math_percentage_1', category: 'subject', title: 'SSC CHSL - CT 04: Simplification - Percentage', badge: 'Math Percentage', badgeColor: 'indigo', description: 'SSC CHSL - CT 04: Simplification - Percentage (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 20 },
+  { id: 'math_rational_irrational_1', category: 'subject', title: 'SSC CHSL - CT 05: Rational or Irrational Numbers', badge: 'Math Rational', badgeColor: 'indigo', description: 'SSC CHSL - CT 05: Rational or Irrational Numbers (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 21 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -255,6 +257,9 @@ export default function ExamPortal() {
     if (selectedTest === 'math_percentage_1') {
       return mathPercentageQuestions;
     }
+    if (selectedTest === 'math_rational_irrational_1') {
+      return mathRationalIrrationalQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -312,6 +317,9 @@ export default function ExamPortal() {
       return ['Math'];
     }
     if (selectedTest === 'math_percentage_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'math_rational_irrational_1') {
       return ['Math'];
     }
     return ['English', 'Math', 'GI', 'GK'];
