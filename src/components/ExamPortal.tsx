@@ -11,6 +11,10 @@ import { englishMock2Questions } from '../data/questions_english_mock_2';
 import { giMock3Questions } from '../data/questions_gi_mock_3';
 import { mathMock1Questions } from '../data/questions_math_mock_1';
 import { gkMock1Questions } from '../data/questions_gk_mock_1';
+import { mathBodmasQuestions } from '../data/questions_math_bodmas';
+import { mathDecimalsQuestions } from '../data/questions_math_decimals';
+import { mathFractionsQuestions } from '../data/questions_math_fractions';
+import { mathPercentageQuestions } from '../data/questions_math_percentage';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -39,7 +43,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -68,7 +72,11 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'english_mock_2', category: 'subject', title: 'English Mock Test 2', badge: 'English 2', badgeColor: 'blue', description: 'SSC CHSL Full Mock Test 2: English Language (25 Questions).', sections: 'English Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 13 },
   { id: 'gi_mock_3', category: 'subject', title: 'General Intelligence 3', badge: 'GI Mock 3', badgeColor: 'purple', description: 'জেনারেল ইন্টেলিজেন্স বা জিআই-এর ২৫টি নতুন স্পেশাল প্রশ্ন (Set 3)।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 14 },
   { id: 'math_mock_1', category: 'subject', title: 'Math Mock Test 1', badge: 'Math', badgeColor: 'indigo', description: 'Quantitative Aptitude Mock Test 1 (25 Questions).', sections: 'Math Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 15 },
-  { id: 'gk_mock_1', category: 'subject', title: 'GK Mock Test 1', badge: 'GK', badgeColor: 'orange', description: 'General Awareness Mock Test 1 (25 Questions).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 16 }
+  { id: 'gk_mock_1', category: 'subject', title: 'GK Mock Test 1', badge: 'GK', badgeColor: 'orange', description: 'General Awareness Mock Test 1 (25 Questions).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 16 },
+  { id: 'math_bodmas_1', category: 'subject', title: 'SSC CHSL - CT 01: Bodmas Rule', badge: 'Math BODMAS', badgeColor: 'indigo', description: 'SSC CHSL - CT 01: Bodmas Rule (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 17 },
+  { id: 'math_decimals_1', category: 'subject', title: 'SSC CHSL - CT 02: Decimals', badge: 'Math Decimals', badgeColor: 'indigo', description: 'SSC CHSL - CT 02: Decimals (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 18 },
+  { id: 'math_fractions_1', category: 'subject', title: 'SSC CHSL - CT 03: Fractions', badge: 'Math Fractions', badgeColor: 'indigo', description: 'SSC CHSL - CT 03: Fractions (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 19 },
+  { id: 'math_percentage_1', category: 'subject', title: 'SSC CHSL - CT 04: Simplification - Percentage', badge: 'Math Percentage', badgeColor: 'indigo', description: 'SSC CHSL - CT 04: Simplification - Percentage (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 20 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -81,6 +89,14 @@ const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ri
   orange: { borderSelected: 'border-orange-500', bgSelected: 'bg-orange-500/15', ringSelected: 'ring-orange-500/35', badgeBg: 'bg-orange-600', textMain: 'text-orange-300' },
   fuchsia: { borderSelected: 'border-fuchsia-500', bgSelected: 'bg-fuchsia-500/15', ringSelected: 'ring-fuchsia-500/35', badgeBg: 'bg-fuchsia-600', textMain: 'text-fuchsia-300' },
   sky: { borderSelected: 'border-sky-500', bgSelected: 'bg-sky-500/15', ringSelected: 'ring-sky-500/35', badgeBg: 'bg-sky-600', textMain: 'text-sky-300' },
+};
+
+const toBanglaNumber = (num: number | string): string => {
+  const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+  return num.toString().split('').map(digit => {
+    const parsed = parseInt(digit, 10);
+    return isNaN(parsed) ? digit : banglaDigits[parsed];
+  }).join('');
 };
 
 export default function ExamPortal() {
@@ -227,6 +243,18 @@ export default function ExamPortal() {
     if (selectedTest === 'gk_mock_1') {
       return gkMock1Questions;
     }
+    if (selectedTest === 'math_bodmas_1') {
+      return mathBodmasQuestions;
+    }
+    if (selectedTest === 'math_decimals_1') {
+      return mathDecimalsQuestions;
+    }
+    if (selectedTest === 'math_fractions_1') {
+      return mathFractionsQuestions;
+    }
+    if (selectedTest === 'math_percentage_1') {
+      return mathPercentageQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -273,6 +301,18 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'gk_mock_1') {
       return ['GK'];
+    }
+    if (selectedTest === 'math_bodmas_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'math_decimals_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'math_fractions_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'math_percentage_1') {
+      return ['Math'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
@@ -911,7 +951,7 @@ https://cbt-sudarshan.vercel.app/`;
                           <span>Q: {test.questionCount}</span>
                           <span>M: {test.totalMarks}</span>
                         </div>
-                        <div className={`${colors.textMain} truncate`}>⏳ {test.durationMinutes > 15 ? '৬০' : '১৫'} মিনিট ({test.durationMinutes}m)</div>
+                        <div className={`${colors.textMain} truncate`}>⏳ {toBanglaNumber(test.durationMinutes)} মিনিট ({test.durationMinutes}m)</div>
                       </div>
                     </div>
                   );
