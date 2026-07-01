@@ -20,6 +20,7 @@ import { mathIntegersQuestions } from '../data/questions_math_integers';
 import { gkCensusSportsQuestions } from '../data/questions_gk_census_sports';
 import { giAlphabetQuestions } from '../data/questions_gi_alphabet';
 import { mathDivisibilityQuestions } from '../data/questions_math_divisibility';
+import { mathTrigonometryQuestions } from '../data/questions_math_trigonometry';
 import { Question, Section } from '../types';
 import { 
   Clock, 
@@ -48,7 +49,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -86,7 +87,8 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'math_integers_1', category: 'subject', title: 'SSC CHSL - CT 06: Integers', badge: 'Math Integers', badgeColor: 'indigo', description: 'SSC CHSL - CT 06: Integers Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 22 },
   { id: 'gk_census_sports_1', category: 'subject', title: 'SSC CHSL MOCK TEST: CENSUS 2011 & SPORTS', badge: 'Census & Sports', badgeColor: 'orange', description: 'Census 2011 & Sports Mock Test (25 Questions).', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 23 },
   { id: 'gi_alphabet_1', category: 'subject', title: 'SSC CHSL - CT 07: Alphabet & Dictionary Order', badge: 'GI Alphabet', badgeColor: 'purple', description: 'Alphabet & Dictionary Order Practice Set (10 Questions).', sections: 'GI Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 24 },
-  { id: 'math_divisibility_1', category: 'subject', title: 'SSC CHSL - CT 08: Divisibility & Remainder', badge: 'Math Divisibility', badgeColor: 'indigo', description: 'Divisibility and Remainder Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 25 }
+  { id: 'math_divisibility_1', category: 'subject', title: 'SSC CHSL - CT 08: Divisibility & Remainder', badge: 'Math Divisibility', badgeColor: 'indigo', description: 'Divisibility and Remainder Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 25 },
+  { id: 'math_trigonometry_1', category: 'subject', title: 'SSC CHSL - CT 09: Trigonometry Basics & Formulas', badge: 'Math Trigonometry', badgeColor: 'indigo', description: 'Trigonometry Basics & Formulas Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 26 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -280,6 +282,9 @@ export default function ExamPortal() {
     if (selectedTest === 'math_divisibility_1') {
       return mathDivisibilityQuestions;
     }
+    if (selectedTest === 'math_trigonometry_1') {
+      return mathTrigonometryQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -352,6 +357,9 @@ export default function ExamPortal() {
       return ['GI'];
     }
     if (selectedTest === 'math_divisibility_1') {
+      return ['Math'];
+    }
+    if (selectedTest === 'math_trigonometry_1') {
       return ['Math'];
     }
     return ['English', 'Math', 'GI', 'GK'];
