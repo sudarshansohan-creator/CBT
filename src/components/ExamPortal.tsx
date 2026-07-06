@@ -132,6 +132,8 @@ export default function ExamPortal() {
   // Filter & Sort States
   const [filterCategory, setFilterCategory] = useState<'all' | 'full' | 'subject' | 'topic'>('all');
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [completedTests, setCompletedTests] = useState<string[]>([]);
 
   // Paid Batch State
   const [joinModalOpen, setJoinModalOpen] = useState(false);
@@ -376,12 +378,82 @@ export default function ExamPortal() {
   // Load active question list based on section
   const sectionQuestions = testQuestions.filter((q) => q.section === activeSection);
 
-  // Auto-load candidate name from local storage
+  // Helper to determine custom card background, border, hover, and text colors based on title/category
+  const getCardStyle = (test: TestOption, isSelected: boolean) => {
+    const titleLower = test.title.toLowerCase();
+    const idLower = test.id.toLowerCase();
+    const badgeLower = test.badge.toLowerCase();
+
+    const isMath = titleLower.includes('math') || badgeLower.includes('math') || idLower.includes('math') || idLower.includes('trigonometry') || idLower.includes('divisibility') || idLower.includes('percentage') || idLower.includes('fractions') || idLower.includes('decimals') || idLower.includes('bodmas') || idLower.includes('integers') || idLower.includes('rational');
+    const isSci = titleLower.includes('science') || idLower.includes('science');
+    const isGK = titleLower.includes('gk') || badgeLower.includes('gk') || titleLower.includes('census') || titleLower.includes('culture') || titleLower.includes('computer') || titleLower.includes('rivers') || titleLower.includes('sports') || idLower.includes('gk') || idLower.includes('geography') || idLower.includes('computer') || idLower.includes('census') || idLower.includes('art') || titleLower.includes('dam');
+    const isEnglish = titleLower.includes('english') || badgeLower.includes('english') || idLower.includes('english') || titleLower.includes('grammar');
+    const isGI = titleLower.includes('gi') || badgeLower.includes('gi') || idLower.includes('gi_') || titleLower.includes('intelligence') || titleLower.includes('alphabet');
+
+    let themeColor = 'indigo'; // Default fallback
+    if (isMath) themeColor = 'blue';
+    else if (isSci) themeColor = 'teal';
+    else if (isGK) themeColor = 'amber';
+    else if (isEnglish) themeColor = 'rose';
+    else if (isGI) themeColor = 'purple';
+
+    const colors = COLOR_MAP[themeColor] || COLOR_MAP.indigo;
+
+    if (isSelected) {
+      // Selected state gets a bright border and glow ring
+      return `border-2 ${colors.borderSelected} ${colors.bgSelected} ring-4 ${colors.ringSelected} scale-[1.02] shadow-xl shadow-slate-950/50`;
+    } else {
+      // Color-coded unselected states with custom subtle background color tint & color indicators
+      switch (themeColor) {
+        case 'blue': // Math -> Blue
+          return 'border-slate-700 bg-blue-950/15 hover:border-blue-500/50 hover:bg-blue-950/25 border-l-4 border-l-blue-500 shadow-sm';
+        case 'teal': // Science -> Green/Teal
+          return 'border-slate-700 bg-teal-950/15 hover:border-teal-500/50 hover:bg-teal-950/25 border-l-4 border-l-teal-500 shadow-sm';
+        case 'amber': // GK -> Yellow/Amber/Orange
+          return 'border-slate-700 bg-amber-950/10 hover:border-amber-500/50 hover:bg-amber-950/20 border-l-4 border-l-amber-500 shadow-sm';
+        case 'purple': // GI -> Purple
+          return 'border-slate-700 bg-purple-950/15 hover:border-purple-500/50 hover:bg-purple-950/25 border-l-4 border-l-purple-500 shadow-sm';
+        case 'rose': // English -> Rose/Pink
+          return 'border-slate-700 bg-rose-950/15 hover:border-rose-500/50 hover:bg-rose-950/25 border-l-4 border-l-rose-500 shadow-sm';
+        default:
+          return 'border-slate-700 bg-slate-750/70 hover:border-slate-500 hover:bg-slate-750 border-l-4 border-l-indigo-500 shadow-sm';
+      }
+    }
+  };
+
+  const getBadgeColor = (test: TestOption) => {
+    const titleLower = test.title.toLowerCase();
+    const idLower = test.id.toLowerCase();
+    const badgeLower = test.badge.toLowerCase();
+
+    const isMath = titleLower.includes('math') || badgeLower.includes('math') || idLower.includes('math') || idLower.includes('trigonometry') || idLower.includes('divisibility') || idLower.includes('percentage') || idLower.includes('fractions') || idLower.includes('decimals') || idLower.includes('bodmas') || idLower.includes('integers') || idLower.includes('rational');
+    const isSci = titleLower.includes('science') || idLower.includes('science');
+    const isGK = titleLower.includes('gk') || badgeLower.includes('gk') || titleLower.includes('census') || titleLower.includes('culture') || titleLower.includes('computer') || titleLower.includes('rivers') || titleLower.includes('sports') || idLower.includes('gk') || idLower.includes('geography') || idLower.includes('computer') || idLower.includes('census') || idLower.includes('art') || titleLower.includes('dam');
+    const isEnglish = titleLower.includes('english') || badgeLower.includes('english') || idLower.includes('english') || titleLower.includes('grammar');
+    const isGI = titleLower.includes('gi') || badgeLower.includes('gi') || idLower.includes('gi_') || titleLower.includes('intelligence') || titleLower.includes('alphabet');
+
+    if (isMath) return 'bg-blue-600 border border-blue-400/30';
+    if (isSci) return 'bg-teal-600 border border-teal-400/30';
+    if (isGK) return 'bg-amber-600 border border-amber-400/30';
+    if (isEnglish) return 'bg-rose-600 border border-rose-400/30';
+    if (isGI) return 'bg-purple-600 border border-purple-400/30';
+    return 'bg-indigo-600 border border-indigo-400/30';
+  };
+
+  // Auto-load candidate name and completed tests from local storage
   useEffect(() => {
     const storedName = localStorage.getItem('cbt_candidate_name');
     if (storedName) {
       setCandidateName(storedName);
       setNameEntered(true);
+    }
+    try {
+      const storedCompleted = localStorage.getItem('cbt_completed_tests');
+      if (storedCompleted) {
+        setCompletedTests(JSON.parse(storedCompleted));
+      }
+    } catch (e) {
+      console.error('Error parsing completed tests', e);
     }
   }, []);
 
@@ -489,6 +561,19 @@ Address: ${joinAddress}`;
     exitFullscreen();
     setSubmitted(true);
     setConfirmSubmitOpen(false);
+    
+    // Save completed test ID to localStorage and state
+    try {
+      const completedTestsStr = localStorage.getItem('cbt_completed_tests') || '[]';
+      const completed = JSON.parse(completedTestsStr) as string[];
+      if (!completed.includes(selectedTest)) {
+        completed.push(selectedTest);
+        localStorage.setItem('cbt_completed_tests', JSON.stringify(completed));
+        setCompletedTests(completed);
+      }
+    } catch (e) {
+      console.error('Error saving completed test ID', e);
+    }
   };
 
   const triggerManualSubmit = () => {
@@ -499,6 +584,19 @@ Address: ${joinAddress}`;
     exitFullscreen();
     setSubmitted(true);
     setConfirmSubmitOpen(false);
+
+    // Save completed test ID to localStorage and state
+    try {
+      const completedTestsStr = localStorage.getItem('cbt_completed_tests') || '[]';
+      const completed = JSON.parse(completedTestsStr) as string[];
+      if (!completed.includes(selectedTest)) {
+        completed.push(selectedTest);
+        localStorage.setItem('cbt_completed_tests', JSON.stringify(completed));
+        setCompletedTests(completed);
+      }
+    } catch (e) {
+      console.error('Error saving completed test ID', e);
+    }
   };
 
   const handleRetake = () => {
@@ -939,77 +1037,170 @@ https://cbt-sudarshan.vercel.app/`;
           </div>
 
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-              <h2 className="text-sm sm:text-lg font-bold text-slate-200">সিলেক্ট করুন কোন টেস্টটি দিতে চান:</h2>
+            <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-slate-800/40 p-4 rounded-xl border border-slate-700/60">
+              <h2 className="text-sm sm:text-lg font-bold text-slate-200 flex items-center gap-2">
+                <span className="text-indigo-400">📝</span> সিলেক্ট করুন কোন টেস্টটি দিতে চান:
+              </h2>
               
-              <div className="flex gap-2 w-full sm:w-auto">
-                <div className="flex-1 sm:flex-none relative bg-slate-750 border border-slate-700 rounded-lg flex items-center px-2 focus-within:ring-2 focus-within:ring-indigo-500">
-                  <Filter className="w-4 h-4 text-slate-400 mr-2" />
-                  <select 
-                    value={filterCategory} 
-                    onChange={(e) => setFilterCategory(e.target.value as any)}
-                    className="bg-transparent text-xs sm:text-sm text-slate-200 outline-none w-full py-2 appearance-none cursor-pointer"
-                  >
-                    <option value="all" className="bg-slate-800">All Topics</option>
-                    <option value="full" className="bg-slate-800">Full Mocks</option>
-                    <option value="subject" className="bg-slate-800">Subject Mocks</option>
-                    <option value="topic" className="bg-slate-800">Topic Mocks</option>
-                  </select>
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                {/* Search Input Bar */}
+                <div className="relative bg-slate-750 border border-slate-600 rounded-xl flex items-center px-3 focus-within:ring-2 focus-within:ring-indigo-500 w-full sm:w-64">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-400 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="মক টেস্ট সার্চ করুন (Search tests...)"
+                    className="bg-transparent text-xs sm:text-sm text-slate-100 placeholder-slate-500 outline-none w-full py-2"
+                  />
+                  {searchQuery && (
+                    <button type="button" onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-200 ml-1">
+                      <XCircle className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
-                
-                <div className="flex-1 sm:flex-none relative bg-slate-750 border border-slate-700 rounded-lg flex items-center px-2 focus-within:ring-2 focus-within:ring-indigo-500">
-                  <ArrowUpDown className="w-4 h-4 text-slate-400 mr-2" />
-                  <select 
-                    value={sortBy} 
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="bg-transparent text-xs sm:text-sm text-slate-200 outline-none w-full py-2 appearance-none cursor-pointer"
-                  >
-                    <option value="latest" className="bg-slate-800">Latest</option>
-                    <option value="oldest" className="bg-slate-800">Oldest</option>
-                  </select>
+
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <div className="flex-1 sm:flex-none relative bg-slate-750 border border-slate-600 rounded-xl flex items-center px-2.5 focus-within:ring-2 focus-within:ring-indigo-500">
+                    <Filter className="w-4 h-4 text-slate-400 mr-2" />
+                    <select 
+                      value={filterCategory} 
+                      onChange={(e) => setFilterCategory(e.target.value as any)}
+                      className="bg-transparent text-xs sm:text-sm text-slate-200 outline-none w-full py-2 appearance-none cursor-pointer pr-4"
+                    >
+                      <option value="all" className="bg-slate-800">All Topics</option>
+                      <option value="full" className="bg-slate-800">Full Mocks</option>
+                      <option value="subject" className="bg-slate-800">Subject Mocks</option>
+                      <option value="topic" className="bg-slate-800">Topic Mocks</option>
+                    </select>
+                  </div>
+                  
+                  <div className="flex-1 sm:flex-none relative bg-slate-750 border border-slate-600 rounded-xl flex items-center px-2.5 focus-within:ring-2 focus-within:ring-indigo-500">
+                    <ArrowUpDown className="w-4 h-4 text-slate-400 mr-2" />
+                    <select 
+                      value={sortBy} 
+                      onChange={(e) => setSortBy(e.target.value as any)}
+                      className="bg-transparent text-xs sm:text-sm text-slate-200 outline-none w-full py-2 appearance-none cursor-pointer pr-4"
+                    >
+                      <option value="latest" className="bg-slate-800">Latest</option>
+                      <option value="oldest" className="bg-slate-800">Oldest</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
-              {TEST_OPTIONS
-                .filter(test => filterCategory === 'all' || test.category === filterCategory)
-                .sort((a, b) => sortBy === 'latest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt)
-                .map((test) => {
-                  const colors = COLOR_MAP[test.badgeColor];
-                  const isSelected = selectedTest === test.id;
-                  
-                  return (
-                    <div
-                      key={test.id}
-                      onClick={() => setSelectedTest(test.id)}
-                      className={`cursor-pointer rounded-xl p-3 sm:p-5 border transition-all relative flex flex-col justify-between ${
-                        isSelected
-                          ? `${colors.borderSelected} ${colors.bgSelected} ring-2 ${colors.ringSelected}`
-                          : 'border-slate-700 bg-slate-750/70 hover:border-slate-600'
-                      }`}
+            {(() => {
+              const filteredTests = TEST_OPTIONS
+                .filter(test => {
+                  const matchesCategory = filterCategory === 'all' || test.category === filterCategory;
+                  const matchesSearch = searchQuery.trim() === '' || 
+                    test.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    test.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    test.badge.toLowerCase().includes(searchQuery.toLowerCase());
+                  return matchesCategory && matchesSearch;
+                })
+                .sort((a, b) => sortBy === 'latest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt);
+
+              if (filteredTests.length === 0) {
+                return (
+                  <div className="text-center py-12 bg-slate-850 rounded-2xl border border-slate-750 p-6 flex flex-col items-center justify-center">
+                    <p className="text-slate-400 text-sm mb-3">কোনো মক টেস্ট খুঁজে পাওয়া যায়নি (No matching tests found)</p>
+                    <button 
+                      type="button"
+                      onClick={() => { setSearchQuery(''); setFilterCategory('all'); }} 
+                      className="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline cursor-pointer"
                     >
-                      <span className={`absolute top-2 right-2 text-[8px] sm:text-xs text-white font-bold px-1.5 py-0.5 rounded-full scale-90 sm:scale-100 origin-top-right ${colors.badgeBg}`}>
-                        {test.badge}
-                      </span>
-                      <div>
-                        <h3 className="font-extrabold text-xs sm:text-base text-white mt-1.5 sm:mt-0">{test.title}</h3>
-                        <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-auto">{test.description}</p>
-                      </div>
-                      <div className="mt-2 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-700/50 space-y-1 text-[10px] sm:text-xs font-semibold text-slate-400">
-                        <div className="hidden sm:block truncate text-slate-500">
-                          <span>{test.sections}</span>
+                      ফিল্টার রিসেট করুন (Reset filters)
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  {filteredTests.map((test) => {
+                    const colors = COLOR_MAP[test.badgeColor] || COLOR_MAP.indigo;
+                    const isSelected = selectedTest === test.id;
+                    const cardClass = getCardStyle(test, isSelected);
+                    const badgeClass = getBadgeColor(test);
+                    
+                    return (
+                      <div
+                        key={test.id}
+                        onClick={() => setSelectedTest(test.id)}
+                        className={`cursor-pointer rounded-2xl p-4 sm:p-5 border transition-all relative flex flex-col justify-between min-h-[190px] ${cardClass}`}
+                      >
+                        {/* Completed progress badge */}
+                        {completedTests.includes(test.id) && (
+                          <div className="absolute top-2.5 left-2.5 flex items-center gap-1 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-md shadow-md shadow-emerald-950/20 z-10">
+                            <Check className="w-2.5 h-2.5 stroke-[3px]" /> Attempted
+                          </div>
+                        )}
+
+                        <span className={`absolute top-2.5 right-2.5 text-[9px] sm:text-xs text-white font-bold px-2 py-0.5 rounded-full z-10 ${badgeClass}`}>
+                          {test.badge}
+                        </span>
+
+                        <div className="pt-4">
+                          <h3 className="font-black text-sm sm:text-[17px] text-white tracking-tight leading-tight mb-1.5 mt-2">
+                            {test.title}
+                          </h3>
+                          <p className="text-[10px] sm:text-xs text-slate-300 mt-1 line-clamp-2 h-7 sm:h-9 leading-relaxed">
+                            {test.description}
+                          </p>
                         </div>
-                        <div className="flex justify-between text-slate-300">
-                          <span>Q: {test.questionCount}</span>
-                          <span>M: {test.totalMarks}</span>
+
+                        <div className="mt-3 pt-3 border-t border-slate-700/50 space-y-3">
+                          <div className="flex justify-between items-center text-[10px] sm:text-xs font-semibold text-slate-400">
+                            <div className="truncate text-slate-400">
+                              <span>{test.sections}</span>
+                            </div>
+                            <div className="flex gap-2.5 text-slate-300 shrink-0">
+                              <span>Q: {test.questionCount}</span>
+                              <span>M: {test.totalMarks}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center">
+                            <div className={`text-[10px] sm:text-xs font-semibold truncate ${colors.textMain}`}>
+                              ⏳ {toBanglaNumber(test.durationMinutes)} মিনিট ({test.durationMinutes}m)
+                            </div>
+                          </div>
+
+                          {/* Action Select/Trigger Button */}
+                          <div className="pt-1">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedTest(test.id);
+                              }}
+                              className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                                isSelected
+                                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/10'
+                                  : 'bg-slate-700/80 hover:bg-slate-700 text-slate-200'
+                              }`}
+                            >
+                              {isSelected ? (
+                                <>
+                                  <CheckCircle className="w-3.5 h-3.5 text-white" />
+                                  <span>সিলেক্ট করা হয়েছে (Selected ✓)</span>
+                                </>
+                              ) : (
+                                <span>পরীক্ষা সিলেক্ট করুন (Select Test)</span>
+                              )}
+                            </button>
+                          </div>
                         </div>
-                        <div className={`${colors.textMain} truncate`}>⏳ {toBanglaNumber(test.durationMinutes)} মিনিট ({test.durationMinutes}m)</div>
                       </div>
-                    </div>
-                  );
-              })}
-            </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
 
             <div className="bg-slate-755 p-4 rounded-xl border border-slate-700/50 text-xs text-slate-300 leading-relaxed">
               <strong className="text-yellow-400 block mb-1">গুরুত্বপূর্ণ নিয়ম ও মার্কিং স্কিম:</strong>
