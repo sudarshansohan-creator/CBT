@@ -146,7 +146,7 @@ export default function ExamPortal() {
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [completedTests, setCompletedTests] = useState<string[]>([]);
-  const [chosenExam, setChosenExam] = useState<'ssc' | 'rrb' | 'wbjee' | 'all' | null>(null);
+  const [chosenExam, setChosenExam] = useState<'ssc' | 'rrb' | 'wbjee' | 'all' | 'mts' | 'panchayat' | 'jeemain' | 'neet' | null>(null);
   const [chosenSubject, setChosenSubject] = useState<'math' | 'gk' | 'gi' | 'english' | 'full' | 'all' | null>(null);
 
   // Paid Batch State
@@ -1092,6 +1092,20 @@ https://cbt-sudarshan.vercel.app/`;
                     </p>
                   </div>
 
+                  {/* SSC MTS Card */}
+                  <div 
+                    onClick={() => setChosenExam('mts')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-blue-950/20 to-cyan-950/20 border border-blue-500/30 hover:border-blue-400 hover:bg-blue-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-cyan-400 border border-blue-500/20 mb-3 group-hover:bg-blue-500/20 transition-all">
+                      <BookOpen className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">SSC MTS</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      কেন্দ্রীয় দপ্তরের গ্রুপ-সি (Group C) পরীক্ষার প্রস্তুতি
+                    </p>
+                  </div>
+
                   {/* RRB Card */}
                   <div 
                     onClick={() => setChosenExam('rrb')}
@@ -1106,7 +1120,21 @@ https://cbt-sudarshan.vercel.app/`;
                     </p>
                   </div>
 
-                  {/* WBJEE / State Card */}
+                  {/* Panchayat Exam Card */}
+                  <div 
+                    onClick={() => setChosenExam('panchayat')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-emerald-950/20 to-lime-950/20 border border-emerald-500/30 hover:border-emerald-400 hover:bg-emerald-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20 mb-3 group-hover:bg-emerald-500/20 transition-all">
+                      <Award className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">Panchayat Exam</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      পশ্চিমবঙ্গ গ্রাম পঞ্চায়েত কর্মী ও অন্যান্য পরীক্ষার প্রস্তুতি
+                    </p>
+                  </div>
+
+                  {/* WBJEE Card */}
                   <div 
                     onClick={() => setChosenExam('wbjee')}
                     className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-amber-950/20 to-orange-950/20 border border-amber-500/30 hover:border-amber-400 hover:bg-amber-950/40 hover:scale-[1.02] shadow-lg group transition-all"
@@ -1117,6 +1145,34 @@ https://cbt-sudarshan.vercel.app/`;
                     <h3 className="font-extrabold text-base sm:text-lg text-white">WBJEE</h3>
                     <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                       পশ্চিমবঙ্গ জয়েন্ট (WBJEE) পরীক্ষা প্রস্তুতি মক
+                    </p>
+                  </div>
+
+                  {/* JEE Main Card */}
+                  <div 
+                    onClick={() => setChosenExam('jeemain')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-indigo-950/20 to-cyan-950/20 border border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20 mb-3 group-hover:bg-indigo-500/20 transition-all">
+                      <Calculator className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">JEE Main</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      সর্বভারতীয় ইঞ্জিনিয়ারিং প্রবেশিকা (NTA JEE) স্পেশাল
+                    </p>
+                  </div>
+
+                  {/* NEET Card */}
+                  <div 
+                    onClick={() => setChosenExam('neet')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-rose-950/20 to-red-950/20 border border-rose-500/30 hover:border-rose-400 hover:bg-rose-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-400 border border-rose-500/20 mb-3 group-hover:bg-rose-500/20 transition-all">
+                      <Brain className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">NEET (UG)</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      জাতীয় স্তরের মেডিকেল প্রবেশিকা পরীক্ষা প্রস্তুতি
                     </p>
                   </div>
 
@@ -1335,6 +1391,10 @@ https://cbt-sudarshan.vercel.app/`;
                     {chosenExam === 'ssc' && "SSC CHSL মক সিরিজ"}
                     {chosenExam === 'rrb' && "RRB / রেলওয়ে প্রস্তুতি সিরিজ"}
                     {chosenExam === 'wbjee' && "WBJEE জয়েন্ট প্রস্তুতি মক"}
+                    {chosenExam === 'mts' && "SSC MTS প্রস্তুতি মক"}
+                    {chosenExam === 'panchayat' && "WB Gram Panchayat প্রস্তুতি মক"}
+                    {chosenExam === 'jeemain' && "JEE Main জয়েন্ট প্রস্তুতি মক"}
+                    {chosenExam === 'neet' && "NEET প্রবেশিকা প্রস্তুতি মক"}
                     {chosenExam === 'all' && "সম্পূর্ণ মক টেস্ট লিস্ট"}
                     {chosenSubject === 'math' && "Mathematics (গণিত) স্পেশাল মক"}
                     {chosenSubject === 'gi' && "General Intelligence (রিজনিং) মক"}
@@ -1433,15 +1493,17 @@ https://cbt-sudarshan.vercel.app/`;
                     const descLower = test.description.toLowerCase();
 
                     if (chosenExam === 'ssc') {
-                      return !titleLower.includes('wbjee') && !idLower.includes('wbjee') && !titleLower.includes('railway') && !titleLower.includes('rrb');
+                      return !titleLower.includes('wbjee') && !idLower.includes('wbjee') && !titleLower.includes('railway') && !titleLower.includes('rrb') && test.id !== 'science_math_gi_1';
                     }
                     if (chosenExam === 'rrb') {
                       const rrbKeywords = ['railway', 'rrb', 'science', 'computer', 'sports', 'census', 'river', 'dam', 'geography', 'bodmas', 'decimals', 'fractions', 'percentage', 'divisibility', 'integers', 'rational', 'gi', 'general intelligence', 'math mock', 'gk mock'];
                       return rrbKeywords.some(kw => titleLower.includes(kw) || idLower.includes(kw) || descLower.includes(kw) || badgeLower.includes(kw));
                     }
-                    if (chosenExam === 'wbjee') {
-                      const wbjeeKeywords = ['wbjee', 'error', 'measurement', 'physics'];
-                      return wbjeeKeywords.some(kw => titleLower.includes(kw) || idLower.includes(kw) || descLower.includes(kw) || badgeLower.includes(kw));
+                    if (chosenExam === 'wbjee' || chosenExam === 'jeemain' || chosenExam === 'neet') {
+                      return idLower.includes('wbjee');
+                    }
+                    if (chosenExam === 'mts' || chosenExam === 'panchayat') {
+                      return false;
                     }
                   }
 
@@ -1471,18 +1533,65 @@ https://cbt-sudarshan.vercel.app/`;
                 .sort((a, b) => sortBy === 'latest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt);
 
               if (filteredTests.length === 0) {
+                const getEmptyMsg = () => {
+                  if (chosenExam === 'mts') {
+                    return {
+                      title: 'SSC MTS (Multi Tasking Staff)',
+                      desc: 'এটি স্টাফ সিলেকশন কমিশনের (SSC) দ্বারা পরিচালিত একটি সর্বভারতীয় পরীক্ষা। কেন্দ্রীয় সরকারের বিভিন্ন মন্ত্রক ও দপ্তরে ‘গ্রুপ-সি’ (Group C) নন-গেজেটেড, নন-মিনিস্ট্রিয়াল পদে কর্মী নিয়োগের জন্য এই পরীক্ষা নেওয়া হয়। সাধারণত মাধ্যমিক পাশের যোগ্যতায় এই পরীক্ষায় বসা যায়। এর প্রস্তুতি মক সেট শীঘ্রই যুক্ত করা হবে।',
+                      engDesc: 'Staff Selection Commission - Multi Tasking Staff mock tests are coming soon.'
+                    };
+                  }
+                  if (chosenExam === 'panchayat') {
+                    return {
+                      title: 'Panchayat Exam (West Bengal)',
+                      desc: 'এটি পশ্চিমবঙ্গ সরকারের পঞ্চায়েত ও গ্রামীণ উন্নয়ন দপ্তরের অধীনে বিভিন্ন প্রশাসনিক ও প্রযুক্তিগত পদে নিয়োগের জন্য পরিচালিত পরীক্ষা। এর মাধ্যমে গ্রাম পঞ্চায়েত কর্মী, ক্লার্ক, ডেটা এন্ট্রি অপারেটর (DEO), এক্সিকিউティブ অ্যাসিস্ট্যান্ট ইত্যাদি পদে কর্মী নিয়োগ করা হয়। নিয়োগ প্রক্রিয়াটি সাধারণত রাজ্য সরকারের নিজস্ব পোর্টাল (যেমন: WBPRMS) দ্বারা পরিচালিত হয়। প্রস্তুতি সেট শীঘ্রই যুক্ত করা হবে।',
+                      engDesc: 'West Bengal Gram Panchayat Recruitment mock tests are coming soon.'
+                    };
+                  }
+                  if (chosenExam === 'jeemain') {
+                    return {
+                      title: 'JEE Main (Joint Entrance Examination)',
+                      desc: 'এটি ভারতের জাতীয় স্তরের ইঞ্জিনিয়ারিং প্রবেশিকা পরীক্ষা, যা ন্যাশনাল টেস্টিং এজেন্সি (NTA) দ্বারা পরিচালিত হয়। বিভিন্ন NIT, IIIT, GFTI এবং অন্যান্য সরকারি ও বেসরকারি ইঞ্জিনিয়ারিং কলেজে বি.টেক (B.Tech) বা বি.ই (B.E) কোর্সে ভর্তির জন্য এই পরীক্ষা দিতে হয়। এছাড়া, এটি JEE Advanced পরীক্ষার জন্য যোগ্যতামান নির্ধারণী পরীক্ষা হিসেবেও কাজ করে। প্রস্তুতি সেট শীঘ্রই আসছে।',
+                      engDesc: 'JEE Main Engineering Entrance Exam practice tests are coming soon.'
+                    };
+                  }
+                  if (chosenExam === 'neet') {
+                    return {
+                      title: 'NEET (National Eligibility cum Entrance Test)',
+                      desc: 'এটি ভারতের সর্ববৃহৎ মেডিকেল প্রবেশিকা পরীক্ষা, যা NTA দ্বারা পরিচালিত হয়। দেশের বিভিন্ন সরকারি ও বেসরকারি মেডিকেল কলেজে এমবিবিএস (MBBS), বিডিএস (BDS) এবং অন্যান্য আয়ুষ (AYUSH) কোর্সে ভর্তির জন্য এই পরীক্ষাটি বাধ্যতামূলক। প্রস্তুতি মক টেস্ট শীঘ্রই আসবে।',
+                      engDesc: 'NEET Medical Entrance Exam mock tests are coming soon.'
+                    };
+                  }
+                  if (chosenExam === 'wbjee') {
+                    return {
+                      title: 'WBJEE',
+                      desc: 'এই বিভাগে বর্তমানে কোনো পরীক্ষা উপলব্ধ নেই।',
+                      engDesc: 'Currently no exams available in this category.'
+                    };
+                  }
+                  return {
+                    title: 'কোনো মক টেস্ট খুঁজে পাওয়া যায়নি',
+                    desc: 'আপনার খোঁজা ফিল্টার বা কি-ওয়ার্ডের জন্য কোনো ম্যাচ পাওয়া যায়নি।',
+                    engDesc: 'No matching tests found for your filters.'
+                  };
+                };
+
+                const msg = getEmptyMsg();
+
                 return (
-                  <div className="text-center py-12 bg-slate-850 rounded-2xl border border-slate-750 p-6 flex flex-col items-center justify-center">
-                    <p className="text-slate-400 text-sm mb-3">
-                      {chosenExam === 'wbjee' 
-                        ? 'এই বিভাগে বর্তমানে কোনো পরীক্ষা উপলব্ধ নেই। (Currently no exams available in this category.)' 
-                        : 'কোনো মক টেস্ট খুঁজে পাওয়া যায়নি (No matching tests found)'}
-                    </p>
-                    {chosenExam !== 'wbjee' && (
+                  <div className="text-center py-10 px-6 sm:px-8 bg-slate-850 rounded-2xl border border-slate-750 flex flex-col items-center justify-center max-w-2xl mx-auto shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                    <div className="inline-flex p-3 rounded-full bg-indigo-500/10 text-indigo-400 mb-4 border border-indigo-500/20">
+                      <Sparkles className="w-8 h-8 animate-pulse" />
+                    </div>
+                    <h3 className="font-extrabold text-lg sm:text-xl text-white mb-2 tracking-tight">{msg.title}</h3>
+                    <p className="text-slate-300 text-sm mb-2 leading-relaxed max-w-lg">{msg.desc}</p>
+                    <p className="text-slate-500 text-xs italic leading-relaxed">{msg.engDesc}</p>
+                    {(!['mts', 'panchayat', 'jeemain', 'neet'].includes(chosenExam || '')) && (
                       <button 
                         type="button"
                         onClick={() => { setSearchQuery(''); setFilterCategory('all'); }} 
-                        className="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline cursor-pointer"
+                        className="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline mt-5 cursor-pointer"
                       >
                         ফিল্টার রিসেট করুন (Reset filters)
                       </button>
