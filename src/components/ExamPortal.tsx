@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { questions, comboQuestions, artCultureQuestions, grammarQuestions, giQuestions } from '../data/questions';
 import { fullMock2Questions } from '../data/questions2';
+import { wbjeeErrorAnalysisQuestions, wbjeeUnitsMeasurements1Questions } from '../data/questions_wbjee';
 import { censusGkQuestions } from '../data/questions_gk';
 import { sportsGkQuestions } from '../data/questions_sports_gk';
 import { computerQuestions } from '../data/questions_computer';
@@ -23,6 +24,7 @@ import { mathDivisibilityQuestions } from '../data/questions_math_divisibility';
 import { mathTrigonometryQuestions } from '../data/questions_math_trigonometry';
 import { scienceMathGiQuestions } from '../data/questions_general_science_math_gi';
 import { Question, Section } from '../types';
+import { LatexRenderer } from './LatexRenderer';
 import { 
   Clock, 
   CheckCircle, 
@@ -44,13 +46,21 @@ import {
   Filter,
   ArrowUpDown,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Brain,
+  Calculator,
+  Globe,
+  GraduationCap,
+  Sparkles,
+  Trophy,
+  HelpCircle,
+  Layers
 } from 'lucide-react';
 
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1' | 'science_math_gi_1';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1' | 'science_math_gi_1' | 'wbjee_error_analysis_2' | 'wbjee_units_measurements_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -90,7 +100,9 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'gi_alphabet_1', category: 'subject', title: 'SSC CHSL - CT 07: Alphabet & Dictionary Order', badge: 'GI Alphabet', badgeColor: 'purple', description: 'Alphabet & Dictionary Order Practice Set (10 Questions).', sections: 'GI Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 24 },
   { id: 'math_divisibility_1', category: 'subject', title: 'SSC CHSL - CT 08: Divisibility & Remainder', badge: 'Math Divisibility', badgeColor: 'indigo', description: 'Divisibility and Remainder Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 25 },
   { id: 'math_trigonometry_1', category: 'subject', title: 'SSC CHSL - CT 09: Trigonometry Basics & Formulas', badge: 'Math Trigonometry', badgeColor: 'indigo', description: 'Trigonometry Basics & Formulas Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 26 },
-  { id: 'science_math_gi_1', category: 'full', title: 'General Science, Math & GI Mock 1', badge: 'Sci-Math-GI', badgeColor: 'teal', description: 'জেনারেল সায়েন্স, গণিত এবং জেনারেল ইন্টেলিজেন্স-এর ১০০টি বিশেষ প্রশ্নের সম্পূর্ণ CBT মক টেস্ট।', sections: 'Science, Math, GI', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 27 }
+  { id: 'science_math_gi_1', category: 'full', title: 'General Science, Math & GI Mock 1', badge: 'Sci-Math-GI', badgeColor: 'teal', description: 'জেনারেল সায়েন্স, গণিত এবং জেনারেল ইন্টেলিজেন্স-এর ১০০টি বিশেষ প্রশ্নের সম্পূর্ণ CBT মক টেস্ট।', sections: 'Science, Math, GI', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 27 },
+  { id: 'wbjee_error_analysis_2', category: 'topic', title: 'Units, Measurements and Error Analysis - Test 2', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের বিশেষ সেট (Error Analysis ও পরিমাপের গাণিতিক সমস্যা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 28 },
+  { id: 'wbjee_units_measurements_1', category: 'topic', title: 'Units and Measurements - Test 1', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের প্রথম সেট (পরিমাপ, মাত্রা ও বিভিন্ন যন্ত্রের গণনা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 29 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -134,6 +146,8 @@ export default function ExamPortal() {
   const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [completedTests, setCompletedTests] = useState<string[]>([]);
+  const [chosenExam, setChosenExam] = useState<'ssc' | 'rrb' | 'wbjee' | 'all' | null>(null);
+  const [chosenSubject, setChosenSubject] = useState<'math' | 'gk' | 'gi' | 'english' | 'full' | 'all' | null>(null);
 
   // Paid Batch State
   const [joinModalOpen, setJoinModalOpen] = useState(false);
@@ -292,6 +306,12 @@ export default function ExamPortal() {
     if (selectedTest === 'science_math_gi_1') {
       return scienceMathGiQuestions;
     }
+    if (selectedTest === 'wbjee_error_analysis_2') {
+      return wbjeeErrorAnalysisQuestions;
+    }
+    if (selectedTest === 'wbjee_units_measurements_1') {
+      return wbjeeUnitsMeasurements1Questions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -371,6 +391,12 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'science_math_gi_1') {
       return ['Math', 'GI', 'GK'];
+    }
+    if (selectedTest === 'wbjee_error_analysis_2') {
+      return ['GK'];
+    }
+    if (selectedTest === 'wbjee_units_measurements_1') {
+      return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
@@ -1024,6 +1050,268 @@ https://cbt-sudarshan.vercel.app/`;
       );
     }
 
+    if (chosenExam === null && chosenSubject === null) {
+      return (
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-2 sm:p-4">
+          <div className="max-w-4xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-4 sm:p-8 border border-slate-700 relative overflow-hidden">
+            {/* Accent decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
+            <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+            <div className="text-center mb-8">
+              <div className="inline-flex p-3 rounded-full bg-indigo-500/10 text-indigo-400 mb-3 border border-indigo-500/20">
+                <Award className="w-10 h-10 animate-pulse" />
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">
+                স্বাগতম, {candidateName}!
+              </h1>
+              <p className="text-indigo-400 mt-2 text-sm sm:text-base font-semibold">
+                CBT Exam Room • আপনার পরীক্ষার লক্ষ্য অথবা পছন্দের বিষয় বেছে নিন
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              {/* Exam Boards Section */}
+              <div className="space-y-4">
+                <h2 className="text-base sm:text-lg font-black text-slate-200 border-l-4 border-l-indigo-500 pl-3 flex items-center gap-2">
+                  <span className="text-indigo-400">🏫</span> 
+                  <span>১. পরীক্ষা অনুযায়ী ক্যাটাগরি (Choose Your Exam Board):</span>
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  {/* SSC CHSL Card */}
+                  <div 
+                    onClick={() => setChosenExam('ssc')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-blue-950/20 to-indigo-950/20 border border-blue-500/30 hover:border-blue-400 hover:bg-blue-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20 mb-3 group-hover:bg-blue-500/20 transition-all">
+                      <GraduationCap className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">SSC CHSL</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      CHSL ও জেনারেল পরীক্ষার জন্য স্পেশাল মক সেট
+                    </p>
+                  </div>
+
+                  {/* RRB Card */}
+                  <div 
+                    onClick={() => setChosenExam('rrb')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-teal-950/20 to-emerald-950/20 border border-teal-500/30 hover:border-teal-400 hover:bg-teal-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20 mb-3 group-hover:bg-teal-500/20 transition-all">
+                      <Sparkles className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">RRB / রেলওয়ে</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      রেলওয়ের ALP, Tech এবং Group D স্পেশাল প্রস্তুতি
+                    </p>
+                  </div>
+
+                  {/* WBJEE / State Card */}
+                  <div 
+                    onClick={() => setChosenExam('wbjee')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-amber-950/20 to-orange-950/20 border border-amber-500/30 hover:border-amber-400 hover:bg-amber-950/40 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20 mb-3 group-hover:bg-amber-500/20 transition-all">
+                      <Globe className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">WBJEE / State</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      রাজ্য সরকারি পরীক্ষা ও পশ্চিমবঙ্গ জয়েন্ট প্রস্তুতি মক
+                    </p>
+                  </div>
+
+                  {/* All Exams Card */}
+                  <div 
+                    onClick={() => setChosenExam('all')}
+                    className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-slate-800/30 to-slate-700/20 border-slate-600/50 hover:border-slate-400 hover:bg-slate-800/50 hover:scale-[1.02] shadow-lg group transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-slate-500/10 flex items-center justify-center text-slate-400 border border-slate-600/30 mb-3 group-hover:bg-slate-500/20 transition-all">
+                      <Layers className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">All Mocks (সব)</h3>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      সব ক্যাটাগরির মক টেস্ট একত্রে দেখতে ক্লিক করুন
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Subjects Section */}
+              <div className="space-y-4">
+                <h2 className="text-base sm:text-lg font-black text-slate-200 border-l-4 border-l-indigo-500 pl-3 flex items-center gap-2">
+                  <span className="text-indigo-400">📚</span> 
+                  <span>অথবা ২. বিষয় অনুযায়ী মক টেস্ট (Or Choose Your Subject):</span>
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
+                  {/* Mathematics Card */}
+                  <div 
+                    onClick={() => setChosenSubject('math')}
+                    className="cursor-pointer rounded-2xl p-4 bg-gradient-to-br from-blue-950/20 to-blue-900/10 border border-blue-500/30 hover:border-blue-400 hover:bg-blue-950/30 hover:scale-[1.02] shadow-md group flex flex-col justify-between min-h-[120px] transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-3 group-hover:bg-blue-500/20 transition-all">
+                      <Calculator className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-sm text-white">গণিত (Math)</h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">Quantitative Aptitude</p>
+                    </div>
+                  </div>
+
+                  {/* GI Card */}
+                  <div 
+                    onClick={() => setChosenSubject('gi')}
+                    className="cursor-pointer rounded-2xl p-4 bg-gradient-to-br from-purple-950/20 to-purple-900/10 border border-purple-500/30 hover:border-purple-400 hover:bg-purple-950/30 hover:scale-[1.02] shadow-md group flex flex-col justify-between min-h-[120px] transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 mb-3 group-hover:bg-purple-500/20 transition-all">
+                      <Brain className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-sm text-white">রিজনিং / GI</h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">Reasoning & Intelligence</p>
+                    </div>
+                  </div>
+
+                  {/* GK Card */}
+                  <div 
+                    onClick={() => setChosenSubject('gk')}
+                    className="cursor-pointer rounded-2xl p-4 bg-gradient-to-br from-amber-950/20 to-amber-900/10 border border-amber-500/30 hover:border-amber-400 hover:bg-amber-950/30 hover:scale-[1.02] shadow-md group flex flex-col justify-between min-h-[120px] transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-3 group-hover:bg-amber-500/20 transition-all">
+                      <Globe className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-sm text-white">সাধারণ জ্ঞান (GK)</h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">GK & Current Affairs</p>
+                    </div>
+                  </div>
+
+                  {/* English Card */}
+                  <div 
+                    onClick={() => setChosenSubject('english')}
+                    className="cursor-pointer rounded-2xl p-4 bg-gradient-to-br from-rose-950/20 to-rose-900/10 border-rose-500/30 hover:border-rose-400 hover:bg-rose-950/30 hover:scale-[1.02] shadow-md group flex flex-col justify-between min-h-[120px] transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-400 mb-3 group-hover:bg-rose-500/20 transition-all">
+                      <BookOpen className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-sm text-white">ইংরেজি (English)</h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">Grammar & Vocabulary</p>
+                    </div>
+                  </div>
+
+                  {/* Full Mock Card */}
+                  <div 
+                    onClick={() => setChosenSubject('full')}
+                    className="cursor-pointer rounded-2xl p-4 bg-gradient-to-br from-indigo-950/20 to-indigo-900/10 border-indigo-500/30 hover:border-indigo-400 hover:bg-indigo-950/30 hover:scale-[1.02] shadow-md group flex flex-col justify-between min-h-[120px] col-span-2 sm:col-span-1 transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-3 group-hover:bg-indigo-500/20 transition-all">
+                      <Trophy className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-sm text-white">পূর্ণাঙ্গ মক টেস্ট</h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">100 Qs Full Exams</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-slate-700/50 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
+              <button
+                type="button"
+                onClick={() => setNameEntered(false)}
+                className="text-slate-400 hover:text-slate-200 font-bold transition flex items-center gap-1.5 cursor-pointer"
+              >
+                ← নাম পরিবর্তন করুন (Change Name)
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setJoinModalOpen(true)}
+                className="text-amber-400 hover:text-amber-300 font-bold transition flex items-center gap-1.5 cursor-pointer"
+              >
+                🔥 জয়েন করুন আমাদের পেইড ব্যাচে (Join Paid Batch)
+              </button>
+            </div>
+          </div>
+          {joinModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+              <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-sm w-full shadow-2xl relative">
+                <button 
+                  onClick={() => setJoinModalOpen(false)}
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white"
+                >
+                  <XCircle className="w-6 h-6" />
+                </button>
+                <h3 className="text-xl font-bold text-white mb-2 text-center">Join Paid Batch</h3>
+                <p className="text-slate-300 text-sm mb-4 text-center">
+                  To get live lecture, suggestion notes, you can join our paid batch for just <span className="font-bold text-emerald-400">100 INR per month</span>.
+                </p>
+                
+                <div className="bg-slate-755/50 border border-slate-700 rounded-lg p-4 mb-6">
+                  <h4 className="text-emerald-400 font-semibold text-sm mb-2">Features Included:</h4>
+                  <ul className="text-slate-300 text-sm space-y-2">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> Small batch
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> Live lecture
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> 1 to 1 conversation
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> Suggestion notes
+                    </li>
+                  </ul>
+                </div>
+                
+                <form onSubmit={handleJoinSubmit} className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      value={joinName}
+                      onChange={(e) => setJoinName(e.target.value)}
+                      placeholder="Your Name"
+                      className="w-full bg-slate-750 border border-slate-600 rounded-lg py-2.5 px-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      required
+                      value={joinAge}
+                      onChange={(e) => setJoinAge(e.target.value)}
+                      placeholder="Your Age"
+                      className="w-full bg-slate-750 border border-slate-600 rounded-lg py-2.5 px-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      required
+                      value={joinAddress}
+                      onChange={(e) => setJoinAddress(e.target.value)}
+                      placeholder="Your Address"
+                      rows={2}
+                      className="w-full bg-slate-750 border border-slate-600 rounded-lg py-2.5 px-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition-colors mt-2 shadow-lg shadow-emerald-500/20"
+                  >
+                    Join Now
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-2 sm:p-4">
         <div className="max-w-4xl w-full bg-slate-800 text-white shadow-2xl rounded-2xl p-4 sm:p-8 border border-slate-700 relative overflow-hidden">
@@ -1037,6 +1325,38 @@ https://cbt-sudarshan.vercel.app/`;
           </div>
 
           <div className="space-y-4">
+            {/* Category Filter Banner */}
+            <div className="bg-slate-900/60 border border-slate-700/80 p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div>
+                <span className="text-[10px] uppercase font-black tracking-widest text-indigo-400">Selected Path (পছন্দের বিষয়)</span>
+                <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2 mt-0.5">
+                  <span className="text-indigo-400">🎯</span>
+                  <span>
+                    {chosenExam === 'ssc' && "SSC CHSL মক সিরিজ"}
+                    {chosenExam === 'rrb' && "RRB / রেলওয়ে প্রস্তুতি সিরিজ"}
+                    {chosenExam === 'wbjee' && "WBJEE ও রাজ্য সরকারি পরীক্ষা মক"}
+                    {chosenExam === 'all' && "সম্পূর্ণ মক টেস্ট লিস্ট"}
+                    {chosenSubject === 'math' && "Mathematics (গণিত) স্পেশাল মক"}
+                    {chosenSubject === 'gi' && "General Intelligence (রিজনিং) মক"}
+                    {chosenSubject === 'gk' && "GK & General Science (সাধারণ জ্ঞান) মক"}
+                    {chosenSubject === 'english' && "English Language (ইংরেজি) মক সেট"}
+                    {chosenSubject === 'full' && "সম্পূর্ণ ১০০ প্রশ্নের ফুল মকস"}
+                    {chosenSubject === 'all' && "সব বিষয়ের মকস"}
+                  </span>
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setChosenExam(null);
+                  setChosenSubject(null);
+                }}
+                className="px-3 py-1.5 bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border border-indigo-500/20"
+              >
+                ← অন্য বিষয় বেছে নিন (Change category)
+              </button>
+            </div>
+
             <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-slate-800/40 p-4 rounded-xl border border-slate-700/60">
               <h2 className="text-sm sm:text-lg font-bold text-slate-200 flex items-center gap-2">
                 <span className="text-indigo-400">📝</span> সিলেক্ট করুন কোন টেস্টটি দিতে চান:
@@ -1100,21 +1420,73 @@ https://cbt-sudarshan.vercel.app/`;
                     test.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                     test.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                     test.badge.toLowerCase().includes(searchQuery.toLowerCase());
-                  return matchesCategory && matchesSearch;
+                  
+                  if (!matchesCategory || !matchesSearch) return false;
+
+                  // Apply chosenExam filter if any
+                  if (chosenExam) {
+                    if (chosenExam === 'all') return true;
+                    
+                    const titleLower = test.title.toLowerCase();
+                    const idLower = test.id.toLowerCase();
+                    const badgeLower = test.badge.toLowerCase();
+                    const descLower = test.description.toLowerCase();
+
+                    if (chosenExam === 'ssc') {
+                      return !titleLower.includes('wbjee') && !idLower.includes('wbjee') && !titleLower.includes('railway') && !titleLower.includes('rrb');
+                    }
+                    if (chosenExam === 'rrb') {
+                      const rrbKeywords = ['railway', 'rrb', 'science', 'computer', 'sports', 'census', 'river', 'dam', 'geography', 'bodmas', 'decimals', 'fractions', 'percentage', 'divisibility', 'integers', 'rational', 'gi', 'general intelligence', 'math mock', 'gk mock'];
+                      return rrbKeywords.some(kw => titleLower.includes(kw) || idLower.includes(kw) || descLower.includes(kw) || badgeLower.includes(kw));
+                    }
+                    if (chosenExam === 'wbjee') {
+                      const wbjeeKeywords = ['wbjee', 'error', 'measurement', 'physics'];
+                      return wbjeeKeywords.some(kw => titleLower.includes(kw) || idLower.includes(kw) || descLower.includes(kw) || badgeLower.includes(kw));
+                    }
+                  }
+
+                  // Apply chosenSubject filter if any
+                  if (chosenSubject) {
+                    if (chosenSubject === 'all') return true;
+
+                    const titleLower = test.title.toLowerCase();
+                    const idLower = test.id.toLowerCase();
+                    const badgeLower = test.badge.toLowerCase();
+
+                    const isMath = titleLower.includes('math') || badgeLower.includes('math') || idLower.includes('math') || idLower.includes('trigonometry') || idLower.includes('divisibility') || idLower.includes('percentage') || idLower.includes('fractions') || idLower.includes('decimals') || idLower.includes('bodmas') || idLower.includes('integers') || idLower.includes('rational');
+                    const isSci = titleLower.includes('science') || idLower.includes('science');
+                    const isGK = titleLower.includes('gk') || badgeLower.includes('gk') || titleLower.includes('census') || titleLower.includes('culture') || titleLower.includes('computer') || titleLower.includes('rivers') || titleLower.includes('sports') || idLower.includes('gk') || idLower.includes('geography') || idLower.includes('computer') || idLower.includes('census') || idLower.includes('art') || titleLower.includes('dam');
+                    const isEnglish = titleLower.includes('english') || badgeLower.includes('english') || idLower.includes('english') || titleLower.includes('grammar');
+                    const isGI = titleLower.includes('gi') || badgeLower.includes('gi') || idLower.includes('gi_') || titleLower.includes('intelligence') || titleLower.includes('alphabet');
+
+                    if (chosenSubject === 'math') return isMath;
+                    if (chosenSubject === 'gk') return isGK || isSci;
+                    if (chosenSubject === 'gi') return isGI;
+                    if (chosenSubject === 'english') return isEnglish;
+                    if (chosenSubject === 'full') return test.category === 'full';
+                  }
+
+                  return true;
                 })
                 .sort((a, b) => sortBy === 'latest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt);
 
               if (filteredTests.length === 0) {
                 return (
                   <div className="text-center py-12 bg-slate-850 rounded-2xl border border-slate-750 p-6 flex flex-col items-center justify-center">
-                    <p className="text-slate-400 text-sm mb-3">কোনো মক টেস্ট খুঁজে পাওয়া যায়নি (No matching tests found)</p>
-                    <button 
-                      type="button"
-                      onClick={() => { setSearchQuery(''); setFilterCategory('all'); }} 
-                      className="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline cursor-pointer"
-                    >
-                      ফিল্টার রিসেট করুন (Reset filters)
-                    </button>
+                    <p className="text-slate-400 text-sm mb-3">
+                      {chosenExam === 'wbjee' 
+                        ? 'এই বিভাগে বর্তমানে কোনো পরীক্ষা উপলব্ধ নেই। (Currently no exams available in this category.)' 
+                        : 'কোনো মক টেস্ট খুঁজে পাওয়া যায়নি (No matching tests found)'}
+                    </p>
+                    {chosenExam !== 'wbjee' && (
+                      <button 
+                        type="button"
+                        onClick={() => { setSearchQuery(''); setFilterCategory('all'); }} 
+                        className="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline cursor-pointer"
+                      >
+                        ফিল্টার রিসেট করুন (Reset filters)
+                      </button>
+                    )}
                   </div>
                 );
               }
@@ -1611,7 +1983,9 @@ https://cbt-sudarshan.vercel.app/`;
                         </span>
                       </div>
 
-                      <p className="text-base sm:text-lg font-medium text-slate-100">{q.question}</p>
+                      <p className="text-base sm:text-lg font-medium text-slate-100">
+                        <LatexRenderer text={q.question} />
+                      </p>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {q.options.map((opt, idx) => {
@@ -1636,7 +2010,9 @@ https://cbt-sudarshan.vercel.app/`;
                               }`}>
                                 {optionKey}
                               </span>
-                              <span>{opt}</span>
+                              <span>
+                                <LatexRenderer text={opt} />
+                              </span>
                             </div>
                           );
                         })}
@@ -1649,10 +2025,10 @@ https://cbt-sudarshan.vercel.app/`;
                           <span>Correct Answer Key: <strong className="text-emerald-400 text-base">{q.correctAnswer}</strong></span>
                         </p>
                         {q.explanation && (
-                          <p className="text-slate-400 font-light leading-relaxed">
+                          <div className="text-slate-400 font-light leading-relaxed">
                             <strong className="text-slate-300">Explanation: </strong>
-                            {q.explanation}
-                          </p>
+                            <LatexRenderer text={q.explanation} />
+                          </div>
                         )}
                       </div>
                     </div>
@@ -1937,7 +2313,7 @@ https://cbt-sudarshan.vercel.app/`;
                 <div className="space-y-5 sm:space-y-6">
                   {/* The actual question message */}
                   <h3 className="text-base sm:text-xl font-semibold text-slate-100 leading-relaxed">
-                    {activeQuestion.question}
+                    <LatexRenderer text={activeQuestion.question} />
                   </h3>
 
                   {/* Options layout */}
@@ -1962,7 +2338,9 @@ https://cbt-sudarshan.vercel.app/`;
                           }`}>
                             {optionKey}
                           </span>
-                          <span className="leading-snug pt-0.5 sm:pt-0">{opt}</span>
+                          <span className="leading-snug pt-0.5 sm:pt-0">
+                            <LatexRenderer text={opt} />
+                          </span>
                         </button>
                       );
                     })}
@@ -2057,7 +2435,9 @@ https://cbt-sudarshan.vercel.app/`;
                         </div>
                       </div>
 
-                      <p className="text-slate-150 font-medium text-base">{q.question}</p>
+                      <p className="text-slate-150 font-medium text-base">
+                        <LatexRenderer text={q.question} />
+                      </p>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {q.options.map((opt, oIdx) => {
@@ -2082,7 +2462,9 @@ https://cbt-sudarshan.vercel.app/`;
                               }`}>
                                 {optionKey}
                               </span>
-                              <span>{opt}</span>
+                              <span>
+                                <LatexRenderer text={opt} />
+                              </span>
                             </button>
                           );
                         })}
