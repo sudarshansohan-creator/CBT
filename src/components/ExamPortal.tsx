@@ -23,6 +23,7 @@ import { giAlphabetQuestions } from '../data/questions_gi_alphabet';
 import { mathDivisibilityQuestions } from '../data/questions_math_divisibility';
 import { mathTrigonometryQuestions } from '../data/questions_math_trigonometry';
 import { scienceMathGiQuestions } from '../data/questions_general_science_math_gi';
+import { panchayatHistory1Questions } from '../data/questions_panchayat';
 import { Question, Section } from '../types';
 import { LatexRenderer } from './LatexRenderer';
 import { 
@@ -60,7 +61,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1' | 'science_math_gi_1' | 'wbjee_error_analysis_2' | 'wbjee_units_measurements_1';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1' | 'science_math_gi_1' | 'wbjee_error_analysis_2' | 'wbjee_units_measurements_1' | 'panchayat_history_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -102,7 +103,8 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'math_trigonometry_1', category: 'subject', title: 'SSC CHSL - CT 09: Trigonometry Basics & Formulas', badge: 'Math Trigonometry', badgeColor: 'indigo', description: 'Trigonometry Basics & Formulas Practice Set (10 Questions).', sections: 'Math Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 26 },
   { id: 'science_math_gi_1', category: 'full', title: 'General Science, Math & GI Mock 1', badge: 'Sci-Math-GI', badgeColor: 'teal', description: 'জেনারেল সায়েন্স, গণিত এবং জেনারেল ইন্টেলিজেন্স-এর ১০০টি বিশেষ প্রশ্নের সম্পূর্ণ CBT মক টেস্ট।', sections: 'Science, Math, GI', questionCount: 100, totalMarks: 200, durationMinutes: 60, createdAt: 27 },
   { id: 'wbjee_error_analysis_2', category: 'topic', title: 'Units, Measurements and Error Analysis - Test 2', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের বিশেষ সেট (Error Analysis ও পরিমাপের গাণিতিক সমস্যা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 28 },
-  { id: 'wbjee_units_measurements_1', category: 'topic', title: 'Units and Measurements - Test 1', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের প্রথম সেট (পরিমাপ, মাত্রা ও বিভিন্ন যন্ত্রের গণনা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 29 }
+  { id: 'wbjee_units_measurements_1', category: 'topic', title: 'Units and Measurements - Test 1', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের প্রথম সেট (পরিমাপ, মাত্রা ও বিভিন্ন যন্ত্রের গণনা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 29 },
+  { id: 'panchayat_history_1', category: 'topic', title: 'West Bengal Panchayat - History Mock 1', badge: 'Panchayat GK', badgeColor: 'emerald', description: 'পশ্চিমবঙ্গ পঞ্চায়েত পরীক্ষার উপযোগী ইতিহাস মক সেট (১০টি গুরুত্বপূর্ণ প্রশ্ন - সিন্ধু সভ্যতা)।', sections: 'GK Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 30 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -115,6 +117,7 @@ const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ri
   orange: { borderSelected: 'border-orange-500', bgSelected: 'bg-orange-500/15', ringSelected: 'ring-orange-500/35', badgeBg: 'bg-orange-600', textMain: 'text-orange-300' },
   fuchsia: { borderSelected: 'border-fuchsia-500', bgSelected: 'bg-fuchsia-500/15', ringSelected: 'ring-fuchsia-500/35', badgeBg: 'bg-fuchsia-600', textMain: 'text-fuchsia-300' },
   sky: { borderSelected: 'border-sky-500', bgSelected: 'bg-sky-500/15', ringSelected: 'ring-sky-500/35', badgeBg: 'bg-sky-600', textMain: 'text-sky-300' },
+  emerald: { borderSelected: 'border-emerald-500', bgSelected: 'bg-emerald-500/15', ringSelected: 'ring-emerald-500/35', badgeBg: 'bg-emerald-600', textMain: 'text-emerald-300' },
 };
 
 const toBanglaNumber = (num: number | string): string => {
@@ -312,6 +315,9 @@ export default function ExamPortal() {
     if (selectedTest === 'wbjee_units_measurements_1') {
       return wbjeeUnitsMeasurements1Questions;
     }
+    if (selectedTest === 'panchayat_history_1') {
+      return panchayatHistory1Questions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -396,6 +402,9 @@ export default function ExamPortal() {
       return ['GK'];
     }
     if (selectedTest === 'wbjee_units_measurements_1') {
+      return ['GK'];
+    }
+    if (selectedTest === 'panchayat_history_1') {
       return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
@@ -1493,7 +1502,7 @@ https://cbt-sudarshan.vercel.app/`;
                     const descLower = test.description.toLowerCase();
 
                     if (chosenExam === 'ssc') {
-                      return !titleLower.includes('wbjee') && !idLower.includes('wbjee') && !titleLower.includes('railway') && !titleLower.includes('rrb') && test.id !== 'science_math_gi_1';
+                      return !titleLower.includes('wbjee') && !idLower.includes('wbjee') && !titleLower.includes('railway') && !titleLower.includes('rrb') && test.id !== 'science_math_gi_1' && !idLower.includes('panchayat');
                     }
                     if (chosenExam === 'rrb') {
                       const rrbKeywords = ['railway', 'rrb', 'science', 'computer', 'sports', 'census', 'river', 'dam', 'geography', 'bodmas', 'decimals', 'fractions', 'percentage', 'divisibility', 'integers', 'rational', 'gi', 'general intelligence', 'math mock', 'gk mock'];
@@ -1502,8 +1511,12 @@ https://cbt-sudarshan.vercel.app/`;
                     if (chosenExam === 'wbjee' || chosenExam === 'jeemain' || chosenExam === 'neet') {
                       return idLower.includes('wbjee');
                     }
-                    if (chosenExam === 'mts' || chosenExam === 'panchayat') {
-                      return false;
+                    if (chosenExam === 'panchayat') {
+                      return idLower.includes('panchayat');
+                    }
+                    if (chosenExam === 'mts') {
+                      const isSsc = !titleLower.includes('wbjee') && !idLower.includes('wbjee') && !titleLower.includes('railway') && !titleLower.includes('rrb') && test.id !== 'science_math_gi_1' && !idLower.includes('panchayat');
+                      return isSsc && (test.category === 'subject' || test.category === 'topic');
                     }
                   }
 
