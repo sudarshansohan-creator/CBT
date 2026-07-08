@@ -1114,9 +1114,9 @@ https://cbt-sudarshan.vercel.app/`;
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20 mb-3 group-hover:bg-amber-500/20 transition-all">
                       <Globe className="w-5 h-5" />
                     </div>
-                    <h3 className="font-extrabold text-base sm:text-lg text-white">WBJEE / State</h3>
+                    <h3 className="font-extrabold text-base sm:text-lg text-white">WBJEE</h3>
                     <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                      রাজ্য সরকারি পরীক্ষা ও পশ্চিমবঙ্গ জয়েন্ট প্রস্তুতি মক
+                      পশ্চিমবঙ্গ জয়েন্ট (WBJEE) পরীক্ষা প্রস্তুতি মক
                     </p>
                   </div>
 
@@ -1334,7 +1334,7 @@ https://cbt-sudarshan.vercel.app/`;
                   <span>
                     {chosenExam === 'ssc' && "SSC CHSL মক সিরিজ"}
                     {chosenExam === 'rrb' && "RRB / রেলওয়ে প্রস্তুতি সিরিজ"}
-                    {chosenExam === 'wbjee' && "WBJEE ও রাজ্য সরকারি পরীক্ষা মক"}
+                    {chosenExam === 'wbjee' && "WBJEE জয়েন্ট প্রস্তুতি মক"}
                     {chosenExam === 'all' && "সম্পূর্ণ মক টেস্ট লিস্ট"}
                     {chosenSubject === 'math' && "Mathematics (গণিত) স্পেশাল মক"}
                     {chosenSubject === 'gi' && "General Intelligence (রিজনিং) মক"}
