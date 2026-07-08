@@ -6,10 +6,17 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     build: {
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
+              if (id.includes('katex')) {
+                return 'vendor-katex';
+              }
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'vendor-react';
+              }
               return 'vendor';
             }
           },
