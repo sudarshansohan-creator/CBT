@@ -152,6 +152,48 @@ export default function ExamPortal() {
   const [chosenExam, setChosenExam] = useState<'ssc' | 'rrb' | 'wbjee' | 'all' | 'mts' | 'panchayat' | 'jeemain' | 'neet' | null>(null);
   const [chosenSubject, setChosenSubject] = useState<'math' | 'gk' | 'gi' | 'english' | 'full' | 'all' | null>(null);
 
+  // Dynamically adapt test options based on selected exam category
+  const testOptions = React.useMemo<TestOption[]>(() => {
+    return TEST_OPTIONS.map((test) => {
+      let title = test.title;
+      let badge = test.badge;
+      let description = test.description;
+
+      if (chosenExam === 'mts') {
+        title = title.replace(/SSC CHSL/gi, 'SSC MTS');
+        badge = badge.replace(/SSC CHSL/gi, 'SSC MTS');
+        description = description.replace(/SSC CHSL/gi, 'SSC MTS');
+      } else if (chosenExam === 'ssc') {
+        title = title.replace(/SSC MTS/gi, 'SSC CHSL');
+        badge = badge.replace(/SSC MTS/gi, 'SSC CHSL');
+        description = description.replace(/SSC MTS/gi, 'SSC CHSL');
+      } else if (chosenExam === 'rrb') {
+        title = title.replace(/SSC CHSL/gi, 'RRB Railway');
+        badge = badge.replace(/SSC CHSL/gi, 'RRB');
+        description = description.replace(/SSC CHSL/gi, 'RRB Railway');
+      } else if (chosenExam === 'jeemain') {
+        title = title.replace(/WBJEE\/JEE Main/gi, 'JEE Main').replace(/WBJEE/gi, 'JEE Main');
+        badge = badge.replace(/WBJEE\/JEE Main/gi, 'JEE Main').replace(/WBJEE/gi, 'JEE Main');
+        description = description.replace(/WBJEE\/JEE Main/gi, 'JEE Main').replace(/WBJEE/gi, 'JEE Main');
+      } else if (chosenExam === 'neet') {
+        title = title.replace(/WBJEE\/JEE Main/gi, 'NEET').replace(/WBJEE/gi, 'NEET');
+        badge = badge.replace(/WBJEE\/JEE Main/gi, 'NEET').replace(/WBJEE/gi, 'NEET');
+        description = description.replace(/WBJEE\/JEE Main/gi, 'NEET').replace(/WBJEE/gi, 'NEET');
+      } else if (chosenExam === 'wbjee') {
+        title = title.replace(/WBJEE\/JEE Main/gi, 'WBJEE').replace(/JEE Main/gi, 'WBJEE').replace(/NEET/gi, 'WBJEE');
+        badge = badge.replace(/WBJEE\/JEE Main/gi, 'WBJEE').replace(/JEE Main/gi, 'WBJEE').replace(/NEET/gi, 'WBJEE');
+        description = description.replace(/WBJEE\/JEE Main/gi, 'WBJEE').replace(/JEE Main/gi, 'WBJEE').replace(/NEET/gi, 'WBJEE');
+      }
+
+      return {
+        ...test,
+        title,
+        badge,
+        description,
+      };
+    });
+  }, [chosenExam]);
+
   // Paid Batch State
   const [joinModalOpen, setJoinModalOpen] = useState(false);
   const [joinName, setJoinName] = useState('');
@@ -553,7 +595,7 @@ Address: ${joinAddress}`;
     setVisitedQuestions({ 1: true });
     setActiveQuestionId(1);
     
-    const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+    const activeTestDef = testOptions.find(t => t.id === selectedTest);
     const initialSection = currentSections[0] || 'English';
     setActiveSection(initialSection);
     
@@ -651,7 +693,7 @@ Address: ${joinAddress}`;
 
   const handleChallengeFriend = () => {
     setHasShared(true);
-    const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+    const activeTestDef = testOptions.find(t => t.id === selectedTest);
     const testTitle = activeTestDef ? activeTestDef.title : 'Mock Test';
 
     const totalQuestionsCount = testQuestions.length;
@@ -1482,7 +1524,7 @@ https://cbt-sudarshan.vercel.app/`;
             </div>
             
             {(() => {
-              const filteredTests = TEST_OPTIONS
+              const filteredTests = testOptions
                 .filter(test => {
                   const matchesCategory = filterCategory === 'all' || test.category === filterCategory;
                   const matchesSearch = searchQuery.trim() === '' || 
@@ -2272,13 +2314,13 @@ https://cbt-sudarshan.vercel.app/`;
             <div>
               <h1 className="text-sm sm:text-lg font-extrabold text-white tracking-wide leading-tight">
                 {(() => {
-                  const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+                  const activeTestDef = testOptions.find(t => t.id === selectedTest);
                   return activeTestDef?.title || 'Mock Test';
                 })()}
               </h1>
               <p className="text-[10px] sm:text-xs text-indigo-400 font-semibold tracking-wider uppercase leading-none mt-1">
                 {(() => {
-                  const activeTestDef = TEST_OPTIONS.find(t => t.id === selectedTest);
+                  const activeTestDef = testOptions.find(t => t.id === selectedTest);
                   return activeTestDef 
                     ? `${activeTestDef.badge} ${activeTestDef.questionCount} Q Series • ${activeTestDef.totalMarks} Marks` 
                     : 'Mock Test';
