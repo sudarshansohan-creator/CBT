@@ -25,6 +25,7 @@ import { mathTrigonometryQuestions } from '../data/questions_math_trigonometry';
 import { scienceMathGiQuestions } from '../data/questions_general_science_math_gi';
 import { panchayatHistory1Questions } from '../data/questions_panchayat';
 import { sscChslGiMock25Questions } from '../data/questions_ssc_chsl_gi_mock_25';
+import { currentAffairsChslQuestions } from '../data/questions_current_affairs_chsl';
 import { Question, Section } from '../types';
 import { LatexRenderer } from './LatexRenderer';
 import { 
@@ -62,7 +63,7 @@ import {
 type TestCategory = 'full' | 'subject' | 'topic';
 
 interface TestOption {
-  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1' | 'science_math_gi_1' | 'wbjee_error_analysis_2' | 'wbjee_units_measurements_1' | 'panchayat_history_1' | 'ssc_chsl_gi_mock_25';
+  id: 'full_mock_1' | 'full_mock_2' | 'english_gi_combo' | 'indian_art_culture' | 'english_grammar' | 'gi_special' | 'static_gk_census' | 'static_gk_sports' | 'computer_knowledge' | 'geography_knowledge' | 'gi_mock_2' | 'english_mock' | 'english_mock_2' | 'gi_mock_3' | 'math_mock_1' | 'gk_mock_1' | 'math_bodmas_1' | 'math_decimals_1' | 'math_fractions_1' | 'math_percentage_1' | 'math_rational_irrational_1' | 'math_integers_1' | 'gk_census_sports_1' | 'gi_alphabet_1' | 'math_divisibility_1' | 'math_trigonometry_1' | 'science_math_gi_1' | 'wbjee_error_analysis_2' | 'wbjee_units_measurements_1' | 'panchayat_history_1' | 'ssc_chsl_gi_mock_25' | 'current_affairs_mock_1';
   category: TestCategory;
   title: string;
   badge: string;
@@ -106,7 +107,8 @@ const TEST_OPTIONS: TestOption[] = [
   { id: 'wbjee_error_analysis_2', category: 'topic', title: 'Units, Measurements and Error Analysis - Test 2', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের বিশেষ সেট (Error Analysis ও পরিমাপের গাণিতিক সমস্যা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 28 },
   { id: 'wbjee_units_measurements_1', category: 'topic', title: 'Units and Measurements - Test 1', badge: 'WBJEE Physics', badgeColor: 'teal', description: 'WBJEE/JEE Main লেভেলের ২৫টি প্রশ্নের প্রথম সেট (পরিমাপ, মাত্রা ও বিভিন্ন যন্ত্রের গণনা)।', sections: 'GK Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 29 },
   { id: 'panchayat_history_1', category: 'topic', title: 'West Bengal Panchayat - History Mock 1', badge: 'Panchayat GK', badgeColor: 'emerald', description: 'পশ্চিমবঙ্গ পঞ্চায়েত পরীক্ষার উপযোগী ইতিহাস মক সেট (১০টি গুরুত্বপূর্ণ প্রশ্ন - সিন্ধু সভ্যতা)।', sections: 'GK Section', questionCount: 10, totalMarks: 20, durationMinutes: 8, createdAt: 30 },
-  { id: 'ssc_chsl_gi_mock_25', category: 'topic', title: 'SSC CHSL - CT 10: General Intelligence Level Test 1', badge: 'SSC CHSL GI', badgeColor: 'purple', description: 'SSC CHSL লেভেলের ২৫টি বিশেষ প্রশ্নের মক টেস্ট (ইংরেজি ও সাধারণ বুদ্ধি)।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 31 }
+  { id: 'ssc_chsl_gi_mock_25', category: 'topic', title: 'SSC CHSL - Surprise Test', badge: 'Surprise Test', badgeColor: 'purple', description: 'SSC CHSL লেভেলের ২৫টি বিশেষ প্রশ্নের সারপ্রাইজ মক টেস্ট (ইংরেজি ও সাধারণ বুদ্ধি)।', sections: 'GI Section', questionCount: 25, totalMarks: 50, durationMinutes: 15, createdAt: 31 },
+  { id: 'current_affairs_mock_1', category: 'subject', title: 'SSC CHSL - Current Affairs Special Mock', badge: 'Current Affairs', badgeColor: 'orange', description: 'গুরুত্বপূর্ণ সরকারি পরিকল্পনা, অর্থনৈতিক নীতি ও সাম্প্রতিক কারেন্ট অ্যাফেয়ার্স (২০টি প্রশ্ন)।', sections: 'GK Section', questionCount: 20, totalMarks: 40, durationMinutes: 15, createdAt: 32 }
 ];
 
 const COLOR_MAP: Record<string, { borderSelected: string, bgSelected: string, ringSelected: string, badgeBg: string, textMain: string }> = {
@@ -365,6 +367,9 @@ export default function ExamPortal() {
     if (selectedTest === 'ssc_chsl_gi_mock_25') {
       return sscChslGiMock25Questions;
     }
+    if (selectedTest === 'current_affairs_mock_1') {
+      return currentAffairsChslQuestions;
+    }
     return questions; // 'full_mock_1' uses all 100 questions
   }, [selectedTest]);
 
@@ -456,6 +461,9 @@ export default function ExamPortal() {
     }
     if (selectedTest === 'ssc_chsl_gi_mock_25') {
       return ['GI'];
+    }
+    if (selectedTest === 'current_affairs_mock_1') {
+      return ['GK'];
     }
     return ['English', 'Math', 'GI', 'GK'];
   }, [selectedTest]);
